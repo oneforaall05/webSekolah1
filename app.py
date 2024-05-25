@@ -247,9 +247,13 @@ def AdminEditFasilitas(_id):
             'namaFasilitas': nama,
             'deskripsiFasilitas':deskripsi
          }
-      if nama_gambar:
-         nama_gambar_asli = nama_gambar.filename
-         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+      
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+      
+      if nama_gambar:         
+         extension = nama_gambar.filename.split('.')[-1]
+         nama_file_gambar = f'fasilitas-{mytime}.{extension}'
          file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
          doc['gambarFasilitas']=nama_file_gambar
@@ -269,9 +273,13 @@ def AdminAddFasilitas():
       deskripsi=request.form['deskripsiFasilitas']
       
       nama_gambar= request.files['gambarFasilitas']
+      
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+    
       if nama_gambar:
-         nama_gambar_asli = nama_gambar.filename
-         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         extension = nama_gambar.filename.split('.')[-1]
+         nama_file_gambar = f'fasilitas-{mytime}.{extension}'
          file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
       else :
