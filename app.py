@@ -202,7 +202,7 @@ def AdminEditFasilitas(_id):
       if nama_gambar:
          nama_gambar_asli = nama_gambar.filename
          nama_file_gambar = nama_gambar_asli.split('/')[-1]
-         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
          doc['gambarFasilitas']=nama_file_gambar
          
@@ -224,7 +224,7 @@ def AdminAddFasilitas():
       if nama_gambar:
          nama_gambar_asli = nama_gambar.filename
          nama_file_gambar = nama_gambar_asli.split('/')[-1]
-         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
       else :
          nama_gambar=None
