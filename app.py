@@ -171,7 +171,7 @@ def AdminEditFasilitas(_id):
       nama=request.form['namaFasilitas']
       deskripsi=request.form['deskripsiFasilitas']
          
-      nama_gambar= request.file['gambarFasilitas']
+      nama_gambar= request.files['gambarFasilitas']
       
       doc={
             'namaFasilitas': nama,
@@ -186,8 +186,10 @@ def AdminEditFasilitas(_id):
          
       db.fasilitas.update_one({'_id':ObjectId(id)},{'$set':doc})
       return redirect(url_for('AdminFasilitas'))
-      
-   fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
+   id =  ObjectId(_id)
+   print(id)
+   # id = ObjectId('6650c8e8970a90fc4870c5b4')
+   fasilitas = list(db.fasilitas.find({'_id':id}))
    return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 
 # add fasilitas
@@ -224,6 +226,7 @@ def AdminDeleteFasilitas(_id):
 @app.route("/test")
 def test():
    id = ObjectId('6650c8e8970a90fc4870c5b4')
+   
    fasilitas = list(db.fasilitas.find({'_id':id}))
    return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 # fasilitas end
