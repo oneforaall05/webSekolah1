@@ -3,6 +3,7 @@ from pymongo import MongoClient
 import jwt
 from datetime import datetime, timedelta
 import hashlib
+import os
 from bson import ObjectId
 
 from flask import Flask, render_template,jsonify,request,redirect,url_for
@@ -96,6 +97,10 @@ def AdminEditProfileSekolah(_id):
           profile = request.form["profile"]
           alamat = request.form["alamat"]
           nama_gambar = request.files["gambarStruktur"]
+          currentStruktur = db.struktur.find_one({'_id': ObjectId(id)})
+          current_image = currentStruktur.get('gambarStruktur', None)
+          today=datetime.now()
+          mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
           doc = {
                "sejarah": sejarah,
                "profile": profile,
@@ -103,8 +108,12 @@ def AdminEditProfileSekolah(_id):
                
           }
           if nama_gambar:
-            nama_gambar_asli = nama_gambar.filename
-            nama_file_gambar = nama_gambar_asli.split('/')[-1]
+            if current_image:
+               current_image_path = os.path.join('static/fotoStruktur', current_image)
+               if os.path.exists(current_image_path):
+                  os.remove(current_image_path)
+            extension = nama_gambar.filename.split('.')[-1]
+            nama_file_gambar = f'struktur-{mytime}.{extension}'
             file_path =f'static/fotoStruktur/{nama_file_gambar}'
             nama_gambar.save(file_path)
             doc['gambarStruktur']=nama_file_gambar
@@ -133,7 +142,8 @@ def AdminEditStaff(_id):
       id=request.form['_id']
       nama=request.form['nama']
       nama_gambar= request.files['gambar']
-      
+      currentStaff = db.gurustaff.find_one({'_id': ObjectId(id)})
+      current_image = currentStaff.get('gambar', None)
       doc={
             'nama': nama
          }
@@ -141,7 +151,11 @@ def AdminEditStaff(_id):
       mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
       if nama_gambar:
-         extension = nama_gambar.filename.split('/')[-1]
+         if current_image:
+               current_image_path = os.path.join('static/fotostaff', current_image)
+               if os.path.exists(current_image_path):
+                  os.remove(current_image_path)
+         extension = nama_gambar.filename.split('.')[-1]
          nama_file_gambar = f'staff-{mytime}.{extension}'
          file_path =f'static/fotostaff/{nama_file_gambar}'
          nama_gambar.save(file_path)
@@ -154,6 +168,12 @@ def AdminEditStaff(_id):
 
 @app.route('/adminDeleteStaff/<_id>',methods=['GET','POST'])
 def AdminDeleteStaff(_id):
+   currentStaff = db.gurustaff.find_one({'_id': ObjectId(_id)})
+   current_image = currentStaff.get('gambar', None)
+   if current_image:
+      current_image_path = os.path.join('static/fotostaff', current_image)
+      if os.path.exists(current_image_path):
+         os.remove(current_image_path)
    db.gurustaff.delete_one({'_id':ObjectId(_id)})
    return redirect(url_for('AdminStaff'))
 
@@ -164,11 +184,12 @@ def AdminAddStaff():
       # ambil input
       nama=request.form.get('nama')
       nama_gambar= request.files['gambar']
+      
       today=datetime.now()
       mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
       if nama_gambar:
-         extension = nama_gambar.filename.split('/')[-1]
+         extension = nama_gambar.filename.split('.')[-1]
          nama_file_gambar = f'staff-{mytime}.{extension}'
          file_path =f'static/fotoStaff/{nama_file_gambar}'
          nama_gambar.save(file_path)
@@ -242,7 +263,8 @@ def AdminEditFasilitas(_id):
       deskripsi=request.form['deskripsiFasilitas']
          
       nama_gambar= request.files['gambarFasilitas']
-      
+      currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(id)})
+      current_image = currentFasilitas.get('gambarFasilitas', None)
       doc={
             'namaFasilitas': nama,
             'deskripsiFasilitas':deskripsi
@@ -251,7 +273,11 @@ def AdminEditFasilitas(_id):
       today=datetime.now()
       mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
       
-      if nama_gambar:         
+      if nama_gambar: 
+         if current_image:
+            current_image_path = os.path.join('static/fotoFasilitas', current_image)
+            if os.path.exists(current_image_path):
+               os.remove(current_image_path)        
          extension = nama_gambar.filename.split('.')[-1]
          nama_file_gambar = f'fasilitas-{mytime}.{extension}'
          file_path =f'static/fotoFasilitas/{nama_file_gambar}'
@@ -296,6 +322,12 @@ def AdminAddFasilitas():
 # delete fasilitas
 @app.route('/adminDeleteFasilitas/<_id>',methods=['GET','POST'])
 def AdminDeleteFasilitas(_id):
+   currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(_id)})
+   current_image = currentFasilitas.get('gambarFasilitas', None)
+   if current_image:
+      current_image_path = os.path.join('static/fotoFasilitas', current_image)
+      if os.path.exists(current_image_path):
+         os.remove(current_image_path) 
    db.fasilitas.delete_one({'_id':ObjectId(_id)})
    return redirect(url_for('AdminFasilitas'))
  
