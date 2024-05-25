@@ -3,12 +3,15 @@ from pymongo import MongoClient
 import jwt
 from datetime import datetime, timedelta
 import hashlib
+from bson import ObjectId
 
 from flask import Flask, render_template,jsonify,request,redirect,url_for
 
 from werkzeug.utils import secure_filename
 
-
+stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
+client = MongoClient(stringUrl)
+db = client.websekolah
 
 app = Flask(__name__)
 
@@ -156,18 +159,73 @@ def AdminEditDaftar():
 # fasilitas
 @app.route('/adminFasilitas',methods=['GET'])
 def AdminFasilitas():
-   return render_template('admin/fasilitas/fasilitas.html')
+   fasilitas =  list(db.fasilitas.find({}))
+   print (fasilitas)
+   return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas)
 
 # edit fasilitas 
-@app.route('/adminEditFasilitas',methods=['GET'])
-def AdminEditFasilitas():
-   return render_template('admin/fasilitas/editFasilitas.html')
+@app.route('/adminEditFasilitas/<_id>',methods=['GET','POST'])
+def AdminEditFasilitas(_id):
+   if request.method=='POST':
+      id=request.form['_id']
+      nama=request.form['namaFasilitas']
+      deskripsi=request.form['deskripsiFasilitas']
+         
+      nama_gambar= request.file['gambarFasilitas']
+      
+      doc={
+            'namaFasilitas': nama,
+            'deskripsiFasilitas':deskripsi
+         }
+      if nama_gambar:
+         nama_gambar_asli = nama_gambar.filename
+         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+         doc['gambarFasilitas']=nama_file_gambar
+         
+      db.fasilitas.update_one({'_id':ObjectId(id)},{'$set':doc})
+      return redirect(url_for('AdminFasilitas'))
+      
+   fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
+   return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 
 # add fasilitas
-@app.route('/adminAddFasilitas',methods=['GET'])
+@app.route('/adminAddFasilitas',methods=['GET','POST'])
 def AdminAddFasilitas():
+   if request.method=='POST':
+      # ambil input
+      nama=request.form['namaFasilitas']
+      deskripsi=request.form['deskripsiFasilitas']
+      
+      nama_gambar= request.files['gambarFasilitas']
+      if nama_gambar:
+         nama_gambar_asli = nama_gambar.filename
+         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+      else :
+         nama_gambar=None
+      doc = {
+            'namaFasilitas':nama,
+            'gambarFasilitas':nama_file_gambar,
+            'deskripsiFasilitas':deskripsi
+        }
+      db.fasilitas.insert_one(doc)
+      return redirect(url_for('AdminFasilitas'))
    return render_template('admin/fasilitas/addfasilitas.html')
 
+# delete fasilitas
+@app.route('/adminDeleteFasilitas/<_id>',methods=['GET','POST'])
+def AdminDeleteFasilitas(_id):
+   db.fasilitas.delete_one({'_id':ObjectId(_id)})
+   return redirect(url_for('AdminFasilitas'))
+ 
+@app.route("/test")
+def test():
+   id = ObjectId('6650c8e8970a90fc4870c5b4')
+   fasilitas = list(db.fasilitas.find({'_id':id}))
+   return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 # fasilitas end
 
 

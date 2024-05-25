@@ -159,8 +159,11 @@
         </div><!-- End Page Title -->
 
         <div class="d-flex justify-content-end mb-3 me-5">
-            <button type="button" class="btn btn-light btn-custom">Add Fasilitas</button>
+            <button type="button" class="btn btn-light btn-custom">
+                <a href="/adminAddFasilitas" style="text-decoration: none; color: inherit;">Add Fasilitas</a>
+            </button>
         </div>
+        
 
         <section class="section">
             <div class="table-responsive">
@@ -174,33 +177,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for item in fasilitas %}
                         <tr>
-                            <td class="text-center"><img src="static/assets/img/news-2.jpg" alt="Sample Image" class="img-fluid img-thumbnail"></td>
-                            <td>Sample Title</td>
-                            <td>Sample description text goes here.</td>
+                            <td class="text-center"><img src="static/assets/img/imgfsl/{{item.gambarFasilitas}}" alt="Sample Image" class="img-fluid img-thumbnail"></td>
+                            <td>{{item.namaFasilitas}}</td>
+                            <td>{{item.deskripsiFasilitas}}</td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
+                                <a href="/adminEditFasilitas/{{item._id}}">
+                                    <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Edit</button>
+                                </a>
+                                <a href="/adminDeleteFasilitas/{{item._id}}">
+                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
+                                </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="text-center"><img src="static/assets/img/news-3.jpg" alt="Sample Image" class="img-fluid img-thumbnail"></td>
-                            <td>Sample Title</td>
-                            <td>Sample description text goes here.</td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center"><img src="static/assets/img/news-4.jpg" alt="Sample Image" class="img-fluid img-thumbnail"></td>
-                            <td>Sample Title</td>
-                            <td>Sample description text goes here.</td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Edit</button>
-                                <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
-                            </td>
-                        </tr>
+                        {% endfor %}
+                        
                         <!-- Repeat the above <tr> block for more rows -->
                     </tbody>
                 </table>

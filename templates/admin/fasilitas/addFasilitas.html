@@ -2,30 +2,46 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Add Fasilitas</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Add Fasilitas</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
 
-{%include 'admin/sideBar.html'%}
+  {%include 'admin/sideBar.html'%}
 
-<main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
+  <main id="main" class="main">
+    <div class="pagetitle mb-4">
+        <h1>Add Fasilitas</h1>
     </div><!-- End Page Title -->
-
-   testis
-
-  </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+    <!-- isi -->
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body mt-4">
+            <div class="table-responsive">
+                <form action="/adminAddFasilitas" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="namaFasilitas" class="form-label">Nama Fasilitas</label>
+                        <input type="text" class="form-control" id="namaFasilitas" name="namaFasilitas"
+                            placeholder="Masukkan Nama Fasilitas" required style="border-radius: 10px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gambarFasilitas" class="form-label">Upload foto</label>
+                        <input type="file" class="form-control" id="gambarFasilitas" accept=".png,.jpg,.jpeg"
+                            name="gambarFasilitas" required style="border-radius: 10px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="deskripsiFasilitas" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="deskripsiFasilitas" name="deskripsiFasilitas"
+                            placeholder="Deskripsikan fasilitas disini" required style="border-radius: 10px;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main><!-- End #main -->
+  {%include 'admin/footer.html'%}
