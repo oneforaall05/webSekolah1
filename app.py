@@ -84,12 +84,35 @@ def adminLogin():
 # profile sekolah 
 @app.route('/adminProfileSekolah',methods=['GET'])
 def AdminProfileSekolah():
-   return render_template('admin/profileSekolah/profileSekolah.html')
+   struktur = list(db.struktur.find({}))
+   return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur)
 
 # edit profile sekolah
-@app.route('/adminEditProfileSekolah',methods=['GET'])
-def AdminEditProfileSekolah():
-   return render_template('admin/profileSekolah/editProfileSekolah.html')
+@app.route('/adminEditProfileSekolah/<_id>',methods=['GET','POST'])
+def AdminEditProfileSekolah(_id):
+   if request.method == "POST":
+          id = request.form["_id"]
+          sejarah = request.form["sejarah"]
+          profile = request.form["profile"]
+          alamat = request.form["alamat"]
+          nama_gambar = request.files["gambarStruktur"]
+          doc = {
+               "sejarah": sejarah,
+               "profile": profile,
+               "alamat": alamat,
+               
+          }
+          if nama_gambar:
+            nama_gambar_asli = nama_gambar.filename
+            nama_file_gambar = nama_gambar_asli.split('/')[-1]
+            file_path =f'static/fotoStruktur/{nama_file_gambar}'
+            nama_gambar.save(file_path)
+            doc['gambarStruktur']=nama_file_gambar
+          db.struktur.update_one({'_id':ObjectId(id)},{"$set":doc})
+          return redirect(url_for('AdminProfileSekolah'))
+   id = ObjectId(_id)
+   struktur = list(db.struktur.find({"_id":id}))
+   return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur)
 
 # profileSekolahAdmin end
 
@@ -104,26 +127,27 @@ def AdminStaff():
    return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf)
 
 # edit staff
-@app.route('/adminEditStaff/<_id>',methods=['GET'])
+@app.route('/adminEditStaff/<_id>',methods=['GET','POST'])
 def AdminEditStaff(_id):
    if request.method=='POST':
       id=request.form['_id']
       nama=request.form['nama']
-      nama_gambar= request.file['gambar']
+      nama_gambar= request.files['gambar']
       
       doc={
             'nama': nama
          }
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+
       if nama_gambar:
-         nama_gambar_asli = nama_gambar.filename
-         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         extension = nama_gambar.filename.split('/')[-1]
+         nama_file_gambar = f'staff-{mytime}.{extension}'
          file_path =f'static/fotostaff/{nama_file_gambar}'
          nama_gambar.save(file_path)
          doc['gambar']=nama_file_gambar
-         
       db.gurustaff.update_one({'_id':ObjectId(id)},{'$set':doc})
       return redirect(url_for('AdminStaff'))
-
    gurustaff = list(db.gurustaff.find({'_id':ObjectId(_id)}))
    return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff)
 
@@ -139,11 +163,13 @@ def AdminAddStaff():
    if request.method=='POST':
       # ambil input
       nama=request.form.get('nama')
-      
       nama_gambar= request.files['gambar']
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+
       if nama_gambar:
-         nama_gambar_asli = nama_gambar.filename
-         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         extension = nama_gambar.filename.split('/')[-1]
+         nama_file_gambar = f'staff-{mytime}.{extension}'
          file_path =f'static/fotoStaff/{nama_file_gambar}'
          nama_gambar.save(file_path)
       else :
@@ -205,7 +231,6 @@ def AdminEditDaftar():
 @app.route('/adminFasilitas',methods=['GET'])
 def AdminFasilitas():
    fasilitas =  list(db.fasilitas.find({}))
-   print (fasilitas)
    return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas)
 
 # edit fasilitas 
@@ -216,7 +241,7 @@ def AdminEditFasilitas(_id):
       nama=request.form['namaFasilitas']
       deskripsi=request.form['deskripsiFasilitas']
          
-      nama_gambar= request.file['gambarFasilitas']
+      nama_gambar= request.files['gambarFasilitas']
       
       doc={
             'namaFasilitas': nama,
@@ -225,7 +250,7 @@ def AdminEditFasilitas(_id):
       if nama_gambar:
          nama_gambar_asli = nama_gambar.filename
          nama_file_gambar = nama_gambar_asli.split('/')[-1]
-         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
          doc['gambarFasilitas']=nama_file_gambar
          
@@ -247,7 +272,7 @@ def AdminAddFasilitas():
       if nama_gambar:
          nama_gambar_asli = nama_gambar.filename
          nama_file_gambar = nama_gambar_asli.split('/')[-1]
-         file_path =f'static/assets/img/imgfsl/{nama_file_gambar}'
+         file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
       else :
          nama_gambar=None
@@ -269,6 +294,7 @@ def AdminDeleteFasilitas(_id):
 @app.route("/test")
 def test():
    id = ObjectId('6650c8e8970a90fc4870c5b4')
+   
    fasilitas = list(db.fasilitas.find({'_id':id}))
    return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 # fasilitas end

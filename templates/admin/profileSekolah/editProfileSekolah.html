@@ -2,30 +2,91 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Edit Profile Sekolah</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Edit Profile Sekolah</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  {%include 'admin/vendor.html'%}
+  
+</head>
+<body>
+  {%include 'admin/sideBar.html'%}
 
-
-{%include 'admin/sideBar.html'%}
-
-<main id="main" class="main">
-
+  <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+      <h1>Edit Profile Sekolah</h1>
+    </div>
+    <!-- End Page Title -->
 
-   testis
+    <!-- General Form Elements -->
+    <form action="/adminEditProfileSekolah/{{struktur[0]._id}}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_id" value="{{struktur[0]._id}}">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Sejarah Sekolah</h5>
+          <div class="row mb-3">
 
-  </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+
+            <div class="col-sm-12">
+              <textarea class="form-control" style="height: 100px" name="sejarah">
+                  {{struktur[0].sejarah}}
+                </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Profile Sekolah</h5>
+          <div class="row mb-3">
+
+            <div class="col-sm-12">
+              <textarea class="form-control" style="height: 100px" name="profile">
+                  {{struktur[0].profile}}
+                </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Struktur Sekolah</h5>
+          <div class="row mb-3">
+            <div class="col-sm-12 mb-3">
+              <img id="gambar-preview" src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="" width="200" class="mb-3">
+              
+              <br><label for="gambarFasilitas" class="form-label">Upload foto</label>
+              <input type="file" class="form-control" id="gambarStruktur" accept=".png,.jpg,.jpeg"
+                name="gambarStruktur" style="border-radius: 10px;">
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Alamat</h5>
+          <div class="row mb-3">
+
+            <div class="col-sm-12">
+              <textarea class="form-control" style="height: 100px" name="alamat">
+                  {{struktur[0].alamat}}
+                </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
+      </div>
+    </form>
+  </main>
+  <!-- End #main -->
+  {%include 'admin/footer.html'%}
+</head>
+
+</html>

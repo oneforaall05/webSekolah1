@@ -9,12 +9,24 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  {% include 'admin/sideBar.html' %}
+  {%include 'admin/vendor.html'%}
+  
+</head>
+
+<body>
+  {%include 'admin/sideBar.html'%}
 
   <main id="main" class="main">
     <div class="pagetitle mb-4">
       <h1>Edit Fasilitas</h1>
-    </div><!-- End Page Title -->
+      <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/adminFasilitas">Fasilitas</a></li>
+            <li class="breadcrumb-item active">Edit Fasilitas</li>
+        </ol>
+    </nav>
+    </div>
+    <!-- End Page Title -->
 
     <!-- isi -->
     <div class="card border-0 shadow mb-4">
@@ -23,20 +35,18 @@
           <form action="/adminEditFasilitas/{{fasilitas[0]._id}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_id" value="{{fasilitas[0]._id}}">
             <div class="mb-3">
-              <label for="namaFasilitas" class="form-label">Nama Fasilitas</label>
+              <label for="namaFasilitas" class="form-label">Nama Fasilitas :</label>
               <input type="text" class="form-control" id="namaFasilitas" name="namaFasilitas" value="{{fasilitas[0].namaFasilitas}}"
                 placeholder="Masukkan Nama Fasilitas"  required
                 style="border-radius: 10px;">
             </div>
             <div class="mb-3">
-              <label for="gambarFasilitas" class="form-label">Upload foto</label>
-              <img id="gambar-preview" src="../static/assets/img/imgfsl/{{fasilitas[0].gambarFasilitas}}" alt=""
-                width="200" class="mb-3">
-              <input type="file" class="form-control" id="gambarFasilitas" accept=".png,.jpg,.jpeg"
-                name="gambarFasilitas" style="border-radius: 10px;">
-            </div>
+              <label for="gambarFasilitas" class="form-label">Upload foto :</label><br>
+              <img id="gambar-preview" src="../static/fotoFasilitas/{{fasilitas[0].gambarFasilitas}}" alt="" width="200" class="mb-3">
+              <input type="file" class="form-control" id="gambarFasilitas" accept=".png,.jpg,.jpeg" name="gambarFasilitas" style="border-radius: 10px;">
+            </div>            
             <div class="mb-3">
-              <label for="deskripsiFasilitas" class="form-label">Deskripsi</label>
+              <label for="deskripsiFasilitas" class="form-label">Deskripsi :</label>
               <textarea class="form-control" id="deskripsiFasilitas" name="deskripsiFasilitas"
                 placeholder="Deskripsikan fasilitas disini" required
                 style="border-radius: 10px;">{{fasilitas[0].deskripsiFasilitas}}</textarea>
@@ -48,6 +58,7 @@
         </div>
       </div>
     </div>
-  </main><!-- End #main -->
+  </main>
+  <!-- End #main -->
 
   {% include 'admin/footer.html' %}

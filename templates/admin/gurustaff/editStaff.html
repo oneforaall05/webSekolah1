@@ -9,7 +9,10 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-
+    {%include 'admin/vendor.html'%}
+  
+  </head>
+<body>
 {%include 'admin/sideBar.html'%}
 
 <main id="main" class="main">
@@ -21,7 +24,7 @@
     <div class="card border-0 shadow mb-4">
       <div class="card-body mt-4">
         <div class="table-responsive">
-          <form action="/adminEditStaff/{{gurustaff[0]._id}}" method="post" enctype="multipart/form-data">
+          <form action="/adminEditStaff/{{gurustaff[0]._id}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_id" value="{{gurustaff[0]._id}}">
             <div class="mb-3">
               <label for="nama" class="form-label">Nama</label>
