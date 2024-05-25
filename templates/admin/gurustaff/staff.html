@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Staff</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+
+    {%include 'admin/sideBar.html'%}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Guru & Staff</h1>
+
+        </div><!-- End Page Title -->
+
+        <div class="d-flex justify-content-end mb-3 me-5">
+            <button type="button" class="btn  btn-outline-primary">
+                <a href="/adminAddStaff" style="text-decoration: none; color: inherit;">Add Guru & Staff</a>
+            </button>
+        </div>
+
+
+        <section class="section">
+            <div class="table-responsive">
+                <table class="table table-bordered table-custom">
+                    <thead>
+                        <tr>
+                            <th class="border-0 rounded-start">No</th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Foto</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in gurustaf %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{item.nama}}</td>
+                            <td class="text-center"><img src="static/fotostaff/{{item.gambar}}" alt="Sample Image"  width="100"
+                                    class="img-fluid img-thumbnail"></td>
+                            <td class="text-center">
+                                <a href="/adminEditStaff/{{item._id}}">
+                                    <button type="button" class="btn btn-primary btn-sm me-2"><i
+                                            class="bi bi-pencil-square"></i> Edit</button>
+                                </a>
+                                <a href="/adminDeleteStaff/{{item._id}}">
+                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                                        Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+    </main><!-- End #main -->
+    {%include 'admin/footer.html'%}

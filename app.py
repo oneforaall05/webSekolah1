@@ -99,17 +99,62 @@ def AdminEditProfileSekolah():
 # staff 
 @app.route('/adminStaff',methods=['GET'])
 def AdminStaff():
-   return render_template('admin/staff/staff.html')
+   gurustaf =  list(db.gurustaff.find({}))
+   print (gurustaf)
+   return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf)
 
 # edit staff
-@app.route('/adminEditStaff',methods=['GET'])
-def AdminEditStaff():
-   return render_template('admin/staff/editStaff.html')
+@app.route('/adminEditStaff/<_id>',methods=['GET'])
+def AdminEditStaff(_id):
+   if request.method=='POST':
+      id=request.form['_id']
+      nama=request.form['nama']
+      nama_gambar= request.file['gambar']
+      
+      doc={
+            'nama': nama
+         }
+      if nama_gambar:
+         nama_gambar_asli = nama_gambar.filename
+         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         file_path =f'static/fotostaff/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+         doc['gambar']=nama_file_gambar
+         
+      db.gurustaff.update_one({'_id':ObjectId(id)},{'$set':doc})
+      return redirect(url_for('AdminStaff'))
+
+   gurustaff = list(db.gurustaff.find({'_id':ObjectId(_id)}))
+   return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff)
+
+
+@app.route('/adminDeleteStaff/<_id>',methods=['GET','POST'])
+def AdminDeleteStaff(_id):
+   db.gurustaff.delete_one({'_id':ObjectId(_id)})
+   return redirect(url_for('AdminStaff'))
 
 # add staff
-@app.route('/adminAddStaff',methods=['GET'])
+@app.route('/adminAddStaff',methods=['GET','POST'])
 def AdminAddStaff():
-   return render_template('admin/staff/addStaff.html')
+   if request.method=='POST':
+      # ambil input
+      nama=request.form.get('nama')
+      
+      nama_gambar= request.files['gambar']
+      if nama_gambar:
+         nama_gambar_asli = nama_gambar.filename
+         nama_file_gambar = nama_gambar_asli.split('/')[-1]
+         file_path =f'static/fotoStaff/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+      else :
+         nama_gambar=None
+      doc = {
+            'nama':nama,
+            'gambar':nama_file_gambar   
+        }
+      db.gurustaff.insert_one(doc)
+      return redirect(url_for('AdminStaff'))
+   return render_template('admin/gurustaff/addStaff.html')
 
 # staffAdmin end
 
