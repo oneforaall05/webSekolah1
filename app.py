@@ -160,7 +160,6 @@ def AdminEditDaftar():
 @app.route('/adminFasilitas',methods=['GET'])
 def AdminFasilitas():
    fasilitas =  list(db.fasilitas.find({}))
-   print (fasilitas)
    return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas)
 
 # edit fasilitas 
@@ -171,7 +170,7 @@ def AdminEditFasilitas(_id):
       nama=request.form['namaFasilitas']
       deskripsi=request.form['deskripsiFasilitas']
          
-      nama_gambar= request.file['gambarFasilitas']
+      nama_gambar= request.files['gambarFasilitas']
       
       doc={
             'namaFasilitas': nama,
@@ -188,6 +187,7 @@ def AdminEditFasilitas(_id):
       return redirect(url_for('AdminFasilitas'))
       
    fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
+   print (fasilitas)
    return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
 
 # add fasilitas
