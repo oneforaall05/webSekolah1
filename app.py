@@ -84,12 +84,35 @@ def adminLogin():
 # profile sekolah 
 @app.route('/adminProfileSekolah',methods=['GET'])
 def AdminProfileSekolah():
-   return render_template('admin/profileSekolah/profileSekolah.html')
+   struktur = list(db.struktur.find({}))
+   return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur)
 
 # edit profile sekolah
-@app.route('/adminEditProfileSekolah',methods=['GET'])
-def AdminEditProfileSekolah():
-   return render_template('admin/profileSekolah/editProfileSekolah.html')
+@app.route('/adminEditProfileSekolah/<_id>',methods=['GET','POST'])
+def AdminEditProfileSekolah(_id):
+   if request.method == "POST":
+          id = request.form["_id"]
+          sejarah = request.form["sejarah"]
+          profile = request.form["profile"]
+          alamat = request.form["alamat"]
+          nama_gambar = request.files["gambarStruktur"]
+          doc = {
+               "sejarah": sejarah,
+               "profile": profile,
+               "alamat": alamat,
+               
+          }
+          if nama_gambar:
+            nama_gambar_asli = nama_gambar.filename
+            nama_file_gambar = nama_gambar_asli.split('/')[-1]
+            file_path =f'static/fotoStruktur/{nama_file_gambar}'
+            nama_gambar.save(file_path)
+            doc['gambarStruktur']=nama_file_gambar
+          db.struktur.update_one({'_id':ObjectId(id)},{"$set":doc})
+          return redirect(url_for('AdminProfileSekolah'))
+   id = ObjectId(_id)
+   struktur = list(db.struktur.find({"_id":id}))
+   return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur)
 
 # profileSekolahAdmin end
 
