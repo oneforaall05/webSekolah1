@@ -205,7 +205,7 @@ def AdminEditFasilitas(_id):
       
       if nama_gambar:         
          extension = nama_gambar.filename.split('.')[-1]
-         nama_file_gambar = f'file-{mytime}.{extension}'
+         nama_file_gambar = f'fasilitas-{mytime}.{extension}'
          file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
          doc['gambarFasilitas']=nama_file_gambar
@@ -231,7 +231,7 @@ def AdminAddFasilitas():
     
       if nama_gambar:
          extension = nama_gambar.filename.split('.')[-1]
-         nama_file_gambar = f'file-{mytime}.{extension}'
+         nama_file_gambar = f'fasilitas-{mytime}.{extension}'
          file_path =f'static/fotoFasilitas/{nama_file_gambar}'
          nama_gambar.save(file_path)
       else :
