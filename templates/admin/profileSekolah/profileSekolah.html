@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+  <style>
+    #btn-custom {
+      border: 2px solid #000;
+      color: #000;
+    }
+
+    #btn-custom:hover {
+      background-color: #000;
+      color: #fff;
+    }
+  </style>
+
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -11,22 +23,58 @@
 
 
 
-{%include 'admin/sideBar.html'%}
+  {%include 'admin/sideBar.html'%}
 
-<main id="main" class="main">
+  <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+      <h1>Profile Sekolah</h1>
 
-   testis
+
+    </div><!-- End Page Title -->
+    <div class="d-flex justify-content-end mb-3 me-5">
+
+      <button type="button" class="btn btn-light " id="btn-custom">
+        <a href="/adminEditProfileSekolah/{{struktur[0]._id}}" style="text-decoration: none; color: inherit;">Edit Profile</a>
+      </button>
+    </div>
+    <!-- Sejarah Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Sejarah</h5>
+        <p class="card-text">
+          {{struktur[0].sejarah}}
+        </p>
+      </div>
+    </div><!-- End Sejarah Card -->
+
+    <!-- Profile Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Profile</h5>
+        <p class="card-text">
+          {{struktur[0].profile}}
+        </p>
+      </div>
+    </div><!-- End Profile Card -->
+
+    <!-- Struktur Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Struktur</h5>
+       <img src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="">
+      </div>
+    </div><!-- End Struktur Card -->
+
+    <!-- Alamat Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Alamat</h5>
+        <p class="card-text">
+          {{struktur[0].alamat}}
+        </p>
+      </div>
+    </div><!-- End Alamat Card -->
 
   </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+  {%include 'admin/footer.html'%}
