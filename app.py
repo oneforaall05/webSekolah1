@@ -211,17 +211,79 @@ def AdminAddStaff():
 # berita
 @app.route('/adminBerita',methods=['GET'])
 def AdminBerita():
-   return render_template('admin/berita/berita.html')
+   Berita =  list(db.berita.find({}))
+   print (Berita)
+   return render_template('admin/berita/berita.html', Berita=Berita)
 
 # edit berita
-@app.route('/adminEditBerita',methods=['GET'])
-def AdminEditBerita():
-   return render_template('admin/berita/editBerita.html')
+@app.route('/adminEditBerita/<_id>',methods=['GET','POST'])
+def AdminEditBerita(_id):
+   if request.method=='POST':
+      id=request.form['_id']
+      Deskripsi=request.form['Deskripsi']
+      nama_gambar= request.files['gambar']
+      currentBerita = db.berita.find_one({'_id': ObjectId(id)})
+      current_image = currentBerita.get('gambar', None)
+      doc={
+            'Deskripsi': Deskripsi
+         }
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+
+      if nama_gambar:
+         if current_image:
+               current_image_path = os.path.join('static/fotoBerita', current_image)
+               if os.path.exists(current_image_path):
+                  os.remove(current_image_path)
+         extension = nama_gambar.filename.split('.')[-1]
+         nama_file_gambar = f'berita-{mytime}.{extension}'
+         file_path =f'static/fotoBerita/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+         doc['gambar']=nama_file_gambar
+      db.berita.update_one({'_id':ObjectId(id)},{'$set':doc})
+      return redirect(url_for('AdminBerita'))
+   berita = list(db.berita.find({'_id':ObjectId(_id)}))
+   return render_template('admin/berita/editBerita.html',berita=berita)
+   
 
 # add berita
-@app.route('/adminAddBerita',methods=['GET'])
+@app.route('/adminAddBerita',methods=['GET','POST'])
 def AdminAddBerita():
+   if request.method=='POST':
+      # ambil input
+      Deskripsi=request.form['Deskripsi']
+      nama_gambar= request.files['gambar']
+      
+      today=datetime.now()
+      mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+    
+      if nama_gambar:
+         extension = nama_gambar.filename.split('.')[-1]
+         nama_file_gambar = f'Berita-{mytime}.{extension}'
+         file_path =f'static/fotoBerita/{nama_file_gambar}'
+         nama_gambar.save(file_path)
+      else :
+         nama_gambar=None
+      doc = {
+            'Deskripsi':Deskripsi,
+            'gambar':nama_file_gambar,
+            
+        }
+      db.berita.insert_one(doc)
+      return redirect(url_for('AdminBerita'))
    return render_template('admin/berita/addBerita.html')
+
+@app.route('/adminDeleteBerita/<_id>',methods=['GET','POST'])
+def AdminDeleteBerita(_id):
+   currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
+   current_image = currentdeskripsi.get('gambar', None)
+   if current_image:
+      current_image_path = os.path.join('static/fotoBerita', current_image)
+      if os.path.exists(current_image_path):
+         os.remove(current_image_path)
+   db.berita.delete_one({'_id':ObjectId(_id)})
+   return redirect(url_for('AdminBerita'))
+
 
 # komentar
 @app.route('/adminDataKomentar',methods=['GET'])

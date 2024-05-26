@@ -8,21 +8,13 @@
     <title>Edit Berita</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-<<<<<<< HEAD
-    {%include 'admin/vendor.html'%}
-  
-  </head>
-<body>
-=======
+
 
     {%include 'admin/vendor.html'%}
 
   </head>
   
   <body>
-  
-
->>>>>>> ebf3e3b15091cca7f77ec1944e08de79a5f8c456
 
 {%include 'admin/sideBar.html'%}
 
@@ -30,16 +22,32 @@
 
     <div class="pagetitle">
       <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
     </div><!-- End Page Title -->
-
-   testis
-
+    <div class="card border-0 shadow mb-4">
+      <div class="card-body mt-4">
+        <div class="table-responsive">
+          <form action="/adminEditBerita/{{berita[0]._id}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_id" value="{{berita[0]._id}}">
+            <div class="mb-3">
+              <label for="Deskripsi" class="form-label">Deskripsi</label>
+              <input type="text" class="form-control" id="Deskripsi" name="Deskripsi" value="{{berita[0].Deskripsi}}"
+                placeholder="Masukkan Deskripsi"  required
+                style="border-radius: 10px;">
+            </div>
+            <div class="mb-3">
+              <label for="gambar" class="form-label">Upload foto</label>
+              <img id="gambar-preview" src="static/fotoBerita{{berita[0].gambar}}" alt=""
+                width="200" class="mb-3">
+              <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg"
+                name="gambar" style="border-radius: 10px;">
+            </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+   
   </main><!-- End #main -->
 {%include 'admin/footer.html'%}

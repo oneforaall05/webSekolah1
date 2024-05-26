@@ -11,35 +11,63 @@
     
     {%include 'admin/vendor.html'%}
 
-<<<<<<< HEAD
-    {%include 'admin/vendor.html'%}
-  
-  </head>
-<body>
-=======
   </head>
   
   <body>
   
 
->>>>>>> ebf3e3b15091cca7f77ec1944e08de79a5f8c456
+
 
 {%include 'admin/sideBar.html'%}
 
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
+      <h1>Berita</h1>
+    
     </div><!-- End Page Title -->
 
-   testis
+    <div class="d-flex justify-content-end mb-3 me-5">
+      <button type="button" class="btn  btn-outline-primary">
+          <a href="/adminAddBerita" style="text-decoration: none; color: inherit;">Add Berita</a>
+      </button>
+  </div>
+
+
+  <section class="section">
+      <div class="table-responsive">
+          <table class="table table-bordered table-custom">
+              <thead>
+                  <tr>
+                      <th class="border-0 rounded-start">No</th>
+                      <th class="text-center">Deskripsi</th>
+                      <th class="text-center">Gambar</th>
+                      <th class="text-center">Aksi</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for item in Berita %}
+                  <tr>
+                      <td>{{ loop.index }}</td>
+                      <td>{{item.Deskripsi}}</td>
+                      <td class="text-center"><img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image"  width="100"
+                              class="img-fluid img-thumbnail"></td>
+                      <td class="text-center">
+                          <a href="/adminEditBerita/{{item._id}}">
+                              <button type="button" class="btn btn-primary btn-sm me-2"><i
+                                      class="bi bi-pencil-square"></i> Edit</button>
+                          </a>
+                          <a href="/adminDeleteBerita/{{item._id}}">
+                              <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                                  Delete</button>
+                          </a>
+                          <a href="/adminDataKomentar/{{item._id}}">
+                            <button type="button" class="btn btn-danger btn-sm"><i class=""></i>
+                                Komentar</button>
+                        </a>
+                      </td>
+                  </tr>
+                  {% endfor %}
 
   </main><!-- End #main -->
 {%include 'admin/footer.html'%}

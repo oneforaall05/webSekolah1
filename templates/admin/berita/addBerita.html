@@ -10,33 +10,41 @@
     <meta content="" name="keywords">
 
     {%include 'admin/vendor.html'%}
-<<<<<<< HEAD
-  
-  </head>
-<body>
-=======
 
 </head>
 
 <body>
-
->>>>>>> ebf3e3b15091cca7f77ec1944e08de79a5f8c456
 {%include 'admin/sideBar.html'%}
 
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
+      <h1>Berita</h1>
     </div><!-- End Page Title -->
-
-   testis
+    <!-- isi -->
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body mt-4">
+            <div class="table-responsive">
+                <form action="/adminAddBerita" method="POST" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="Deskripsi" class="form-label">Deskripsi </label>
+                    <input type="text" class="form-control" id="Deskripsi" name="Deskripsi"
+                        placeholder="Masukkan Deskripsi " required style="border-radius: 10px;">
+                  </div>
+                  <div class="mb-3">
+                    <label for="gambar" class="form-label">Upload foto</label>
+                    <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg"
+                        name="gambar" required style="border-radius: 10px;">
+                  </div>
+                  
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
 
   </main><!-- End #main -->
 {%include 'admin/footer.html'%}
