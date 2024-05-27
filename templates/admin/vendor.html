@@ -19,3 +19,11 @@
 
 <!-- Template Main CSS File -->
 <link href="../static/assets/css/style.css" rel="stylesheet">
+<script>
+    function sign_out() {
+        $.removeCookie('mytoken', { path: '/' });
+        alert("sign out");
+        window.location.href = '/adminLogin';
+    }
+
+</script>

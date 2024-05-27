@@ -14,6 +14,7 @@ stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWr
 client = MongoClient(stringUrl)
 db = client.websekolah
 
+SECRET_KEY = "S4nd4l&sp1r1t_"
 app = Flask(__name__)
 
 # user start
@@ -75,8 +76,45 @@ def userSyaratDaftar():
 
 
 # loginAdmin
-@app.route('/adminLogin',methods=['GET'])
+@app.route('/adminLogin',methods=['GET',"POST"])
 def adminLogin():
+   if request.method == "POST":
+      username_receive = request.form["username_give"]
+      password_receive = request.form["password_give"]
+      print(username_receive)
+      print(password_receive)
+      pw_hash = hashlib.sha256(password_receive.encode("utf-8")).hexdigest()
+      print(pw_hash)
+      result = db.admin.find_one(
+        {
+            "username": username_receive,
+            "password": pw_hash,
+        }
+      )
+      if result:
+         payload = {
+         "id": username_receive,
+         # the token will be valid for 24 hours
+         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+         }
+         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+         return jsonify(
+               {
+                  "result": "success",
+                  "token": token,
+                  }
+         )
+      # Let's also handle the case where the id and
+      # password combination cannot be found
+      else:
+         return jsonify(
+               {
+                  "result": "fail",
+                  "msg": "We could not find a user with that id/password combination",
+               }
+         )
+      
    return render_template('admin/loginAdmin.html')
 
 
