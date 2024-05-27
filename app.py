@@ -14,6 +14,7 @@ stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWr
 client = MongoClient(stringUrl)
 db = client.websekolah
 
+SECRET_KEY = "S4nd4l&sp1r1t_"
 app = Flask(__name__)
 
 # user start
@@ -75,8 +76,45 @@ def userSyaratDaftar():
 
 
 # loginAdmin
-@app.route('/adminLogin',methods=['GET'])
+@app.route('/adminLogin',methods=['GET',"POST"])
 def adminLogin():
+   if request.method == "POST":
+      username_receive = request.form["username_give"]
+      password_receive = request.form["password_give"]
+      print(username_receive)
+      print(password_receive)
+      pw_hash = hashlib.sha256(password_receive.encode("utf-8")).hexdigest()
+      print(pw_hash)
+      result = db.admin.find_one(
+        {
+            "username": username_receive,
+            "password": pw_hash,
+        }
+      )
+      if result:
+         payload = {
+         "id": username_receive,
+         # the token will be valid for 24 hours
+         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+         }
+         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+         return jsonify(
+               {
+                  "result": "success",
+                  "token": token,
+                  }
+         )
+      # Let's also handle the case where the id and
+      # password combination cannot be found
+      else:
+         return jsonify(
+               {
+                  "result": "fail",
+                  "msg": "We could not find a user with that id/password combination",
+               }
+         )
+      
    return render_template('admin/loginAdmin.html')
 
 
@@ -273,6 +311,7 @@ def AdminAddBerita():
       return redirect(url_for('AdminBerita'))
    return render_template('admin/berita/addBerita.html')
 
+# delete berita
 @app.route('/adminDeleteBerita/<_id>',methods=['GET','POST'])
 def AdminDeleteBerita(_id):
    currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
@@ -281,14 +320,27 @@ def AdminDeleteBerita(_id):
       current_image_path = os.path.join('static/fotoBerita', current_image)
       if os.path.exists(current_image_path):
          os.remove(current_image_path)
+   
    db.berita.delete_one({'_id':ObjectId(_id)})
+   db.komentar.delete_many({'berita_id':ObjectId(_id)})
    return redirect(url_for('AdminBerita'))
 
 
 # komentar
-@app.route('/adminDataKomentar',methods=['GET'])
-def AdminDataKomentar():
-   return render_template('admin/berita/dataKomentar.html')
+@app.route('/adminDataKomentar/<_id>',methods=['GET',"POST"])
+def AdminDataKomentar(_id):
+   
+   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
+   return render_template('admin/berita/dataKomentar.html',datas = komentar)
+
+# delete komentar
+@app.route('/adminDeleteKomentar/<_id>', methods = ['GET','POST'])
+def AdminDeleteKomentar(_id):
+   currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
+   currentBerita = currentKomentar.get("berita_id")
+   print(currentBerita)
+   db.komentar.delete_one({"_id":ObjectId(_id)})
+   return redirect(url_for('AdminDataKomentar',_id = currentBerita))
 
 # berita end
 
