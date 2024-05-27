@@ -311,6 +311,7 @@ def AdminAddBerita():
       return redirect(url_for('AdminBerita'))
    return render_template('admin/berita/addBerita.html')
 
+# delete berita
 @app.route('/adminDeleteBerita/<_id>',methods=['GET','POST'])
 def AdminDeleteBerita(_id):
    currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
@@ -319,14 +320,27 @@ def AdminDeleteBerita(_id):
       current_image_path = os.path.join('static/fotoBerita', current_image)
       if os.path.exists(current_image_path):
          os.remove(current_image_path)
+   
    db.berita.delete_one({'_id':ObjectId(_id)})
+   db.komentar.delete_many({'berita_id':ObjectId(_id)})
    return redirect(url_for('AdminBerita'))
 
 
 # komentar
-@app.route('/adminDataKomentar',methods=['GET'])
-def AdminDataKomentar():
-   return render_template('admin/berita/dataKomentar.html')
+@app.route('/adminDataKomentar/<_id>',methods=['GET',"POST"])
+def AdminDataKomentar(_id):
+   
+   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
+   return render_template('admin/berita/dataKomentar.html',datas = komentar)
+
+# delete komentar
+@app.route('/adminDeleteKomentar/<_id>', methods = ['GET','POST'])
+def AdminDeleteKomentar(_id):
+   currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
+   currentBerita = currentKomentar.get("berita_id")
+   print(currentBerita)
+   db.komentar.delete_one({"_id":ObjectId(_id)})
+   return redirect(url_for('AdminDataKomentar',_id = currentBerita))
 
 # berita end
 
