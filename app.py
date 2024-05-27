@@ -298,12 +298,77 @@ def AdminDataKomentar():
 # data pendaftaran
 @app.route('/adminDataDaftar',methods=['GET'])
 def AdminDataDaftar():
-   return render_template('admin/pendaftaran/dataDaftar.html')
+   pendaftaran = list(db.pendaftaran.find({}))
+   return render_template('admin/pendaftaran/dataDaftar.html',data=pendaftaran)
+
+# detail pendaftaran
+@app.route("/adminDetailDaftar/<_id>", methods=['GET','POST'])
+def AdminDetailDaftar(_id):
+   id=ObjectId(_id)
+   detail=db.pendaftaran.find_one({'_id':id})
+   return render_template('admin/pendaftaran/detailDaftar.html',data=detail)
 
 # edit data pendaftaran
-@app.route('/adminEditDaftar',methods=['GET'])
-def AdminEditDaftar():
-   return render_template('admin/pendaftaran/editDaftar.html')
+@app.route('/adminEditDaftar/<_id>',methods=['GET','POST'])
+def AdminEditDaftar(_id):
+   if request.method=='POST':
+      nama=request.form['nama']
+      jenisKelamin=request.form['jenisKelamin']
+      nik=request.form['nik']
+      ttl=request.form['ttl']
+      agama=request.form['agama']
+      alamat=request.form['alamat']
+      tempatTinggal=request.form['tempatTinggal']
+      transportasi=request.form['transportasi']
+      namaAyah=request.form['namaAyah']
+      ttlAyah=request.form['ttlAyah']
+      pendidikanAyah=request.form['pendidikanAyah']
+      pekerjaanAyah=request.form['pekerjaanAyah']
+      nomorAyah=request.form['nomorAyah']
+      namaIbu=request.form['namaIbu']
+      ttlIbu=request.form['ttlIbu']
+      pendidikanIbu=request.form['pendidikanIbu']
+      pekerjaanIbu=request.form['pekerjaanIbu']
+      nomorIbu=request.form['nomorIbu']
+      tinggi=request.form['tinggi']
+      berat=request.form['berat']
+      jarakSekolah=request.form['jarakSekolah']
+      waktuSekolah=request.form['waktuSekolah']
+      anakKe=request.form['anakKe']
+      saudara=request.form['jumlahSaudara']
+      
+      doc={
+         'nama':nama,
+         'jk':jenisKelamin,
+         'nik':nik,
+         'ttl':ttl,
+         'agama':agama,
+         'alamat':alamat,
+         't_tinggal':tempatTinggal,
+         'transportasi':transportasi,
+         'nama_ayah':namaAyah,
+         'ttl_ayah':ttlAyah,
+         'pendidikan_ayah':pendidikanAyah,
+         'pekerjaan_ayah':pekerjaanAyah,
+         'nomor_Hp_ayah':nomorAyah,
+         'nama_Ibu':namaIbu,
+         'ttl_Ibu':ttlIbu,
+         'pendidikan_Ibu':pendidikanIbu,
+         'pekerjaan_Ibu':pekerjaanIbu,
+         'nomor_Hp_Ibu':nomorIbu,
+         'tinggi':tinggi,
+         'berat':berat,
+         'jarak_sekolah':jarakSekolah,
+         'waktu_sekolah':waktuSekolah,
+         'anak_ke':anakKe,
+         'saudara':saudara
+      }
+      id=ObjectId(_id)
+      db.pendaftaran.update_one({'_id':id},{'$set':doc})
+      return redirect(url_for('AdminDetailDaftar',_id=_id))
+   id=ObjectId(_id)
+   detail=db.pendaftaran.find_one({'_id':id})
+   return render_template('admin/pendaftaran/editDaftar.html',data=detail)
 
 # pendaftaranAdmin end
 

@@ -9,30 +9,128 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    {%include 'admin/vendor.html'%}
-  
-  </head>
+    {% include 'admin/vendor.html' %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 100%;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .action a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .action a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            table,
+            th,
+            td {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+        }
+    </style>
+
+</head>
+
 <body>
 
+    {% include 'admin/sideBar.html' %}
 
+    <main id="main" class="main">
 
+        <div class="pagetitle">
+            <h1>Pendaftaran</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/adminDataDaftar.html">Pendaftaran</a></li>
+                </ol>
+            </nav>
+        </div>
+        <!-- End Page Title -->
 
-{%include 'admin/sideBar.html'%}
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>NIK</th>
+                        <th>TTL</th>
+                        <th>Nama Ibu</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
 
-<main id="main" class="main">
+                {% for item in data %}
+                <tbody>
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{item.nama}}</td>
+                        <td>{{item.nik}}</td>
+                        <td>{{item.ttl}}</td>
+                        <td>{{item.nama_ibu}}</td>
+                        <td class="action"><a href="/adminDetailDaftar/{{item._id}}">Detail</a></td>
+                    </tr>
+                    <!-- Tambahkan baris lain sesuai kebutuhan -->
+                </tbody>
+                {% endfor %}
 
-    <div class="pagetitle">
-      <h1>Blank Page</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
-          <li class="breadcrumb-item active">Blank</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+            </table>
+        </div>
 
-   testis
+    </main>
+    <!-- End #main -->
 
-  </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+    {% include 'admin/footer.html' %}
