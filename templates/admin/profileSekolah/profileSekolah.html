@@ -23,7 +23,13 @@
 
 
   {%include 'admin/vendor.html'%}
-  
+  <script>
+    $(document).ready(function () {
+      $("#profile").removeClass("collapsed");
+    });
+  </script>
+
+
 </head>
 
 
@@ -41,7 +47,8 @@
     <div class="d-flex justify-content-end mb-3 me-5">
 
       <button type="button" class="btn btn-light " id="btn-custom">
-        <a href="/adminEditProfileSekolah/{{struktur[0]._id}}" style="text-decoration: none; color: inherit;">Edit Profile</a>
+        <a href="/adminEditProfileSekolah/{{struktur[0]._id}}" style="text-decoration: none; color: inherit;">Edit
+          Profile</a>
       </button>
     </div>
     <!-- Sejarah Card -->
@@ -68,7 +75,8 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Struktur</h5>
-       <img src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="" style="width: 50vw;">
+        <img src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="" style="width: 50vw;">
+
       </div>
     </div><!-- End Struktur Card -->
 

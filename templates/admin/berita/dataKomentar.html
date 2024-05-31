@@ -2,28 +2,70 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Data Komentar</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Data Komentar</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
 
-    {%include 'admin/vendor.html'%}
+  {%include 'admin/vendor.html'%}
 
-  </head>
-  
-  <body>
-  
+</head>
 
-{%include 'admin/sideBar.html'%}
+<body>
 
-<main id="main" class="main">
+
+  {%include 'admin/sideBar.html'%}
+
+  <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Blank Page</h1>
+      <h1>Data Komentar</h1>
     </div><!-- End Page Title -->
 
+    <!-- table -->
+    <div class="card">
+      <div class="card-body">
+
+
+        <!-- Table with hoverable rows -->
+        <table class="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Name</th>
+              <th scope="col">Komentar</th>
+              <th scope="col">Aksi</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in datas %}
+            <tr>
+              <th scope="row">
+                {{loop.index}}
+              </th>
+              <td>
+                {{item.user_nama}}
+              </td>
+              <td>
+                {{item.komentar}}
+              </td>
+              <td>
+                <a href="/adminDeleteKomentar/{{item._id}}">
+                  <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                    Delete</button></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- End Table with hoverable rows -->
+
+      </div>
+    </div>
+    <!-- table end -->
   </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+  {%include 'admin/footer.html'%}
