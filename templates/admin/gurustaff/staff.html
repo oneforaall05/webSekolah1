@@ -34,7 +34,7 @@
                 <table class="table table-bordered table-custom">
                     <thead>
                         <tr>
-                            <th class="border-0 rounded-start">No</th>
+                            <th class="text-center">No</th>
                             <th class="text-center">Nama</th>
                             <th class="text-center">Foto</th>
                             <th class="text-center">Aksi</th>
@@ -43,8 +43,8 @@
                     <tbody>
                         {% for item in gurustaf %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{item.nama}}</td>
+                            <td class="text-center">{{ loop.index }}</td>
+                            <td class="text-center">{{item.nama}}</td>
                             <td class="text-center"><img src="static/fotostaff/{{item.gambar}}" alt="Sample Image"  width="100"
                                     class="img-fluid img-thumbnail"></td>
                             <td class="text-center">

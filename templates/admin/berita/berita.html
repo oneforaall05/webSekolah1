@@ -39,9 +39,10 @@
           <table class="table table-bordered table-custom">
               <thead>
                   <tr>
-                      <th class="border-0 rounded-start">No</th>
-                      <th class="text-center">Deskripsi</th>
+                      <th class="text-center">No</th>
                       <th class="text-center">Gambar</th>
+                      <th class="text-center">Judul</th>
+                      <th class="text-center">Deskripsi</th>
                       <th class="text-center">Aksi</th>
                   </tr>
               </thead>
@@ -49,9 +50,10 @@
                   {% for item in Berita %}
                   <tr>
                       <td class="text-center">{{ loop.index }}</td>
-                      <td>{{item.Deskripsi}}</td>
                       <td class="text-center"><img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image"  width="100"
-                              class="img-fluid img-thumbnail"></td>
+                        class="img-fluid img-thumbnail"></td>
+                      <td class="text-center">{{item.judul}}</td>
+                      <td class="text-center">{{item.Deskripsi}}</td>
                       <td class="text-center">
                           <a href="/adminEditBerita/{{item._id}}">
                               <button type="button" class="btn btn-primary btn-sm me-2"><i
