@@ -5,16 +5,16 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Edit Daftar</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Edit Daftar</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    {%include 'admin/vendor.html'%}
+  {%include 'admin/vendor.html'%}
 
-  </head>
-  
-  <body>
-  
+</head>
+
+<body>
+
 
 
   {%include 'admin/sideBar.html'%}
@@ -38,46 +38,55 @@
         <div class="table-responsive">
           <form action="/adminEditDaftar/{{data._id}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_id" value="{{data._id}}">
-            <div class="mb-3">
-              <label for="nama" class="form-label">Nama Calon Peserta Didik :</label>
-              <input type="text" class="form-control" id="nama" name="nama"
-                value="{{data.nama}}" placeholder="Masukkan Nama Calon Peserta Didik" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row ">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Nama Calon Peserta Didik :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="nama" value="{{data.nama}}"
+                placeholder="Masukkan Nama Calon Peserta Didik" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label class="jenisKelamin" for="form-label">Jenis Kelamin :</label>
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">jenis Kelamin :</span>
+              </div>
               <select class="form-select" id="inputGroupSelect01" name="jenisKelamin" style="border-radius: 10px;">
                 <option selected>{{data.jk}}</option>
                 <option value="Laki-Laki">Laki-Laki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
             </div>
-            <div class="mb-3">
-              <label for="nik" class="form-label">NIK :</label>
-              <input type="number" class="form-control" id="nama" name="nik"
-                value="{{data.nik}}" placeholder="Masukkan NIK" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">NIK :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="nik" value="{{data.nik}}"
+                placeholder="Masukkan NIK" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="ttl" class="form-label">tepat, Tanggal Lahir :</label>
-              <input type="text" class="form-control" id="nama" name="ttl"
-                value="{{data.ttl}}" placeholder="Masukkan Tempat tanggal lahir" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">tepat, Tanggal Lahir :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="ttl" value="{{data.ttl}}"
+                placeholder="Masukkan Tempat tanggal lahir" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="agama" class="form-label">Agama :</label>
-              <input type="text" class="form-control" id="nama" name="agama"
-                value="{{data.agama}}" placeholder="Masukkan agama" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Agama :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="agama" value="{{data.agama}}"
+                placeholder="Masukkan agama" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="alamat" class="form-label">Alamat :</label>
-              <input type="text" class="form-control" id="nama" name="alamat"
-                value="{{data.alamat}}" placeholder="Masukkan alamat" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Alamat :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="alamat" value="{{data.alamat}}"
+                placeholder="Masukkan alamat" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label class="statusTinggal" for="form-label">Status Tempat Tinggal :</label>
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Status Tempat Tinggal :</span>
+              </div>
               <select class="form-select" id="inputGroupSelect01" name="tempatTinggal" style="border-radius: 10px;">
                 <option selected>{{data.t_tinggal}}</option>
                 <option value="Bersama Orang Tua">Bersama Orang Tua</option>
@@ -86,107 +95,124 @@
 
               </select>
             </div>
-            <div class="mb-3">
-              <label for="transportasi" class="form-label">Metode transportasi :</label>
-              <input type="text" class="form-control" id="nama" name="transportasi"
-                value="{{data.transportasi}}" placeholder="Masukkan Metode Transportasi" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Metode Transformasi :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="transportasi" value="{{data.transportasi}}"
+                placeholder="Masukkan Metode Transportasi" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="namaAyah" class="form-label">Nama Ayah :</label>
-              <input type="text" class="form-control" id="nama" name="namaAyah"
-                value="{{data.nama_ayah}}" placeholder="Masukkan Nama Ayah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Nama Ayah :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="namaAyah" value="{{data.nama_ayah}}"
+                placeholder="Masukkan Nama Ayah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="ttlAyah" class="form-label">tahun Lahir Ayah :</label>
-              <input type="number" class="form-control" id="nama" name="ttlAyah"
-                value="{{data.ttl_ayah}}" placeholder="Masukkan Tahun lahir ayah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Tahun Lahir Ayah :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="ttlAyah" value="{{data.ttl_ayah}}"
+                placeholder="Masukkan Tahun lahir ayah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="PAyah" class="form-label">Pendidikan Terakhir Ayah :</label>
-              <input type="text" class="form-control" id="nama" name="pendidikanAyah"
-                value="{{data.pendidikan_ayah}}" placeholder="Masukkan Pendidikan Terakhir Ayah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Pendidikan Terakhir Ayah :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="pendidikanAyah" value="{{data.pendidikan_ayah}}"
+                placeholder="Masukkan Pendidikan Terakhir Ayah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="PeAyah" class="form-label">pekerjaan Ayah :</label>
-              <input type="text" class="form-control" id="nama" name="pekerjaanAyah"
-                value="{{data.pekerjaan_ayah}}" placeholder="Masukkan Pekerjaan Ayah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Pekerjaan Ayah :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="pekerjaanAyah" value="{{data.pekerjaan_ayah}}"
+                placeholder="Masukkan Pekerjaan Ayah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="nomorAyah" class="form-label">Nomor Telp/Hp Ayah :</label>
-              <input type="number" class="form-control" id="nama" name="nomorAyah"
-                value="{{data.nomor_Hp_ayah}}" placeholder="Masukkan Nomor Telp / Hp ayah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Nomor telp/Hp Ayah :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="nomorAyah" value="{{data.nomor_Hp_ayah}}"
+                placeholder="Masukkan Nomor Telp / Hp ayah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="namaIbu" class="form-label">Nama Ibu :</label>
-              <input type="text" class="form-control" id="nama" name="namaIbu"
-                value="{{data.nama_ibu}}" placeholder="Masukkan Nama ibu" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Nama Ibu :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="namaIbu" value="{{data.nama_ibu}}"
+                placeholder="Masukkan Nama ibu" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="ttlIbu" class="form-label">tahun Lahir ibu :</label>
-              <input type="number" class="form-control" id="nama" name="ttlIbu"
-                value="{{data.ttl_ibu}}" placeholder="Masukkan Tahun lahir ibu" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Tahun Lahir Ayah :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="ttlIbu" value="{{data.ttl_ibu}}"
+                placeholder="Masukkan Tahun lahir ibu" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="PIbu" class="form-label">Pendidikan Terakhir ibu :</label>
-              <input type="text" class="form-control" id="nama" name="pendidikanIbu"
-                value="{{data.pendidikan_ibu}}" placeholder="Masukkan Pendidikan Terakhir ibu" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Pendidikan terakhir Ibu :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="pendidikanIbu" value="{{data.pendidikan_ibu}}"
+                placeholder="Masukkan Pendidikan Terakhir ibu" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="PeIbu" class="form-label">pekerjaan ibu :</label>
-              <input type="text" class="form-control" id="nama" name="pekerjaanIbu"
-                value="{{data.pekerjaan_ibu}}" placeholder="Masukkan Pekerjaan ibu" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Pekerjaan Ibu :</span>
+              </div>
+              <input type="text" class="form-control" id="nama" name="pekerjaanIbu" value="{{data.pekerjaan_ibu}}"
+                placeholder="Masukkan Pekerjaan ibu" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="nomorIbu" class="form-label">Nomor Telp/Hp ibu :</label>
-              <input type="number" class="form-control" id="nama" name="nomorIbu"
-                value="{{data.nomor_Hp_ibu}}" placeholder="Masukkan Nomor Telp / Hp ibu" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Nomor Telp/Hp Ibu :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="nomorIbu" value="{{data.nomor_Hp_ibu}}"
+                placeholder="Masukkan Nomor Telp / Hp ibu" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="tinggi" class="form-label">tinggi (cm):</label>
-              <input type="number" class="form-control" id="nama" name="tinggi"
-                value="{{data.tinggi}}" placeholder="Masukkan Tinggi Calon Peserta Didik" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Tinggi (cm):</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="tinggi" value="{{data.tinggi}}"
+                placeholder="Masukkan Tinggi Calon Peserta Didik" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="berat" class="form-label">Berat (Kg):</label>
-              <input type="number" class="form-control" id="nama" name="berat"
-                value="{{data.berat}}" placeholder="Masukkan Berat Calon Peserta Didik" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Berat (kg) :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="berat" value="{{data.berat}}"
+                placeholder="Masukkan Berat Calon Peserta Didik" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="jarak" class="form-label">Jarak Ke sekolah (Km):</label>
-              <input type="number" class="form-control" id="nama" name="jarakSekolah"
-                value="{{data.jarak_sekolah}}" placeholder="Masukkan Jarak Rumah Calon Peserta Didik ke Sekolah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Jarak Ke Sekolah (Km) :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="jarakSekolah" value="{{data.jarak_sekolah}}"
+                placeholder="Masukkan Jarak Rumah Calon Peserta Didik ke Sekolah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="waktu" class="form-label">Waktu Tempuh Ke Sekolah (Menit) :</label>
-              <input type="number" class="form-control" id="nama" name="waktuSekolah"
-                value="{{data.waktu_sekolah}}" placeholder="Masukkan Waktu Tempuh Ke Sekolah" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Waktu Tempuh Ke Sekolah (Menit) :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="waktuSekolah" value="{{data.waktu_sekolah}}"
+                placeholder="Masukkan Waktu Tempuh Ke Sekolah" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="anak" class="form-label">Anak Ke :</label>
-              <input type="number" class="form-control" id="nama" name="anakKe"
-                value="{{data.anak_ke}}" placeholder="Masukkan Anak Ke berapa" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Anak Ke :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="anakKe" value="{{data.anak_ke}}"
+                placeholder="Masukkan Anak Ke berapa" required style="border-radius: 10px;">
             </div>
-            <div class="mb-3">
-              <label for="saudara" class="form-label">Jumlah  Saudara :</label>
-              <input type="number" class="form-control" id="nama" name="jumlahSaudara"
-                value="{{data.saudara}}" placeholder="Masukkan Jumlah Saudara Calon Peserta Didik" required
-                style="border-radius: 10px;">
+            <div class=" input-group mb-3 row">
+              <div class="text mx-3 col-md-3">
+                <span class="input-group-text">Jumlah Saudara :</span>
+              </div>
+              <input type="number" class="form-control" id="nama" name="jumlahSaudara" value="{{data.saudara}}"
+                placeholder="Masukkan Jumlah Saudara Calon Peserta Didik" required style="border-radius: 10px;">
             </div>
             <div class="mb-3">
               <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>

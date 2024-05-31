@@ -81,6 +81,19 @@
 
         }
     </style>
+    <script>
+        function submitForm() {
+            // Ambil elemen form dengan ID 'tahunForm'
+            var form = document.getElementById('tahunForm');
+
+            // Periksa apakah opsi yang dipilih tidak kosong
+            var select = document.getElementById('inputGroupSelect01');
+            if (select.value) {
+                // Kirim form
+                form.submit();
+            }
+        }
+    </script>
 
 </head>
 
@@ -101,6 +114,18 @@
         <!-- End Page Title -->
 
         <div class="container">
+            <div class="d-flex flex-row-reverse">
+                <form id="tahunForm" action="/adminDataDaftar" method="post" enctype="multipart/form-data"></form>
+                <select class="form-select" id="inputGroupSelect01" name="tahun" onchange="submitForm()"
+                    style="border-radius: 10px ; width: 100px;">
+                    <option value="2024" >2024</option>
+                    <option value="2025" >2025</option>
+                    <option value="2026" >2026</option>
+                </select>
+               
+                </form>
+
+            </div>
             <table>
                 <thead>
                     <tr>

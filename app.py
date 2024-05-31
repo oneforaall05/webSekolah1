@@ -462,15 +462,22 @@ def AdminDeleteKomentar(_id):
 # pendaftaranAdmin start
 
 # data pendaftaran
-@app.route('/adminDataDaftar',methods=['GET'])
+@app.route('/adminDataDaftar',methods=['GET','POST'])
 def AdminDataDaftar():
    token_receive = request.cookies.get(TOKEN_KEY)
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      pendaftaran = list(db.pendaftaran.find({}))
-      return render_template('admin/pendaftaran/dataDaftar.html',data=pendaftaran)
+      if request.method=='POST':
+         tahun=request.form.get('tahun')
+         print(tahun)
+         pendaftaran = list(db.pendaftaran.find({'tahun':tahun}))
+         tahun=''
+      
+      tahun = list(db.pendaftaran.find({}))
+      pendaftaran=''
+      return render_template('admin/pendaftaran/dataDaftar.html',data=pendaftaran,tahun=tahun)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -484,6 +491,7 @@ def AdminDetailDaftar(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      
       id=ObjectId(_id)
       detail=db.pendaftaran.find_one({'_id':id})
       return render_template('admin/pendaftaran/detailDaftar.html',data=detail)
@@ -512,19 +520,19 @@ def AdminEditDaftar(_id):
          namaAyah=request.form['namaAyah'].strip()
          ttlAyah=request.form['ttlAyah'].strip()
          pendidikanAyah=request.form['pendidikanAyah'].strip()
-         pekerjaanAyah=request.form['pekerjaanAyah']
-         nomorAyah=request.form['nomorAyah']
-         namaIbu=request.form['namaIbu']
-         ttlIbu=request.form['ttlIbu']
-         pendidikanIbu=request.form['pendidikanIbu']
-         pekerjaanIbu=request.form['pekerjaanIbu']
-         nomorIbu=request.form['nomorIbu']
-         tinggi=request.form['tinggi']
-         berat=request.form['berat']
-         jarakSekolah=request.form['jarakSekolah']
-         waktuSekolah=request.form['waktuSekolah']
-         anakKe=request.form['anakKe']
-         saudara=request.form['jumlahSaudara']
+         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
+         nomorAyah=request.form['nomorAyah'].strip()
+         namaIbu=request.form['namaIbu'].strip()
+         ttlIbu=request.form['ttlIbu'].strip()
+         pendidikanIbu=request.form['pendidikanIbu'].strip()
+         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
+         nomorIbu=request.form['nomorIbu'].strip()
+         tinggi=request.form['tinggi'].strip()
+         berat=request.form['berat'].strip()
+         jarakSekolah=request.form['jarakSekolah'].strip()
+         waktuSekolah=request.form['waktuSekolah'].strip()
+         anakKe=request.form['anakKe'].strip()
+         saudara=request.form['jumlahSaudara'].strip()
          
          doc={
             'nama':nama,
@@ -592,11 +600,11 @@ def AdminEditFasilitas(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       if request.method=='POST':
-         id=request.form['_id']
-         nama=request.form['namaFasilitas']
-         deskripsi=request.form['deskripsiFasilitas']
+         id=request.form['_id'].strip()
+         nama=request.form['namaFasilitas'].strip()
+         deskripsi=request.form['deskripsiFasilitas'].strip()
             
-         nama_gambar= request.files['gambarFasilitas']
+         nama_gambar= request.files['gambarFasilitas'].strip()
          currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(id)})
          current_image = currentFasilitas.get('gambarFasilitas', None)
          doc={
@@ -638,10 +646,10 @@ def AdminAddFasilitas():
       )
       if request.method=='POST':
          # ambil input
-         nama=request.form['namaFasilitas']
-         deskripsi=request.form['deskripsiFasilitas']
+         nama=request.form['namaFasilitas'].strip()
+         deskripsi=request.form['deskripsiFasilitas'].strip()
          
-         nama_gambar= request.files['gambarFasilitas']
+         nama_gambar= request.files['gambarFasilitas'].strip()
          
          today=datetime.now()
          mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
