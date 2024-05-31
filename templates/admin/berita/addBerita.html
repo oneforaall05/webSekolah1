@@ -2,49 +2,53 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Add Berita</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Add Berita</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    {%include 'admin/vendor.html'%}
+  {%include 'admin/vendor.html'%}
 
 </head>
 
 <body>
-{%include 'admin/sideBar.html'%}
+  {%include 'admin/sideBar.html'%}
 
-<main id="main" class="main">
+  <main id="main" class="main">
 
     <div class="pagetitle">
       <h1>Berita</h1>
     </div><!-- End Page Title -->
     <!-- isi -->
     <div class="card border-0 shadow mb-4">
-        <div class="card-body mt-4">
-            <div class="table-responsive">
-                <form action="/adminAddBerita" method="POST" enctype="multipart/form-data">
-                  <div class="mb-3">
-                    <label for="Deskripsi" class="form-label">Deskripsi </label>
-                    <input type="text" class="form-control" id="Deskripsi" name="Deskripsi"
-                        placeholder="Masukkan Deskripsi " required style="border-radius: 10px;">
-                  </div>
-                  <div class="mb-3">
-                    <label for="gambar" class="form-label">Upload foto</label>
-                    <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg"
-                        name="gambar" required style="border-radius: 10px;">
-                  </div>
-                  
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
-                    </div>
-                </form>
+      <div class="card-body mt-4">
+        <div class="table-responsive">
+          <form action="/adminAddBerita" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="gambar" class="form-label">Upload foto</label>
+              <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg" name="gambar" required
+                style="border-radius: 10px;">
             </div>
+            <div class="mb-3">
+              <label for="judul" class="form-label">Judul</label>
+              <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan Judul Berita"
+                required style="border-radius: 10px;">
+            </div>
+            <div class="mb-3">
+              <label for="Deskripsi" class="form-label">Deskripsi </label>
+              <textarea class="form-control" id="Deskripsi" name="Deskripsi" placeholder="Deskripsikan Berita" required
+                style="border-radius: 10px;"></textarea>
+            </div>
+            <div class="mb-3">
+              <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-   
+
 
   </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+  {%include 'admin/footer.html'%}

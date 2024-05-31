@@ -39,7 +39,7 @@
           <table class="table table-bordered table-custom">
               <thead>
                   <tr>
-                      <th class="border-0 rounded-start">No</th>
+                      <th class="text-center">No</th>
                       <th class="text-center">Deskripsi</th>
                       <th class="text-center">Gambar</th>
                       <th class="text-center">Aksi</th>
@@ -49,7 +49,7 @@
                   {% for item in Berita %}
                   <tr>
                       <td class="text-center">{{ loop.index }}</td>
-                      <td>{{item.Deskripsi}}</td>
+                      <td class="text-center">{{item.Deskripsi}}</td>
                       <td class="text-center"><img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image"  width="100"
                               class="img-fluid img-thumbnail"></td>
                       <td class="text-center">

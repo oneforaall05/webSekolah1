@@ -333,11 +333,13 @@ def AdminEditBerita(_id):
       )
       if request.method=='POST':
          id=request.form['_id']
-         Deskripsi=request.form['Deskripsi']
+         judul=request.form['judul']
          nama_gambar= request.files['gambar']
+         Deskripsi=request.form['Deskripsi']
          currentBerita = db.berita.find_one({'_id': ObjectId(id)})
          current_image = currentBerita.get('gambar', None)
          doc={
+               'judul' : judul,
                'Deskripsi': Deskripsi
             }
          today=datetime.now()
@@ -373,8 +375,9 @@ def AdminAddBerita():
       )
       if request.method=='POST':
          # ambil input
-         Deskripsi=request.form['Deskripsi']
          nama_gambar= request.files['gambar']
+         judul=request.form['judul']
+         Deskripsi=request.form['Deskripsi']
          
          today=datetime.now()
          mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
@@ -387,8 +390,9 @@ def AdminAddBerita():
          else :
             nama_gambar=None
          doc = {
-               'Deskripsi':Deskripsi,
                'gambar':nama_file_gambar,
+               'judul' : judul,
+               'Deskripsi':Deskripsi
                
          }
          db.berita.insert_one(doc)
