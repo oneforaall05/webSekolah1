@@ -23,6 +23,12 @@
 
 
   {%include 'admin/vendor.html'%}
+  <script>
+    $(document).ready(function () {
+      $("#profile").removeClass("collapsed");
+    });
+  </script>
+
 
 </head>
 
@@ -70,7 +76,7 @@
       <div class="card-body">
         <h5 class="card-title">Struktur</h5>
         <img src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="" style="width: 50vw;">
-        
+
       </div>
     </div><!-- End Struktur Card -->
 

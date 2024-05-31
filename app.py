@@ -501,17 +501,17 @@ def AdminEditDaftar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       if request.method=='POST':
-         nama=request.form['nama']
-         jenisKelamin=request.form['jenisKelamin']
-         nik=request.form['nik']
-         ttl=request.form['ttl']
-         agama=request.form['agama']
-         alamat=request.form['alamat']
-         tempatTinggal=request.form['tempatTinggal']
-         transportasi=request.form['transportasi']
-         namaAyah=request.form['namaAyah']
-         ttlAyah=request.form['ttlAyah']
-         pendidikanAyah=request.form['pendidikanAyah']
+         nama=request.form['nama'].strip()
+         jenisKelamin=request.form['jenisKelamin'].strip()
+         nik=request.form['nik'].strip()
+         ttl=request.form['ttl'].strip()
+         agama=request.form['agama'].strip()
+         alamat=request.form['alamat'].strip()
+         tempatTinggal=request.form['tempatTinggal'].strip()
+         transportasi=request.form['transportasi'].strip()
+         namaAyah=request.form['namaAyah'].strip()
+         ttlAyah=request.form['ttlAyah'].strip()
+         pendidikanAyah=request.form['pendidikanAyah'].strip()
          pekerjaanAyah=request.form['pekerjaanAyah']
          nomorAyah=request.form['nomorAyah']
          namaIbu=request.form['namaIbu']
