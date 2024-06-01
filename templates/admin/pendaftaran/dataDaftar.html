@@ -114,18 +114,26 @@
         <!-- End Page Title -->
 
         <div class="container">
+            <h2 class="text-center">Data Pendaftar tahun {{thn}}</h2>
             <div class="d-flex flex-row-reverse">
-                <form id="tahunForm" action="/adminDataDaftar" method="post" enctype="multipart/form-data"></form>
-                <select class="form-select" id="inputGroupSelect01" name="tahun" onchange="submitForm()"
-                    style="border-radius: 10px ; width: 100px;">
-                    <option value="2024" >2024</option>
-                    <option value="2025" >2025</option>
-                    <option value="2026" >2026</option>
-                </select>
-               
+                <form id="tahunForm" action="/adminDataDaftar" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="thn" value="{{thn}}">
+                    <select class="form-select" id="inputGroupSelect01" name="tahun" onchange="submitForm()"
+                        style="border-radius: 10px ; width: 100px;">
+                        <option selected>{{thn}}</option>
+                        {% for item in tahun %}
+                        <option value="{{item}}">{{item}}</option>
+                        {% endfor %}
+                    </select>
                 </form>
-
+                <div class="text mx-3 col-md-2" style="width:auto;">
+                    <span class="input-group-text">Pilih Tahun :</span>
+                </div>
             </div>
+
+
+
+
             <table>
                 <thead>
                     <tr>
@@ -137,6 +145,10 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
+
+                {% if data %}
+
+
 
                 {% for item in data %}
                 <tbody>
@@ -151,6 +163,7 @@
                     <!-- Tambahkan baris lain sesuai kebutuhan -->
                 </tbody>
                 {% endfor %}
+                {% endif %}
 
             </table>
         </div>

@@ -473,15 +473,38 @@ def AdminDataDaftar():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      if request.method=='POST':
-         tahun=request.form.get('tahun')
-         print(tahun)
-         pendaftaran = list(db.pendaftaran.find({'tahun':tahun}))
-         tahun=''
+      if request.method == 'POST':
+         thn = request.form['tahun']
+         dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+         pendaftaran = list(db.pendaftaran.find({}))
+         tahun = set()
+         for dataThn in pendaftaran:
+            tahun.add(dataThn.get('tahun'))
+
+         year = list(tahun)
+         year.reverse()
+         years=year
+
+         
       
-      tahun = list(db.pendaftaran.find({}))
-      pendaftaran=''
-      return render_template('admin/pendaftaran/dataDaftar.html',data=pendaftaran,tahun=tahun)
+         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn)
+
+      pendaftaran = list(db.pendaftaran.find({}))
+      tahun = set()
+      for dataThn in pendaftaran:
+         tahun.add(dataThn.get('tahun'))
+
+      year = list(tahun)
+      year.reverse()
+      years=year
+      
+      today=datetime.now()
+      mytime = today.strftime('%Y')
+      thn=mytime
+      dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+      
+      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar)
+
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -699,21 +722,35 @@ def AdminDeleteFasilitas(_id):
    except jwt.exceptions.DecodeError:
        return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
  
-@app.route("/test")
+@app.route("/test",methods=['GET','POST'])
 def test():
-   token_receive = request.cookies.get(TOKEN_KEY)
-   try:
-      payload = jwt.decode(
-         token_receive, SECRET_KEY, algorithms='HS256'
-      )
-      id = ObjectId('6650c8e8970a90fc4870c5b4')
+   if request.method == 'POST':
+      thn = request.form['tahun']
+      dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+      pendaftaran = list(db.pendaftaran.find({}))
+      tahun = set()
+      for dataThn in pendaftaran:
+         tahun.add(dataThn.get('tahun'))
+
+      year = list(tahun)
+      year.reverse()
+      years=year
+      print(years)
       
-      fasilitas = list(db.fasilitas.find({'_id':id}))
-      return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
-   except jwt.ExpiredSignatureError:
-       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
-   except jwt.exceptions.DecodeError:
-       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+   
+      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn)
+
+   pendaftaran = list(db.pendaftaran.find({}))
+   tahun = set()
+   for dataThn in pendaftaran:
+      tahun.add(dataThn.get('tahun'))
+
+   year = list(tahun)
+   year.reverse()
+   years=year
+   print(years)
+   
+   return render_template('admin/pendaftaran/dataDaftar.html', tahun=years)
 # fasilitas end
 
 
