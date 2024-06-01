@@ -9,7 +9,12 @@
   <meta content="" name="description" />
   <meta content="" name="keywords" />
   {%include 'admin/vendor.html'%}
-  
+  <style>
+    #profile {
+      background-color: rgba(134, 163, 194, 0.1);
+    }
+  </style>
+
 </head>
 
 <body>
@@ -58,11 +63,12 @@
           <h5 class="card-title">Struktur Sekolah</h5>
           <div class="row mb-3">
             <div class="col-sm-12 mb-3">
-              <img id="gambar-preview" src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt="" width="200" class="mb-3">
-              
+              <img id="gambar-preview" src="../../../static/fotoStruktur/{{struktur[0].gambarStruktur}}" alt=""
+                width="200" class="mb-3">
+
               <br><label for="gambarFasilitas" class="form-label">Upload foto</label>
-              <input type="file" class="form-control" id="gambarStruktur" accept=".png,.jpg,.jpeg"
-                name="gambarStruktur" style="border-radius: 10px;">
+              <input type="file" class="form-control" id="gambarStruktur" accept=".png,.jpg,.jpeg" name="gambarStruktur"
+                style="border-radius: 10px;">
             </div>
 
           </div>
@@ -88,6 +94,6 @@
   </main>
   <!-- End #main -->
   {%include 'admin/footer.html'%}
-</head>
+  </head>
 
 </html>
