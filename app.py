@@ -66,11 +66,13 @@ def userFasilitas():
 # formdaftar
 @app.route('/formDaftar',methods=['GET'])
 def userFormDaftar():
+   
    return render_template('user/formDaftar.html')
 
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
 def userSyaratDaftar():
+   
    return render_template('user/syaratDaftar.html')
 
 # user end
