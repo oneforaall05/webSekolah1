@@ -2,28 +2,40 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Edit Staff</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+  <title>Edit Staff</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    {%include 'admin/vendor.html'%}
-    <style>
-      #staff{
-        background-color: rgba(134, 163, 194, 0.1);
+  {%include 'admin/vendor.html'%}
+  <style>
+    #staff {
+      background-color: rgba(134, 163, 194, 0.1);
     }
-    </style>
-  
-  </head>
-<body>
-{%include 'admin/sideBar.html'%}
 
-<main id="main" class="main">
+    img {
+      width: 200px;
+      height: auto;
+    }
+  </style>
+
+</head>
+
+<body>
+  {%include 'admin/sideBar.html'%}
+
+  <main id="main" class="main">
 
     <div class="pagetitle">
       <h1>Edit Guru Staff</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/adminStaff">Guru & Staff</a></li>
+          <li class="breadcrumb-item">Edit data Guru</li>
+        </ol>
+      </nav>
     </div><!-- End Page Title -->
 
     <div class="card border-0 shadow mb-4">
@@ -34,16 +46,15 @@
             <div class="mb-3">
               <label for="nama" class="form-label">Nama</label>
               <input type="text" class="form-control" id="nama" name="nama" value="{{gurustaff[0].nama}}"
-                placeholder="Masukkan Nama "  required
-                style="border-radius: 10px;">
+                placeholder="Masukkan Nama " required style="border-radius: 10px;">
             </div>
             <div class="mb-3">
-              <img id="gambar-preview" src="../static/fotostaff/{{gurustaff[0].gambar}}" alt=""
-                width="200" class="mb-3">
-                <br>
               <label for="gambar" class="form-label">Upload foto</label>
-              <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg"
-                name="gambar" style="border-radius: 10px;">
+              <br>
+              <img id="gambar-preview" src="../static/fotostaff/{{gurustaff[0].gambar}}" alt="" width="200"
+                class="mb-3">
+              <input type="file" class="form-control" id="gambar" accept=".png,.jpg,.jpeg" name="gambar"
+                style="border-radius: 10px;">
             </div>
             <div class="mb-3">
               <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
@@ -52,7 +63,7 @@
         </div>
       </div>
     </div>
-  
+
 
   </main><!-- End #main -->
-{%include 'admin/footer.html'%}
+  {%include 'admin/footer.html'%}

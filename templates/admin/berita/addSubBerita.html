@@ -17,30 +17,33 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Add Sub Berita</h5>
-
+                
                 <!-- Horizontal Form -->
                 <form action="/adminAddSubBerita/{{berita[0]._id}}" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_id" value="{{berita[0]._id}}">
-                    
+
                     <div class="row mb-3">
                         <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="file" id="gambarSubBerita" name="gambarSubBerita"required>
+                            <input class="form-control" type="file" id="gambarSubBerita" name="gambarSubBerita"
+                                required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">deskripsi gambar</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="deskripsiGambar" name="deskripsiGambar" value=" " required>
+                            <input type="text" class="form-control" id="deskripsiGambar" name="deskripsiGambar"
+                                value=" " required>
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Deskripsi</label>
                         <div class="col-sm-10">
-                          <textarea class="form-control" style="height: 100px" id="deskripsi" name="deskripsi"required></textarea>
+                            <textarea class="form-control" style="height: 100px" id="deskripsi" name="deskripsi"
+                                required></textarea>
                         </div>
-                      </div>
+                    </div>
 
 
                     <div class="text-center">
