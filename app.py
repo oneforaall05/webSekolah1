@@ -429,13 +429,27 @@ def AdminDeleteBerita(_id):
 # sub berita
 @app.route('/adminSubBerita/<_id>',methods=['GET'])
 def AdminSubBerita(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+       payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+       )
        berita = list(db.berita.find({'_id':ObjectId(_id)}))
        subBerita =  list(db.subBerita.find({}))
        return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita)
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
 # add sub berita
 @app.route('/adminAddSubBerita/<_id>',methods=['GET','POST'])
 def AdminAddSubBerita(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
       if request.method=='POST':
          id=request.form['_id']
          deskripsiGambar=request.form['deskripsiGambar']
@@ -459,46 +473,65 @@ def AdminAddSubBerita(_id):
          return redirect(url_for('AdminSubBerita',_id =id))
       berita = list(db.berita.find({'_id':ObjectId(_id)}))
       return render_template('admin/berita/addSubBerita.html',berita = berita)
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
 # edit sub berita
 @app.route('/adminEditSubBerita/<_id>',methods=['GET','POST'])
 def AdminEditSubBerita(_id):
-      if request.method=='POST':
-         id=request.form['_id']
-         berita_id = request.form['berita_id']
-         deskripsiGambar=request.form['deskripsiGambar']
-         nama_gambar= request.files['gambarSubBerita']
-         Deskripsi=request.form['deskripsi']
-         currentSubBerita = db.subBerita.find_one({'_id': ObjectId(id)})
-         current_image = currentSubBerita.get('gambarSubBerita', None)
-         doc={
-               'berita_id':ObjectId(berita_id),
-               'deskripsiGambar' : deskripsiGambar,
-               'deskripsi': Deskripsi
-            }
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+      token_receive = request.cookies.get(TOKEN_KEY)
+      try:
+         payload = jwt.decode(
+            token_receive, SECRET_KEY, algorithms='HS256'
+         )
+         if request.method=='POST':
+            id=request.form['_id']
+            berita_id = request.form['berita_id']
+            deskripsiGambar=request.form['deskripsiGambar']
+            nama_gambar= request.files['gambarSubBerita']
+            Deskripsi=request.form['deskripsi']
+            currentSubBerita = db.subBerita.find_one({'_id': ObjectId(id)})
+            current_image = currentSubBerita.get('gambarSubBerita', None)
+            doc={
+                  'berita_id':ObjectId(berita_id),
+                  'deskripsiGambar' : deskripsiGambar,
+                  'deskripsi': Deskripsi
+               }
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-         if nama_gambar:
-            if current_image:
-               current_image_path = os.path.join('static/fotoBerita/', current_image)
-               if os.path.exists(current_image_path):
-                  os.remove(current_image_path)    
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'subBerita-{mytime}.{extension}'
-            file_path =f'static/fotoBerita/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-            doc['gambarSubBerita']=nama_file_gambar
-         db.subBerita.update_one({'_id':ObjectId(id)},{'$set':doc})
-         return redirect(url_for('AdminSubBerita',_id =berita_id))
-      subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
-      currentBerita = subBerita[0].get("berita_id")
-      berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
-      return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita)
+            if nama_gambar:
+               if current_image:
+                  current_image_path = os.path.join('static/fotoBerita/', current_image)
+                  if os.path.exists(current_image_path):
+                     os.remove(current_image_path)    
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'subBerita-{mytime}.{extension}'
+               file_path =f'static/fotoBerita/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+               doc['gambarSubBerita']=nama_file_gambar
+            db.subBerita.update_one({'_id':ObjectId(id)},{'$set':doc})
+            return redirect(url_for('AdminSubBerita',_id =berita_id))
+         subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
+         currentBerita = subBerita[0].get("berita_id")
+         berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
+         return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita)
+      except jwt.ExpiredSignatureError:
+         return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+      except jwt.exceptions.DecodeError:
+         return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+   
 
 # delete sub berita
 @app.route('/adminDeleteSubBerita/<_id>',methods=['GET','POST'])
 def AdminDeleteSubBerita(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
       currentSubBerita = db.subBerita.find_one({'_id': ObjectId(_id)})
       current_image = currentSubBerita.get('gambarSubBerita', None)
       currentBerita = currentSubBerita.get("berita_id")
@@ -508,6 +541,10 @@ def AdminDeleteSubBerita(_id):
             os.remove(current_image_path)
       db.subBerita.delete_one({'_id':ObjectId(_id)})
       return redirect(url_for('AdminSubBerita',_id = currentBerita))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
 # komentar
 @app.route('/adminDataKomentar/<_id>',methods=['GET',"POST"])
