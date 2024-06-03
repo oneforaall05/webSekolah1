@@ -426,6 +426,88 @@ def AdminDeleteBerita(_id):
    except jwt.exceptions.DecodeError:
        return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
+# sub berita
+@app.route('/adminSubBerita/<_id>',methods=['GET'])
+def AdminSubBerita(_id):
+       berita = list(db.berita.find({'_id':ObjectId(_id)}))
+       subBerita =  list(db.subBerita.find({}))
+       return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita)
+
+# add sub berita
+@app.route('/adminAddSubBerita/<_id>',methods=['GET','POST'])
+def AdminAddSubBerita(_id):
+      if request.method=='POST':
+         id=request.form['_id']
+         deskripsiGambar=request.form['deskripsiGambar']
+         nama_gambar= request.files['gambarSubBerita']
+         Deskripsi=request.form['deskripsi']
+         doc={
+               'berita_id':ObjectId(id),
+               'deskripsiGambar' : deskripsiGambar,
+               'deskripsi': Deskripsi
+            }
+         today=datetime.now()
+         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+
+         if nama_gambar:
+            extension = nama_gambar.filename.split('.')[-1]
+            nama_file_gambar = f'subBerita-{mytime}.{extension}'
+            file_path =f'static/fotoBerita/{nama_file_gambar}'
+            nama_gambar.save(file_path)
+            doc['gambarSubBerita']=nama_file_gambar
+         db.subBerita.insert_one(doc)
+         return redirect(url_for('AdminSubBerita',_id =id))
+      berita = list(db.berita.find({'_id':ObjectId(_id)}))
+      return render_template('admin/berita/addSubBerita.html',berita = berita)
+
+# edit sub berita
+@app.route('/adminEditSubBerita/<_id>',methods=['GET','POST'])
+def AdminEditSubBerita(_id):
+      if request.method=='POST':
+         id=request.form['_id']
+         berita_id = request.form['berita_id']
+         deskripsiGambar=request.form['deskripsiGambar']
+         nama_gambar= request.files['gambarSubBerita']
+         Deskripsi=request.form['deskripsi']
+         currentSubBerita = db.subBerita.find_one({'_id': ObjectId(id)})
+         current_image = currentSubBerita.get('gambarSubBerita', None)
+         doc={
+               'berita_id':ObjectId(berita_id),
+               'deskripsiGambar' : deskripsiGambar,
+               'deskripsi': Deskripsi
+            }
+         today=datetime.now()
+         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+
+         if nama_gambar:
+            if current_image:
+               current_image_path = os.path.join('static/fotoBerita/', current_image)
+               if os.path.exists(current_image_path):
+                  os.remove(current_image_path)    
+            extension = nama_gambar.filename.split('.')[-1]
+            nama_file_gambar = f'subBerita-{mytime}.{extension}'
+            file_path =f'static/fotoBerita/{nama_file_gambar}'
+            nama_gambar.save(file_path)
+            doc['gambarSubBerita']=nama_file_gambar
+         db.subBerita.update_one({'_id':ObjectId(id)},{'$set':doc})
+         return redirect(url_for('AdminSubBerita',_id =berita_id))
+      subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
+      currentBerita = subBerita[0].get("berita_id")
+      berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
+      return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita)
+
+# delete sub berita
+@app.route('/adminDeleteSubBerita/<_id>',methods=['GET','POST'])
+def AdminDeleteSubBerita(_id):
+      currentSubBerita = db.subBerita.find_one({'_id': ObjectId(_id)})
+      current_image = currentSubBerita.get('gambarSubBerita', None)
+      currentBerita = currentSubBerita.get("berita_id")
+      if current_image:
+         current_image_path = os.path.join('static/fotoBerita/', current_image)
+         if os.path.exists(current_image_path):
+            os.remove(current_image_path)
+      db.subBerita.delete_one({'_id':ObjectId(_id)})
+      return redirect(url_for('AdminSubBerita',_id = currentBerita))
 
 # komentar
 @app.route('/adminDataKomentar/<_id>',methods=['GET',"POST"])
@@ -452,7 +534,7 @@ def AdminDeleteKomentar(_id):
       )
       currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
       currentBerita = currentKomentar.get("berita_id")
-      print(currentBerita)
+      # print(currentBerita)
       db.komentar.delete_one({"_id":ObjectId(_id)})
       return redirect(url_for('AdminDataKomentar',_id = currentBerita))
    except jwt.ExpiredSignatureError:

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Sub Berita</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    {%include 'admin/vendor.html'%}
+</head>
+
+<body>
+    {%include 'admin/sideBar.html'%}
+    <main id="main" class="main">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add Sub Berita</h5>
+
+                <!-- Horizontal Form -->
+                <form action="/adminAddSubBerita/{{berita[0]._id}}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_id" value="{{berita[0]._id}}">
+                    
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="file" id="gambarSubBerita" name="gambarSubBerita"required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">deskripsi gambar</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="deskripsiGambar" name="deskripsiGambar" value=" " required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Deskripsi</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" style="height: 100px" id="deskripsi" name="deskripsi"required></textarea>
+                        </div>
+                      </div>
+
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </div>
+                </form><!-- End Horizontal Form -->
+
+            </div>
+        </div>
+    </main>
+    {%include 'admin/footer.html'%}
