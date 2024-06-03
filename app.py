@@ -138,11 +138,12 @@ def AdminProfileSekolah():
       payload = jwt.decode(
             token_receive, SECRET_KEY, algorithms='HS256'
       )
-      # userInfo = db.admin.find_one({'username':payload.get('id')})
-      # print(userInfo)
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
+      # print(name)
       # print(payload+'yes')    
       struktur = list(db.struktur.find({}))
-      return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur)
+      return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur,name = name)
     except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
     except jwt.exceptions.DecodeError:
@@ -159,6 +160,8 @@ def AdminEditProfileSekolah(_id):
          payload = jwt.decode(
             token_receive, SECRET_KEY, algorithms='HS256'
          )
+         userInfo = db.admin.find_one({'username':payload.get('id')})
+         name = userInfo['username']
          if request.method == "POST":
                id = request.form["_id"]
                sejarah = request.form["sejarah"].strip()
@@ -189,7 +192,7 @@ def AdminEditProfileSekolah(_id):
                return redirect(url_for('AdminProfileSekolah'))
          id = ObjectId(_id)
          struktur = list(db.struktur.find({"_id":id}))
-         return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur)
+         return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -207,10 +210,13 @@ def AdminStaff():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
+      # print(token_receive)
    
       gurustaf =  list(db.gurustaff.find({}))
-      print (gurustaf)
-      return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf)
+      # print (gurustaf)
+      return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -224,6 +230,8 @@ def AdminEditStaff(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          id=request.form['_id']
          nama=request.form['nama']
@@ -249,7 +257,7 @@ def AdminEditStaff(_id):
          db.gurustaff.update_one({'_id':ObjectId(id)},{'$set':doc})
          return redirect(url_for('AdminStaff'))
       gurustaff = list(db.gurustaff.find({'_id':ObjectId(_id)}))
-      return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff)
+      return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -263,6 +271,7 @@ def AdminDeleteStaff(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      
       currentStaff = db.gurustaff.find_one({'_id': ObjectId(_id)})
       current_image = currentStaff.get('gambar', None)
       if current_image:
@@ -284,6 +293,8 @@ def AdminAddStaff():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          # ambil input
          nama=request.form.get('nama')
@@ -305,7 +316,7 @@ def AdminAddStaff():
          }
          db.gurustaff.insert_one(doc)
          return redirect(url_for('AdminStaff'))
-      return render_template('admin/gurustaff/addStaff.html')
+      return render_template('admin/gurustaff/addStaff.html',name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -319,9 +330,20 @@ def AdminAddStaff():
 # berita
 @app.route('/adminBerita',methods=['GET'])
 def AdminBerita():
-   Berita =  list(db.berita.find({}))
-   print (Berita)
-   return render_template('admin/berita/berita.html', Berita=Berita)
+   try:
+      token_receive = request.cookies.get(TOKEN_KEY)
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
+      Berita =  list(db.berita.find({}))
+      print (Berita)
+      return render_template('admin/berita/berita.html', Berita=Berita,name = name)
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
 # edit berita
 @app.route('/adminEditBerita/<_id>',methods=['GET','POST'])
@@ -331,6 +353,8 @@ def AdminEditBerita(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          id=request.form['_id']
          judul=request.form['judul']
@@ -358,7 +382,7 @@ def AdminEditBerita(_id):
          db.berita.update_one({'_id':ObjectId(id)},{'$set':doc})
          return redirect(url_for('AdminBerita'))
       berita = list(db.berita.find({'_id':ObjectId(_id)}))
-      return render_template('admin/berita/editBerita.html',berita=berita)
+      return render_template('admin/berita/editBerita.html',berita=berita,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -373,6 +397,8 @@ def AdminAddBerita():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          # ambil input
          nama_gambar= request.files['gambar']
@@ -397,7 +423,7 @@ def AdminAddBerita():
          }
          db.berita.insert_one(doc)
          return redirect(url_for('AdminBerita'))
-      return render_template('admin/berita/addBerita.html')
+      return render_template('admin/berita/addBerita.html',name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -434,9 +460,11 @@ def AdminSubBerita(_id):
        payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
        )
+       userInfo = db.admin.find_one({'username':payload.get('id')})
+       name = userInfo['username']
        berita = list(db.berita.find({'_id':ObjectId(_id)}))
        subBerita =  list(db.subBerita.find({}))
-       return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita)
+       return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -450,6 +478,8 @@ def AdminAddSubBerita(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          id=request.form['_id']
          deskripsiGambar=request.form['deskripsiGambar']
@@ -472,7 +502,7 @@ def AdminAddSubBerita(_id):
          db.subBerita.insert_one(doc)
          return redirect(url_for('AdminSubBerita',_id =id))
       berita = list(db.berita.find({'_id':ObjectId(_id)}))
-      return render_template('admin/berita/addSubBerita.html',berita = berita)
+      return render_template('admin/berita/addSubBerita.html',berita = berita,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -486,6 +516,8 @@ def AdminEditSubBerita(_id):
          payload = jwt.decode(
             token_receive, SECRET_KEY, algorithms='HS256'
          )
+         userInfo = db.admin.find_one({'username':payload.get('id')})
+         name = userInfo['username']
          if request.method=='POST':
             id=request.form['_id']
             berita_id = request.form['berita_id']
@@ -517,7 +549,7 @@ def AdminEditSubBerita(_id):
          subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
          currentBerita = subBerita[0].get("berita_id")
          berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
-         return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita)
+         return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita,name =name)
       except jwt.ExpiredSignatureError:
          return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
       except jwt.exceptions.DecodeError:
@@ -554,8 +586,10 @@ def AdminDataKomentar(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
-      return render_template('admin/berita/dataKomentar.html',datas = komentar)
+      return render_template('admin/berita/dataKomentar.html',datas = komentar,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -592,6 +626,8 @@ def AdminDataDaftar():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method == 'POST':
          thn = request.form['tahun']
          dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
@@ -606,7 +642,7 @@ def AdminDataDaftar():
 
          
       
-         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn)
+         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn,name = name)
 
       pendaftaran = list(db.pendaftaran.find({}))
       tahun = set()
@@ -622,7 +658,7 @@ def AdminDataDaftar():
       thn=mytime
       dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
       
-      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar)
+      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar,name = name)
 
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
@@ -637,10 +673,12 @@ def AdminDetailDaftar(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       
       id=ObjectId(_id)
       detail=db.pendaftaran.find_one({'_id':id})
-      return render_template('admin/pendaftaran/detailDaftar.html',data=detail)
+      return render_template('admin/pendaftaran/detailDaftar.html',data=detail,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -654,6 +692,8 @@ def AdminEditDaftar(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          nama=request.form['nama'].strip()
          jenisKelamin=request.form['jenisKelamin'].strip()
@@ -711,7 +751,7 @@ def AdminEditDaftar(_id):
          return redirect(url_for('AdminDetailDaftar',_id=_id))
       id=ObjectId(_id)
       detail=db.pendaftaran.find_one({'_id':id})
-      return render_template('admin/pendaftaran/editDaftar.html',data=detail)
+      return render_template('admin/pendaftaran/editDaftar.html',data=detail,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -730,8 +770,10 @@ def AdminFasilitas():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       fasilitas =  list(db.fasilitas.find({}))
-      return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas)
+      return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -745,6 +787,8 @@ def AdminEditFasilitas(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          id=request.form['_id'].strip()
          nama=request.form['namaFasilitas'].strip()
@@ -776,7 +820,7 @@ def AdminEditFasilitas(_id):
          return redirect(url_for('AdminFasilitas'))
          
       fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
-      return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas)
+      return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas,name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -790,6 +834,8 @@ def AdminAddFasilitas():
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      name = userInfo['username']
       if request.method=='POST':
          # ambil input
          nama=request.form['namaFasilitas'].strip()
@@ -814,7 +860,7 @@ def AdminAddFasilitas():
          }
          db.fasilitas.insert_one(doc)
          return redirect(url_for('AdminFasilitas'))
-      return render_template('admin/fasilitas/addfasilitas.html')
+      return render_template('admin/fasilitas/addfasilitas.html',name = name)
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -828,6 +874,7 @@ def AdminDeleteFasilitas(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
+      
       currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(_id)})
       current_image = currentFasilitas.get('gambarFasilitas', None)
       if current_image:
