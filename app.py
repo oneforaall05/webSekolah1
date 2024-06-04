@@ -59,40 +59,43 @@ def userShowBerita():
    return render_template('user/showBerita.html')
 
 # fasilitasUser
-@app.route('/Fasilitas',methods=['GET'])
+@app.route('/fasilitas',methods=['GET'])
 def userFasilitas():
    return render_template('user/fasilitas.html')
 
 # formdaftar
-@app.route('/formDaftar',methods=['GET'])
+@app.route('/formDaftar',methods=['GET','POST'])
 def userFormDaftar():
    if request.method=='POST':
-         nama=request.form['nama'].strip()
-         jenisKelamin=request.form['jenisKelamin'].strip()
-         nik=request.form['nik'].strip()
-         ttl=request.form['ttl'].strip()
-         agama=request.form['agama'].strip()
-         alamat=request.form['alamat'].strip()
-         tempatTinggal=request.form['tempatTinggal'].strip()
-         transportasi=request.form['transportasi'].strip()
-         namaAyah=request.form['namaAyah'].strip()
-         ttlAyah=request.form['ttlAyah'].strip()
-         pendidikanAyah=request.form['pendidikanAyah'].strip()
-         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
-         nomorAyah=request.form['nomorAyah'].strip()
-         namaIbu=request.form['namaIbu'].strip()
-         ttlIbu=request.form['ttlIbu'].strip()
-         pendidikanIbu=request.form['pendidikanIbu'].strip()
-         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
-         nomorIbu=request.form['nomorIbu'].strip()
-         tinggi=request.form['tinggi'].strip()
-         berat=request.form['berat'].strip()
-         jarakSekolah=request.form['jarakSekolah'].strip()
-         waktuSekolah=request.form['waktuSekolah'].strip()
-         anakKe=request.form['anakKe'].strip()
-         saudara=request.form['jumlahSaudara'].strip()
+      today=datetime.now()
+      tahun = today.strftime('%Y')
+      nama=request.form['nama'].strip()
+      jenisKelamin=request.form['jenisKelamin'].strip()
+      nik=request.form['nik'].strip()
+      ttl=request.form['ttl'].strip()
+      agama=request.form['agama'].strip()
+      alamat=request.form['alamat'].strip()
+      tempatTinggal=request.form['tempatTinggal'].strip()
+      transportasi=request.form['transportasi'].strip()
+      namaAyah=request.form['namaAyah'].strip()
+      ttlAyah=request.form['ttlAyah'].strip()
+      pendidikanAyah=request.form['pendidikanAyah'].strip()
+      pekerjaanAyah=request.form['pekerjaanAyah'].strip()
+      nomorAyah=request.form['nomorAyah'].strip()
+      namaIbu=request.form['namaIbu'].strip()
+      ttlIbu=request.form['ttlIbu'].strip()
+      pendidikanIbu=request.form['pendidikanIbu'].strip()
+      pekerjaanIbu=request.form['pekerjaanIbu'].strip()
+      nomorIbu=request.form['nomorIbu'].strip()
+      tinggi=request.form['tinggi'].strip()
+      berat=request.form['berat'].strip()
+      jarakSekolah=request.form['jarakSekolah'].strip()
+      waktuSekolah=request.form['waktuSekolah'].strip()
+      anakKe=request.form['anakKe'].strip()
+      saudara=request.form['jumlahSaudara'].strip()
          
-         doc={
+      doc={
+            'tahun':tahun,
             'nama':nama,
             'jk':jenisKelamin,
             'nik':nik,
@@ -106,11 +109,11 @@ def userFormDaftar():
             'pendidikan_ayah':pendidikanAyah,
             'pekerjaan_ayah':pekerjaanAyah,
             'nomor_Hp_ayah':nomorAyah,
-            'nama_Ibu':namaIbu,
-            'ttl_Ibu':ttlIbu,
-            'pendidikan_Ibu':pendidikanIbu,
-            'pekerjaan_Ibu':pekerjaanIbu,
-            'nomor_Hp_Ibu':nomorIbu,
+            'nama_ibu':namaIbu,
+            'ttl_ibu':ttlIbu,
+            'pendidikan_ibu':pendidikanIbu,
+            'pekerjaan_ibu':pekerjaanIbu,
+            'nomor_Hp_ibu':nomorIbu,
             'tinggi':tinggi,
             'berat':berat,
             'jarak_sekolah':jarakSekolah,
@@ -118,8 +121,8 @@ def userFormDaftar():
             'anak_ke':anakKe,
             'saudara':saudara
          }
-         db.pendaftaran.update_one(doc)
-         return redirect(url_for('userSyaratDafar'))
+      db.pendaftaran.insert_one(doc)
+      return redirect(url_for('userSyaratDaftar'))
    return render_template('user/formDaftar.html')
 
 # syaratDaftar
@@ -789,11 +792,11 @@ def AdminEditDaftar(_id):
             'pendidikan_ayah':pendidikanAyah,
             'pekerjaan_ayah':pekerjaanAyah,
             'nomor_Hp_ayah':nomorAyah,
-            'nama_Ibu':namaIbu,
-            'ttl_Ibu':ttlIbu,
-            'pendidikan_Ibu':pendidikanIbu,
-            'pekerjaan_Ibu':pekerjaanIbu,
-            'nomor_Hp_Ibu':nomorIbu,
+            'nama_ibu':namaIbu,
+            'ttl_ibu':ttlIbu,
+            'pendidikan_ibu':pendidikanIbu,
+            'pekerjaan_ibu':pekerjaanIbu,
+            'nomor_Hp_ibu':nomorIbu,
             'tinggi':tinggi,
             'berat':berat,
             'jarak_sekolah':jarakSekolah,
