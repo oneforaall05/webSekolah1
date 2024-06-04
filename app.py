@@ -25,18 +25,30 @@ TOKEN_KEY = "mytoken"
 # home 
 @app.route('/',methods=['GET'])
 def home():
-   return render_template('index.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('index.html', bolean = bolean)
+
 
 
 # loginUser 
 @app.route('/login',methods=['GET','POST'])
 def userLogin():
    if request.method == "POST":
-      print("eaea")
+      # print("eaea")
       username_receive = request.form["username_give"]
       password_receive = request.form["password_give"]
       password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-      print(username_receive,password_receive)
+      # print(username_receive,password_receive)
       doc = {
          'username':username_receive,
          'password':password_hash
@@ -87,42 +99,120 @@ def userRegister():
       return redirect(url_for("userLogin"))   
    return render_template('user/register.html')
 
+
+       
+
 # profileSekolahUser
 @app.route('/profileSekolah',methods=['GET'])
 def userProfileSekolah():
-   return render_template('user/profileSekolah.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/profileSekolah.html',bolean=bolean)
 
 # StaffUser
 @app.route('/staff',methods=['GET'])
 def userStaff():
-   return render_template('user/staff.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/staff.html',bolean=bolean)
 
 # berita
 @app.route('/berita',methods=['GET'])
 def userBerita():
-   return render_template('user/berita.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/berita.html',bolean=bolean)
 
 # show berita
 @app.route('/showBerita',methods=['GET'])
 def userShowBerita():
-   return render_template('user/showBerita.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/showBerita.html',bolean=bolean)
 
 # fasilitasUser
 @app.route('/fasilitas',methods=['GET'])
 def userFasilitas():
-   return render_template('user/fasilitas.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/fasilitas.html',bolean=bolean)
 
 # formdaftar
 @app.route('/formDaftar',methods=['GET'])
 def userFormDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY)
    
-   return render_template('user/formDaftar.html')
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/formDaftar.html',bolean=bolean)
 
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
 def userSyaratDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY)
    
-   return render_template('user/syaratDaftar.html')
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/syaratDaftar.html',bolean=bolean)
 
 # user end
 
