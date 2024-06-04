@@ -1,7 +1,7 @@
 <header id="header" class="header d-flex align-items-center sticky-top " style="background-color: white;">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a class="logo d-flex align-items-center me-auto">
+      <a class="logo d-flex align-items-center me-auto" href="/">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="static/assets/img/logokabserang.png" alt="">
         <h1 style="color: black;">SDN BOJONG NEROS</h1>
@@ -18,8 +18,13 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+      {% if bolean == False %}
+      <a class="btn-getstarted" href="/login">Login</a>
+      {% else %}
+      <a class="btn-getstarted" onclick="sign_out()">Logout</a>
+      {%endif%}
 
-      <a class="btn-getstarted" href="login.html">Login</a>
+
 
     </div>
   </header>

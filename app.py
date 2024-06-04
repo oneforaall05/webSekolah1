@@ -25,111 +25,184 @@ TOKEN_KEY = "mytoken"
 # home 
 @app.route('/',methods=['GET'])
 def home():
-   return render_template('index.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('index.html', bolean = bolean)
+
 
 
 # loginUser 
-@app.route('/login',methods=['GET'])
+@app.route('/login',methods=['GET','POST'])
 def userLogin():
+   if request.method == "POST":
+      # print("eaea")
+      username_receive = request.form["username_give"]
+      password_receive = request.form["password_give"]
+      password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+      # print(username_receive,password_receive)
+      doc = {
+         'username':username_receive,
+         'password':password_hash
+      }
+      result =db.user.find_one(doc)
+      if result:
+         payload = {
+         "id": username_receive,
+         # the token will be valid for 24 hours
+         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
+         }
+         # print(payload["id"],payload["exp"])
+         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+         return jsonify(
+               {
+                  "result": "success",
+                  "token": token,
+                  }
+         )
+      # Let's also handle the case where the id and
+      # password combination cannot be found
+      else:
+         return jsonify(
+               {
+                  "result": "fail",
+                  "msg": "We could not find a user with that id/password combination",
+               }
+         )
+      
    return render_template('user/login.html')
 
 # registerUser
-@app.route('/register',methods=['GET'])
+@app.route('/register',methods=['GET','POST'])
 def userRegister():
+   print("eaea123")
+   if request.method == "POST":
+      print("eaea")
+      username_receive = request.form["username"]
+      password_receive = request.form["password"]
+      password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+      print(username_receive,password_receive)
+      doc = {
+         'username':username_receive,
+         'password':password_hash
+      }
+      db.user.insert_one(doc)
+      return redirect(url_for("userLogin"))   
    return render_template('user/register.html')
+
+
+       
 
 # profileSekolahUser
 @app.route('/profileSekolah',methods=['GET'])
 def userProfileSekolah():
-   return render_template('user/profileSekolah.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/profileSekolah.html',bolean=bolean)
 
 # StaffUser
 @app.route('/staff',methods=['GET'])
 def userStaff():
-   return render_template('user/staff.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/staff.html',bolean=bolean)
 
 # berita
 @app.route('/berita',methods=['GET'])
 def userBerita():
-   return render_template('user/berita.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/berita.html',bolean=bolean)
 
 # show berita
 @app.route('/showBerita',methods=['GET'])
 def userShowBerita():
-   return render_template('user/showBerita.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/showBerita.html',bolean=bolean)
 
 # fasilitasUser
 @app.route('/fasilitas',methods=['GET'])
 def userFasilitas():
-   return render_template('user/fasilitas.html')
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/fasilitas.html',bolean=bolean)
 
 # formdaftar
 @app.route('/formDaftar',methods=['GET','POST'])
 def userFormDaftar():
-   if request.method=='POST':
-      today=datetime.now()
-      tahun = today.strftime('%Y')
-      nama=request.form['nama'].strip()
-      jenisKelamin=request.form['jenisKelamin'].strip()
-      nik=request.form['nik'].strip()
-      ttl=request.form['ttl'].strip()
-      agama=request.form['agama'].strip()
-      alamat=request.form['alamat'].strip()
-      tempatTinggal=request.form['tempatTinggal'].strip()
-      transportasi=request.form['transportasi'].strip()
-      namaAyah=request.form['namaAyah'].strip()
-      ttlAyah=request.form['ttlAyah'].strip()
-      pendidikanAyah=request.form['pendidikanAyah'].strip()
-      pekerjaanAyah=request.form['pekerjaanAyah'].strip()
-      nomorAyah=request.form['nomorAyah'].strip()
-      namaIbu=request.form['namaIbu'].strip()
-      ttlIbu=request.form['ttlIbu'].strip()
-      pendidikanIbu=request.form['pendidikanIbu'].strip()
-      pekerjaanIbu=request.form['pekerjaanIbu'].strip()
-      nomorIbu=request.form['nomorIbu'].strip()
-      tinggi=request.form['tinggi'].strip()
-      berat=request.form['berat'].strip()
-      jarakSekolah=request.form['jarakSekolah'].strip()
-      waktuSekolah=request.form['waktuSekolah'].strip()
-      anakKe=request.form['anakKe'].strip()
-      saudara=request.form['jumlahSaudara'].strip()
-         
-      doc={
-            'tahun':tahun,
-            'nama':nama,
-            'jk':jenisKelamin,
-            'nik':nik,
-            'ttl':ttl,
-            'agama':agama,
-            'alamat':alamat,
-            't_tinggal':tempatTinggal,
-            'transportasi':transportasi,
-            'nama_ayah':namaAyah,
-            'ttl_ayah':ttlAyah,
-            'pendidikan_ayah':pendidikanAyah,
-            'pekerjaan_ayah':pekerjaanAyah,
-            'nomor_Hp_ayah':nomorAyah,
-            'nama_ibu':namaIbu,
-            'ttl_ibu':ttlIbu,
-            'pendidikan_ibu':pendidikanIbu,
-            'pekerjaan_ibu':pekerjaanIbu,
-            'nomor_Hp_ibu':nomorIbu,
-            'tinggi':tinggi,
-            'berat':berat,
-            'jarak_sekolah':jarakSekolah,
-            'waktu_sekolah':waktuSekolah,
-            'anak_ke':anakKe,
-            'saudara':saudara
-         }
-      db.pendaftaran.insert_one(doc)
-      return redirect(url_for('userSyaratDaftar'))
+   
    return render_template('user/formDaftar.html')
 
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
 def userSyaratDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY)
    
-   return render_template('user/syaratDaftar.html')
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   bolean = False
+   if userInfo :
+      bolean = True
+   return render_template('user/syaratDaftar.html',bolean=bolean)
 
 # user end
 
@@ -197,11 +270,14 @@ def AdminProfileSekolah():
             token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      # print(name)
-      # print(payload+'yes')    
-      struktur = list(db.struktur.find({}))
-      return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur,name = name)
+       
+      if userInfo:
+         name = userInfo['username']
+            
+         struktur = list(db.struktur.find({}))
+         return render_template('admin/profileSekolah/profileSekolah.html',struktur = struktur,name = name)
+      else:
+         return redirect(url_for("home",msg="you are not admin"))
     except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
     except jwt.exceptions.DecodeError:
@@ -219,38 +295,42 @@ def AdminEditProfileSekolah(_id):
             token_receive, SECRET_KEY, algorithms='HS256'
          )
          userInfo = db.admin.find_one({'username':payload.get('id')})
-         name = userInfo['username']
-         if request.method == "POST":
-               id = request.form["_id"]
-               sejarah = request.form["sejarah"].strip()
-               profile = request.form["profile"].strip()
-               alamat = request.form["alamat"].strip()
-               nama_gambar = request.files["gambarStruktur"]
-               currentStruktur = db.struktur.find_one({'_id': ObjectId(id)})
-               current_image = currentStruktur.get('gambarStruktur', None)
-               today=datetime.now()
-               mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
-               doc = {
-                     "sejarah": sejarah,
-                     "profile": profile,
-                     "alamat": alamat,
-                     
-               }
-               if nama_gambar:
-                  if current_image:
-                     current_image_path = os.path.join('static/fotoStruktur', current_image)
-                     if os.path.exists(current_image_path):
-                        os.remove(current_image_path)
-                  extension = nama_gambar.filename.split('.')[-1]
-                  nama_file_gambar = f'struktur-{mytime}.{extension}'
-                  file_path =f'static/fotoStruktur/{nama_file_gambar}'
-                  nama_gambar.save(file_path)
-                  doc['gambarStruktur']=nama_file_gambar
-               db.struktur.update_one({'_id':ObjectId(id)},{"$set":doc})
-               return redirect(url_for('AdminProfileSekolah'))
-         id = ObjectId(_id)
-         struktur = list(db.struktur.find({"_id":id}))
-         return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur,name = name)
+         if userInfo:
+            if request.method == "POST":
+                  id = request.form["_id"]
+                  sejarah = request.form["sejarah"].strip()
+                  profile = request.form["profile"].strip()
+                  alamat = request.form["alamat"].strip()
+                  nama_gambar = request.files["gambarStruktur"]
+                  currentStruktur = db.struktur.find_one({'_id': ObjectId(id)})
+                  current_image = currentStruktur.get('gambarStruktur', None)
+                  today=datetime.now()
+                  mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+                  doc = {
+                        "sejarah": sejarah,
+                        "profile": profile,
+                        "alamat": alamat,
+                        
+                  }
+                  if nama_gambar:
+                     if current_image:
+                        current_image_path = os.path.join('static/fotoStruktur', current_image)
+                        if os.path.exists(current_image_path):
+                           os.remove(current_image_path)
+                     extension = nama_gambar.filename.split('.')[-1]
+                     nama_file_gambar = f'struktur-{mytime}.{extension}'
+                     file_path =f'static/fotoStruktur/{nama_file_gambar}'
+                     nama_gambar.save(file_path)
+                     doc['gambarStruktur']=nama_file_gambar
+                  db.struktur.update_one({'_id':ObjectId(id)},{"$set":doc})
+                  return redirect(url_for('AdminProfileSekolah'))
+         
+            name = userInfo['username']
+            id = ObjectId(_id)
+            struktur = list(db.struktur.find({"_id":id}))
+            return render_template('admin/profileSekolah/editProfileSekolah.html',struktur = struktur,name = name)
+         else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -269,12 +349,15 @@ def AdminStaff():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      # print(token_receive)
+      if userInfo:
+         name = userInfo['username']
+         # print(token_receive)
    
-      gurustaf =  list(db.gurustaff.find({}))
-      # print (gurustaf)
-      return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf,name = name)
+         gurustaf =  list(db.gurustaff.find({}))
+         #  print (gurustaf)
+         return render_template('admin/gurustaff/staff.html', gurustaf=gurustaf,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -289,33 +372,36 @@ def AdminEditStaff(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         id=request.form['_id']
-         nama=request.form['nama']
-         nama_gambar= request.files['gambar']
-         currentStaff = db.gurustaff.find_one({'_id': ObjectId(id)})
-         current_image = currentStaff.get('gambar', None)
-         doc={
-               'nama': nama
-            }
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+      if userInfo:
+         if request.method=='POST':
+            id=request.form['_id']
+            nama=request.form['nama']
+            nama_gambar= request.files['gambar']
+            currentStaff = db.gurustaff.find_one({'_id': ObjectId(id)})
+            current_image = currentStaff.get('gambar', None)
+            doc={
+                  'nama': nama
+               }
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-         if nama_gambar:
-            if current_image:
-                  current_image_path = os.path.join('static/fotostaff', current_image)
-                  if os.path.exists(current_image_path):
-                     os.remove(current_image_path)
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'staff-{mytime}.{extension}'
-            file_path =f'static/fotostaff/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-            doc['gambar']=nama_file_gambar
-         db.gurustaff.update_one({'_id':ObjectId(id)},{'$set':doc})
-         return redirect(url_for('AdminStaff'))
-      gurustaff = list(db.gurustaff.find({'_id':ObjectId(_id)}))
-      return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff,name = name)
+            if nama_gambar:
+               if current_image:
+                     current_image_path = os.path.join('static/fotostaff', current_image)
+                     if os.path.exists(current_image_path):
+                           os.remove(current_image_path)
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'staff-{mytime}.{extension}'
+               file_path =f'static/fotostaff/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+               doc['gambar']=nama_file_gambar
+            db.gurustaff.update_one({'_id':ObjectId(id)},{'$set':doc})
+            return redirect(url_for('AdminStaff'))
+         name = userInfo['username']
+         gurustaff = list(db.gurustaff.find({'_id':ObjectId(_id)}))
+         return render_template('admin/gurustaff/editstaff.html',gurustaff=gurustaff,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -329,15 +415,18 @@ def AdminDeleteStaff(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      
-      currentStaff = db.gurustaff.find_one({'_id': ObjectId(_id)})
-      current_image = currentStaff.get('gambar', None)
-      if current_image:
-         current_image_path = os.path.join('static/fotostaff', current_image)
-         if os.path.exists(current_image_path):
-            os.remove(current_image_path)
-      db.gurustaff.delete_one({'_id':ObjectId(_id)})
-      return redirect(url_for('AdminStaff'))
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         currentStaff = db.gurustaff.find_one({'_id': ObjectId(_id)})
+         current_image = currentStaff.get('gambar', None)
+         if current_image:
+            current_image_path = os.path.join('static/fotostaff', current_image)
+            if os.path.exists(current_image_path):
+               os.remove(current_image_path)
+         db.gurustaff.delete_one({'_id':ObjectId(_id)})
+         return redirect(url_for('AdminStaff'))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -352,29 +441,32 @@ def AdminAddStaff():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         # ambil input
-         nama=request.form.get('nama')
-         nama_gambar= request.files['gambar']
-         
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+      if userInfo:
+         name = userInfo['username']
+         if request.method=='POST':
+               # ambil input
+            nama=request.form.get('nama')
+            nama_gambar= request.files['gambar']
+            
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-         if nama_gambar:
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'staff-{mytime}.{extension}'
-            file_path =f'static/fotoStaff/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-         else :
-            nama_gambar=None
-         doc = {
-               'nama':nama,
-               'gambar':nama_file_gambar   
-         }
-         db.gurustaff.insert_one(doc)
-         return redirect(url_for('AdminStaff'))
-      return render_template('admin/gurustaff/addStaff.html',name = name)
+            if nama_gambar:
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'staff-{mytime}.{extension}'
+               file_path =f'static/fotoStaff/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+            else :
+               nama_gambar=None
+            doc = {
+                  'nama':nama,
+                  'gambar':nama_file_gambar   
+            }
+            db.gurustaff.insert_one(doc)
+            return redirect(url_for('AdminStaff'))
+         return render_template('admin/gurustaff/addStaff.html',name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -394,10 +486,13 @@ def AdminBerita():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      Berita =  list(db.berita.find({}))
-      print (Berita)
-      return render_template('admin/berita/berita.html', Berita=Berita,name = name)
+      if userInfo:
+         name = userInfo['username']
+         Berita =  list(db.berita.find({}))
+         print (Berita)
+         return render_template('admin/berita/berita.html', Berita=Berita,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -412,35 +507,38 @@ def AdminEditBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         id=request.form['_id']
-         judul=request.form['judul']
-         nama_gambar= request.files['gambar']
-         Deskripsi=request.form['Deskripsi']
-         currentBerita = db.berita.find_one({'_id': ObjectId(id)})
-         current_image = currentBerita.get('gambar', None)
-         doc={
-               'judul' : judul,
-               'Deskripsi': Deskripsi
-            }
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+      if userInfo:
+         name = userInfo['username']
+         if request.method=='POST':
+            id=request.form['_id']
+            judul=request.form['judul']
+            nama_gambar= request.files['gambar']
+            Deskripsi=request.form['Deskripsi']
+            currentBerita = db.berita.find_one({'_id': ObjectId(id)})
+            current_image = currentBerita.get('gambar', None)
+            doc={
+                  'judul' : judul,
+                  'Deskripsi': Deskripsi
+               }
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-         if nama_gambar:
-            if current_image:
-                  current_image_path = os.path.join('static/fotoBerita', current_image)
-                  if os.path.exists(current_image_path):
-                     os.remove(current_image_path)
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'berita-{mytime}.{extension}'
-            file_path =f'static/fotoBerita/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-            doc['gambar']=nama_file_gambar
-         db.berita.update_one({'_id':ObjectId(id)},{'$set':doc})
-         return redirect(url_for('AdminBerita'))
-      berita = list(db.berita.find({'_id':ObjectId(_id)}))
-      return render_template('admin/berita/editBerita.html',berita=berita,name = name)
+            if nama_gambar:
+               if current_image:
+                     current_image_path = os.path.join('static/fotoBerita', current_image)
+                     if os.path.exists(current_image_path):
+                        os.remove(current_image_path)
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'berita-{mytime}.{extension}'
+               file_path =f'static/fotoBerita/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+               doc['gambar']=nama_file_gambar
+            db.berita.update_one({'_id':ObjectId(id)},{'$set':doc})
+            return redirect(url_for('AdminBerita'))
+         berita = list(db.berita.find({'_id':ObjectId(_id)}))
+         return render_template('admin/berita/editBerita.html',berita=berita,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -456,32 +554,36 @@ def AdminAddBerita():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         # ambil input
-         nama_gambar= request.files['gambar']
-         judul=request.form['judul']
-         Deskripsi=request.form['Deskripsi']
+      if userInfo:
+             
+         name = userInfo['username']
+         if request.method=='POST':
+            # ambil input
+            nama_gambar= request.files['gambar']
+            judul=request.form['judul']
+            Deskripsi=request.form['Deskripsi']
+            
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
          
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-      
-         if nama_gambar:
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'Berita-{mytime}.{extension}'
-            file_path =f'static/fotoBerita/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-         else :
-            nama_gambar=None
-         doc = {
-               'gambar':nama_file_gambar,
-               'judul' : judul,
-               'Deskripsi':Deskripsi
-               
-         }
-         db.berita.insert_one(doc)
-         return redirect(url_for('AdminBerita'))
-      return render_template('admin/berita/addBerita.html',name = name)
+            if nama_gambar:
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'Berita-{mytime}.{extension}'
+               file_path =f'static/fotoBerita/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+            else :
+               nama_gambar=None
+            doc = {
+                  'gambar':nama_file_gambar,
+                  'judul' : judul,
+                  'Deskripsi':Deskripsi
+                  
+            }
+            db.berita.insert_one(doc)
+            return redirect(url_for('AdminBerita'))
+         return render_template('admin/berita/addBerita.html',name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -495,16 +597,21 @@ def AdminDeleteBerita(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
-      current_image = currentdeskripsi.get('gambar', None)
-      if current_image:
-         current_image_path = os.path.join('static/fotoBerita', current_image)
-         if os.path.exists(current_image_path):
-            os.remove(current_image_path)
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
+         current_image = currentdeskripsi.get('gambar', None)
+         if current_image:
+            current_image_path = os.path.join('static/fotoBerita', current_image)
+            if os.path.exists(current_image_path):
+               os.remove(current_image_path)
+         
+         db.berita.delete_one({'_id':ObjectId(_id)})
+         db.komentar.delete_many({'berita_id':ObjectId(_id)})
+         return redirect(url_for('AdminBerita'))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
       
-      db.berita.delete_one({'_id':ObjectId(_id)})
-      db.komentar.delete_many({'berita_id':ObjectId(_id)})
-      return redirect(url_for('AdminBerita'))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -515,14 +622,17 @@ def AdminDeleteBerita(_id):
 def AdminSubBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
    try:
-       payload = jwt.decode(
+      payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
        )
-       userInfo = db.admin.find_one({'username':payload.get('id')})
-       name = userInfo['username']
-       berita = list(db.berita.find({'_id':ObjectId(_id)}))
-       subBerita =  list(db.subBerita.find({}))
-       return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita,name = name)
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         name = userInfo['username']
+         berita = list(db.berita.find({'_id':ObjectId(_id)}))
+         subBerita =  list(db.subBerita.find({}))
+         return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -537,30 +647,33 @@ def AdminAddSubBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         id=request.form['_id']
-         deskripsiGambar=request.form['deskripsiGambar']
-         nama_gambar= request.files['gambarSubBerita']
-         Deskripsi=request.form['deskripsi']
-         doc={
-               'berita_id':ObjectId(id),
-               'deskripsiGambar' : deskripsiGambar,
-               'deskripsi': Deskripsi
-            }
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+      if userInfo:
+         name = userInfo['username']
+         if request.method=='POST':
+            id=request.form['_id']
+            deskripsiGambar=request.form['deskripsiGambar']
+            nama_gambar= request.files['gambarSubBerita']
+            Deskripsi=request.form['deskripsi']
+            doc={
+                  'berita_id':ObjectId(id),
+                  'deskripsiGambar' : deskripsiGambar,
+                  'deskripsi': Deskripsi
+               }
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-         if nama_gambar:
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'subBerita-{mytime}.{extension}'
-            file_path =f'static/fotoBerita/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-            doc['gambarSubBerita']=nama_file_gambar
-         db.subBerita.insert_one(doc)
-         return redirect(url_for('AdminSubBerita',_id =id))
-      berita = list(db.berita.find({'_id':ObjectId(_id)}))
-      return render_template('admin/berita/addSubBerita.html',berita = berita,name = name)
+            if nama_gambar:
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'subBerita-{mytime}.{extension}'
+               file_path =f'static/fotoBerita/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+               doc['gambarSubBerita']=nama_file_gambar
+            db.subBerita.insert_one(doc)
+            return redirect(url_for('AdminSubBerita',_id =id))
+         berita = list(db.berita.find({'_id':ObjectId(_id)}))
+         return render_template('admin/berita/addSubBerita.html',berita = berita,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -575,39 +688,42 @@ def AdminEditSubBerita(_id):
             token_receive, SECRET_KEY, algorithms='HS256'
          )
          userInfo = db.admin.find_one({'username':payload.get('id')})
-         name = userInfo['username']
-         if request.method=='POST':
-            id=request.form['_id']
-            berita_id = request.form['berita_id']
-            deskripsiGambar=request.form['deskripsiGambar']
-            nama_gambar= request.files['gambarSubBerita']
-            Deskripsi=request.form['deskripsi']
-            currentSubBerita = db.subBerita.find_one({'_id': ObjectId(id)})
-            current_image = currentSubBerita.get('gambarSubBerita', None)
-            doc={
-                  'berita_id':ObjectId(berita_id),
-                  'deskripsiGambar' : deskripsiGambar,
-                  'deskripsi': Deskripsi
-               }
-            today=datetime.now()
-            mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
+         if userInfo:
+            name = userInfo['username']
+            if request.method=='POST':
+               id=request.form['_id']
+               berita_id = request.form['berita_id']
+               deskripsiGambar=request.form['deskripsiGambar']
+               nama_gambar= request.files['gambarSubBerita']
+               Deskripsi=request.form['deskripsi']
+               currentSubBerita = db.subBerita.find_one({'_id': ObjectId(id)})
+               current_image = currentSubBerita.get('gambarSubBerita', None)
+               doc={
+                     'berita_id':ObjectId(berita_id),
+                     'deskripsiGambar' : deskripsiGambar,
+                     'deskripsi': Deskripsi
+                  }
+               today=datetime.now()
+               mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
 
-            if nama_gambar:
-               if current_image:
-                  current_image_path = os.path.join('static/fotoBerita/', current_image)
-                  if os.path.exists(current_image_path):
-                     os.remove(current_image_path)    
-               extension = nama_gambar.filename.split('.')[-1]
-               nama_file_gambar = f'subBerita-{mytime}.{extension}'
-               file_path =f'static/fotoBerita/{nama_file_gambar}'
-               nama_gambar.save(file_path)
-               doc['gambarSubBerita']=nama_file_gambar
-            db.subBerita.update_one({'_id':ObjectId(id)},{'$set':doc})
-            return redirect(url_for('AdminSubBerita',_id =berita_id))
-         subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
-         currentBerita = subBerita[0].get("berita_id")
-         berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
-         return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita,name =name)
+               if nama_gambar:
+                  if current_image:
+                     current_image_path = os.path.join('static/fotoBerita/', current_image)
+                     if os.path.exists(current_image_path):
+                        os.remove(current_image_path)    
+                  extension = nama_gambar.filename.split('.')[-1]
+                  nama_file_gambar = f'subBerita-{mytime}.{extension}'
+                  file_path =f'static/fotoBerita/{nama_file_gambar}'
+                  nama_gambar.save(file_path)
+                  doc['gambarSubBerita']=nama_file_gambar
+               db.subBerita.update_one({'_id':ObjectId(id)},{'$set':doc})
+               return redirect(url_for('AdminSubBerita',_id =berita_id))
+            subBerita =  list(db.subBerita.find({'_id':ObjectId(_id)}))
+            currentBerita = subBerita[0].get("berita_id")
+            berita = list(db.berita.find({'_id':ObjectId(currentBerita)}))
+            return render_template('admin/berita/editSubBerita.html',berita = berita,subBerita = subBerita,name =name)
+         else:
+             return redirect(url_for("home",msg="you are not admin"))
       except jwt.ExpiredSignatureError:
          return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
       except jwt.exceptions.DecodeError:
@@ -622,15 +738,19 @@ def AdminDeleteSubBerita(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      currentSubBerita = db.subBerita.find_one({'_id': ObjectId(_id)})
-      current_image = currentSubBerita.get('gambarSubBerita', None)
-      currentBerita = currentSubBerita.get("berita_id")
-      if current_image:
-         current_image_path = os.path.join('static/fotoBerita/', current_image)
-         if os.path.exists(current_image_path):
-            os.remove(current_image_path)
-      db.subBerita.delete_one({'_id':ObjectId(_id)})
-      return redirect(url_for('AdminSubBerita',_id = currentBerita))
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         currentSubBerita = db.subBerita.find_one({'_id': ObjectId(_id)})
+         current_image = currentSubBerita.get('gambarSubBerita', None)
+         currentBerita = currentSubBerita.get("berita_id")
+         if current_image:
+            current_image_path = os.path.join('static/fotoBerita/', current_image)
+            if os.path.exists(current_image_path):
+               os.remove(current_image_path)
+         db.subBerita.delete_one({'_id':ObjectId(_id)})
+         return redirect(url_for('AdminSubBerita',_id = currentBerita))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -645,9 +765,13 @@ def AdminDataKomentar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
-      return render_template('admin/berita/dataKomentar.html',datas = komentar,name = name)
+      if userInfo:
+             
+         name = userInfo['username']
+         komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
+         return render_template('admin/berita/dataKomentar.html',datas = komentar,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -661,11 +785,15 @@ def AdminDeleteKomentar(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
-      currentBerita = currentKomentar.get("berita_id")
-      # print(currentBerita)
-      db.komentar.delete_one({"_id":ObjectId(_id)})
-      return redirect(url_for('AdminDataKomentar',_id = currentBerita))
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
+         currentBerita = currentKomentar.get("berita_id")
+         # print(currentBerita)
+         db.komentar.delete_one({"_id":ObjectId(_id)})
+         return redirect(url_for('AdminDataKomentar',_id = currentBerita))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -685,10 +813,25 @@ def AdminDataDaftar():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method == 'POST':
-         thn = request.form['tahun']
-         dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+      if userInfo:
+             
+         name = userInfo['username']
+         if request.method == 'POST':
+            thn = request.form['tahun']
+            dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+            pendaftaran = list(db.pendaftaran.find({}))
+            tahun = set()
+            for dataThn in pendaftaran:
+               tahun.add(dataThn.get('tahun'))
+
+            year = list(tahun)
+            year.reverse()
+            years=year
+
+            
+         
+            return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn,name = name)
+
          pendaftaran = list(db.pendaftaran.find({}))
          tahun = set()
          for dataThn in pendaftaran:
@@ -697,26 +840,15 @@ def AdminDataDaftar():
          year = list(tahun)
          year.reverse()
          years=year
-
          
-      
-         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn,name = name)
-
-      pendaftaran = list(db.pendaftaran.find({}))
-      tahun = set()
-      for dataThn in pendaftaran:
-         tahun.add(dataThn.get('tahun'))
-
-      year = list(tahun)
-      year.reverse()
-      years=year
-      
-      today=datetime.now()
-      mytime = today.strftime('%Y')
-      thn=mytime
-      dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
-      
-      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar,name = name)
+         today=datetime.now()
+         mytime = today.strftime('%Y')
+         thn=mytime
+         dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
+         
+         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
 
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
@@ -732,11 +864,14 @@ def AdminDetailDaftar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      
-      id=ObjectId(_id)
-      detail=db.pendaftaran.find_one({'_id':id})
-      return render_template('admin/pendaftaran/detailDaftar.html',data=detail,name = name)
+      if userInfo:
+         name = userInfo['username']
+         
+         id=ObjectId(_id)
+         detail=db.pendaftaran.find_one({'_id':id})
+         return render_template('admin/pendaftaran/detailDaftar.html',data=detail,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -792,11 +927,11 @@ def AdminEditDaftar(_id):
             'pendidikan_ayah':pendidikanAyah,
             'pekerjaan_ayah':pekerjaanAyah,
             'nomor_Hp_ayah':nomorAyah,
-            'nama_ibu':namaIbu,
-            'ttl_ibu':ttlIbu,
-            'pendidikan_ibu':pendidikanIbu,
-            'pekerjaan_ibu':pekerjaanIbu,
-            'nomor_Hp_ibu':nomorIbu,
+            'nama_Ibu':namaIbu,
+            'ttl_Ibu':ttlIbu,
+            'pendidikan_Ibu':pendidikanIbu,
+            'pekerjaan_Ibu':pekerjaanIbu,
+            'nomor_Hp_Ibu':nomorIbu,
             'tinggi':tinggi,
             'berat':berat,
             'jarak_sekolah':jarakSekolah,
@@ -829,9 +964,13 @@ def AdminFasilitas():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      fasilitas =  list(db.fasilitas.find({}))
-      return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas,name = name)
+      if userInfo:
+             
+         name = userInfo['username']
+         fasilitas =  list(db.fasilitas.find({}))
+         return render_template('admin/fasilitas/fasilitas.html',fasilitas=fasilitas,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -846,39 +985,42 @@ def AdminEditFasilitas(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         id=request.form['_id'].strip()
-         nama=request.form['namaFasilitas'].strip()
-         deskripsi=request.form['deskripsiFasilitas'].strip()
+      if userInfo:
+         name = userInfo['username']
+         if request.method=='POST':
+            id=request.form['_id'].strip()
+            nama=request.form['namaFasilitas'].strip()
+            deskripsi=request.form['deskripsiFasilitas'].strip()
+               
+            nama_gambar= request.files['gambarFasilitas'].strip()
+            currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(id)})
+            current_image = currentFasilitas.get('gambarFasilitas', None)
+            doc={
+                  'namaFasilitas': nama,
+                  'deskripsiFasilitas':deskripsi
+               }
             
-         nama_gambar= request.files['gambarFasilitas'].strip()
-         currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(id)})
-         current_image = currentFasilitas.get('gambarFasilitas', None)
-         doc={
-               'namaFasilitas': nama,
-               'deskripsiFasilitas':deskripsi
-            }
-         
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-         
-         if nama_gambar: 
-            if current_image:
-               current_image_path = os.path.join('static/fotoFasilitas', current_image)
-               if os.path.exists(current_image_path):
-                  os.remove(current_image_path)        
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'fasilitas-{mytime}.{extension}'
-            file_path =f'static/fotoFasilitas/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-            doc['gambarFasilitas']=nama_file_gambar
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
             
-         db.fasilitas.update_one({'_id':ObjectId(id)},{'$set':doc})
-         return redirect(url_for('AdminFasilitas'))
-         
-      fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
-      return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas,name = name)
+            if nama_gambar: 
+               if current_image:
+                  current_image_path = os.path.join('static/fotoFasilitas', current_image)
+                  if os.path.exists(current_image_path):
+                     os.remove(current_image_path)        
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'fasilitas-{mytime}.{extension}'
+               file_path =f'static/fotoFasilitas/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+               doc['gambarFasilitas']=nama_file_gambar
+               
+            db.fasilitas.update_one({'_id':ObjectId(id)},{'$set':doc})
+            return redirect(url_for('AdminFasilitas'))
+            
+         fasilitas = list(db.fasilitas.find({'_id':ObjectId(_id)}))
+         return render_template('admin/fasilitas/editFasilitas.html',fasilitas=fasilitas,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -893,32 +1035,36 @@ def AdminAddFasilitas():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         # ambil input
-         nama=request.form['namaFasilitas'].strip()
-         deskripsi=request.form['deskripsiFasilitas'].strip()
+      if userInfo:
+             
+         name = userInfo['username']
+         if request.method=='POST':
+            # ambil input
+            nama=request.form['namaFasilitas'].strip()
+            deskripsi=request.form['deskripsiFasilitas'].strip()
+            
+            nama_gambar= request.files['gambarFasilitas'].strip()
+            
+            today=datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
          
-         nama_gambar= request.files['gambarFasilitas'].strip()
-         
-         today=datetime.now()
-         mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-      
-         if nama_gambar:
-            extension = nama_gambar.filename.split('.')[-1]
-            nama_file_gambar = f'fasilitas-{mytime}.{extension}'
-            file_path =f'static/fotoFasilitas/{nama_file_gambar}'
-            nama_gambar.save(file_path)
-         else :
-            nama_gambar=None
-         doc = {
-               'namaFasilitas':nama,
-               'gambarFasilitas':nama_file_gambar,
-               'deskripsiFasilitas':deskripsi
-         }
-         db.fasilitas.insert_one(doc)
-         return redirect(url_for('AdminFasilitas'))
-      return render_template('admin/fasilitas/addfasilitas.html',name = name)
+            if nama_gambar:
+               extension = nama_gambar.filename.split('.')[-1]
+               nama_file_gambar = f'fasilitas-{mytime}.{extension}'
+               file_path =f'static/fotoFasilitas/{nama_file_gambar}'
+               nama_gambar.save(file_path)
+            else :
+               nama_gambar=None
+            doc = {
+                  'namaFasilitas':nama,
+                  'gambarFasilitas':nama_file_gambar,
+                  'deskripsiFasilitas':deskripsi
+            }
+            db.fasilitas.insert_one(doc)
+            return redirect(url_for('AdminFasilitas'))
+         return render_template('admin/fasilitas/addfasilitas.html',name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -932,15 +1078,18 @@ def AdminDeleteFasilitas(_id):
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
       )
-      
-      currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(_id)})
-      current_image = currentFasilitas.get('gambarFasilitas', None)
-      if current_image:
-         current_image_path = os.path.join('static/fotoFasilitas', current_image)
-         if os.path.exists(current_image_path):
-            os.remove(current_image_path) 
-      db.fasilitas.delete_one({'_id':ObjectId(_id)})
-      return redirect(url_for('AdminFasilitas'))
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo:
+         currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(_id)})
+         current_image = currentFasilitas.get('gambarFasilitas', None)
+         if current_image:
+            current_image_path = os.path.join('static/fotoFasilitas', current_image)
+            if os.path.exists(current_image_path):
+               os.remove(current_image_path) 
+         db.fasilitas.delete_one({'_id':ObjectId(_id)})
+         return redirect(url_for('AdminFasilitas'))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
