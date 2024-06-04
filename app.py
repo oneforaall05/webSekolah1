@@ -11,8 +11,9 @@ from flask import Flask, render_template,jsonify,request,redirect,url_for
 from werkzeug.utils import secure_filename
 
 
-stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
-client = MongoClient(stringUrl)
+# stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
+stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
+client = MongoClient(stringUrl2)
 db = client.websekolah
 
 app = Flask(__name__)
@@ -177,10 +178,11 @@ def userFasilitas():
                token_receive, SECRET_KEY, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   fasilitas =  list(db.fasilitas.find({}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/fasilitas.html',bolean=bolean)
+   return render_template('user/fasilitas.html',bolean=bolean,fasilitas=fasilitas)
 
 # formdaftar
 @app.route('/formDaftar',methods=['GET','POST'])

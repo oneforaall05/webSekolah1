@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Fasilitas</title>
-    <meta content="" name="description" />
-    <meta content="" name="keywords" />
-    {%include 'vendor.html'%}
-  </head>
-  <body>
-    {%include 'header.html'%}
-    <main class="main">
-    Fasilitas
-    </main>
-    {%include 'footer.html'%}
-    
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Fasilitas</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  {%include 'vendor.html'%}
+</head>
+
+<body>
+  {%include 'header.html'%}
+  <main class="main m-5">
+    <div class="row">
+      {% for item in fasilitas%}
+      <div class="col mt-2 mb-2">
+
+        <div class="card" style="width: 18rem;">
+          <img src="static/fotoFasilitas/{{item.gambarFasilitas}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">
+              {{item.namaFasilitas}}
+            </h5>
+            <p class="card-text">
+              {{item.deskripsiFasilitas}}
+            </p>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </main>
+  {%include 'footer.html'%}
+
+</body>
+
 </html>
