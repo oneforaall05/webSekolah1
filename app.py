@@ -11,9 +11,9 @@ from flask import Flask, render_template,jsonify,request,redirect,url_for
 from werkzeug.utils import secure_filename
 
 
-# stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
-stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
-client = MongoClient(stringUrl2)
+stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
+#stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
+client = MongoClient(stringUrl)
 db = client.websekolah
 
 app = Flask(__name__)
@@ -130,10 +130,11 @@ def userStaff():
                token_receive, SECRET_KEY, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   gurustaf = list(db.gurustaff.find({}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/staff.html',bolean=bolean)
+   return render_template('user/staff.html',bolean=bolean, gurustaf=gurustaf)
 
 # berita
 @app.route('/berita',methods=['GET'])
@@ -378,11 +379,13 @@ def AdminEditStaff(_id):
          if request.method=='POST':
             id=request.form['_id']
             nama=request.form['nama']
+            jabatan=request.form['jabatan']
             nama_gambar= request.files['gambar']
             currentStaff = db.gurustaff.find_one({'_id': ObjectId(id)})
             current_image = currentStaff.get('gambar', None)
             doc={
-                  'nama': nama
+                  'nama': nama,
+                  'jabatan':jabatan
                }
             today=datetime.now()
             mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
@@ -448,6 +451,7 @@ def AdminAddStaff():
          if request.method=='POST':
                # ambil input
             nama=request.form.get('nama')
+            jabatan=request.form.get('jabatan')
             nama_gambar= request.files['gambar']
             
             today=datetime.now()
@@ -462,6 +466,7 @@ def AdminAddStaff():
                nama_gambar=None
             doc = {
                   'nama':nama,
+                  'jabatan':jabatan,
                   'gambar':nama_file_gambar   
             }
             db.gurustaff.insert_one(doc)
