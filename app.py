@@ -66,7 +66,60 @@ def userFasilitas():
 # formdaftar
 @app.route('/formDaftar',methods=['GET'])
 def userFormDaftar():
-   
+   if request.method=='POST':
+         nama=request.form['nama'].strip()
+         jenisKelamin=request.form['jenisKelamin'].strip()
+         nik=request.form['nik'].strip()
+         ttl=request.form['ttl'].strip()
+         agama=request.form['agama'].strip()
+         alamat=request.form['alamat'].strip()
+         tempatTinggal=request.form['tempatTinggal'].strip()
+         transportasi=request.form['transportasi'].strip()
+         namaAyah=request.form['namaAyah'].strip()
+         ttlAyah=request.form['ttlAyah'].strip()
+         pendidikanAyah=request.form['pendidikanAyah'].strip()
+         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
+         nomorAyah=request.form['nomorAyah'].strip()
+         namaIbu=request.form['namaIbu'].strip()
+         ttlIbu=request.form['ttlIbu'].strip()
+         pendidikanIbu=request.form['pendidikanIbu'].strip()
+         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
+         nomorIbu=request.form['nomorIbu'].strip()
+         tinggi=request.form['tinggi'].strip()
+         berat=request.form['berat'].strip()
+         jarakSekolah=request.form['jarakSekolah'].strip()
+         waktuSekolah=request.form['waktuSekolah'].strip()
+         anakKe=request.form['anakKe'].strip()
+         saudara=request.form['jumlahSaudara'].strip()
+         
+         doc={
+            'nama':nama,
+            'jk':jenisKelamin,
+            'nik':nik,
+            'ttl':ttl,
+            'agama':agama,
+            'alamat':alamat,
+            't_tinggal':tempatTinggal,
+            'transportasi':transportasi,
+            'nama_ayah':namaAyah,
+            'ttl_ayah':ttlAyah,
+            'pendidikan_ayah':pendidikanAyah,
+            'pekerjaan_ayah':pekerjaanAyah,
+            'nomor_Hp_ayah':nomorAyah,
+            'nama_Ibu':namaIbu,
+            'ttl_Ibu':ttlIbu,
+            'pendidikan_Ibu':pendidikanIbu,
+            'pekerjaan_Ibu':pekerjaanIbu,
+            'nomor_Hp_Ibu':nomorIbu,
+            'tinggi':tinggi,
+            'berat':berat,
+            'jarak_sekolah':jarakSekolah,
+            'waktu_sekolah':waktuSekolah,
+            'anak_ke':anakKe,
+            'saudara':saudara
+         }
+         db.pendaftaran.update_one(doc)
+         return redirect(url_for('userSyaratDafar'))
    return render_template('user/formDaftar.html')
 
 # syaratDaftar
