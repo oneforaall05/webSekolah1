@@ -1,19 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Login</title>
-    <meta content="" name="description" />
-    <meta content="" name="keywords" />
-    {%include 'vendor.html'%}
-  </head>
-  <body>
-    {%include 'header.html'%}
-    <main class="main">
-    Login
-    </main>
-    {%include 'footer.html'%}
-    
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Login</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  {%include 'vendor.html'%}
+  <script>
+    function signIn() {
+      let username = $("#username").val();
+      let password = $("#password").val();
+      console.log(username)
+      if (username === "") {
+        $("#help-id-login").text("Please input your id.");
+        $("#username").focus();
+        console.log("test")
+        return;
+      } else {
+        $("#help-id-login").text("");
+      }
+
+      if (password === "") {
+        $("#help-password").text("Please input your password.");
+        $("#password").focus();
+        return;
+      } else {
+        $("#help-password").text("");
+      }
+      $.ajax({
+        type: "POST",
+        url: "/login",
+        data: {
+          username_give: username,
+          password_give: password
+        },
+        success: function (response) {
+          console.log(response)
+          if (response["result"] === "success") {
+            $.cookie("mytoken", response["token"], { path: "/" });
+            window.location.replace("/");
+          } else {
+            alert(response["msg"]);
+          }
+        }
+      })
+    }
+    function togglePasswordVisibility() {
+      var passwordInput = document.getElementById("input-password");
+      var togglePassword = document.querySelector(".toggle-password");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePassword.textContent = "Hide Password";
+      } else {
+        passwordInput.type = "password";
+        togglePassword.textContent = "Show Password";
+      }
+    }
+  </script>
+  
+</head>
+
+<body>
+  {%include 'header.html'%}
+  <!-- <main class="main">
+    <div class="card m-3">
+      <div class="row">
+        <div class="col-6">
+          <div class="card-body">
+            <h1 class="card-title text-center">Login</h1>
+            <form action="">
+              <div class="mb-3">
+                <label for="username" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="username" placeholder="Bambank Panuroto" name="username">
+              </div>
+
+              <div class="mb-3">
+                <label for="username" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="password" name="password" placeholder="Panuroto2321">
+              </div>
+              <div class="text-center">
+                <a href="#" type="submit" class="btn btn-primary"> Submit</a>
+
+              </div>
+              <p class="mt-3 text-center">Belum punya akun? <a href="/register">Silakan Membuat akun Disini</a></p>
+            </form>
+          </div>
+
+        </div>
+        <div class="col-6" style="background-image: url(static/img/sekolah.jpg);background-size: cover;background-position: center center; ">
+          <img src="static/img/sekolah.jpg" alt="" style="width: 100%;object-fit:cover;opacity: 0;">
+        </div>
+      </div>
+    </div> -->
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="../static/img/login.jpeg" alt="login form" class="img-fluid"
+                style="border-radius: 1rem 0 0 1rem" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <form>
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219"></i>
+                    <img src="static/assets/img/logokabserang.png" alt="" width="70vw">
+                    <span class="h1 fw-bold mb-0 text-center">SDN BOJONG NEROS</span>
+                  </div>
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px">
+                    Login ke akun anda
+                  </h5>
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control form-control-lg" />
+                    <p id="help-id-login" style="color: red;"></p>
+                  </div>
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control form-control-lg" />
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">Show Password</span>
+                    <p id="help-password" style="color: red;"></p>
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block"
+                      type="button" onclick="signIn()">
+                      Login
+                    </button>
+                  </div>
+
+
+                  <p class="mb-5 pb-lg-2" style="color: #393f81">
+                    Anda Belum punya akun?
+                    <a href="/register" style="color: #393f81">Registrasi akun disini</a>
+                  </p>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </main>
+  {%include 'footer.html'%}
+
+</body>
+
 </html>
