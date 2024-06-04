@@ -7,212 +7,176 @@
   <title>Form Daftar</title>
   <meta content="" name="description" />
   <meta content="" name="keywords" />
-  {%include 'vendor.html'%}
+  {% include 'vendor.html' %}
   <style>
-    .input-group-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-sizing: border-box;
+    .form-group{
+      margin: auto;
     }
+    label{
+      margin: 15px 0px 10px 0px;
+    }
+    .form-group .flex {
+      display: flex;
+      gap: 10px;
+
+    }
+
   </style>
 </head>
 
 <body>
-  {%include 'header.html'%}
+  {% include 'header.html' %}
   <main class="main">
-    <div class="card border-0  mb-4 mx-5 md-5">
-      <div class="card-body mt-4">
-
-        <h4 class="mx-4 mb-5">Silahkan Masukkan Data Anda Pada Form Dibawah : </h4>
-        <div class="table-responsive">
-          <form action="/formDaftar" method="post" enctype="multipart/form-data">
-            <div class=" input-group mb-3 row ">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Nama Calon Peserta Didik :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="nama" 
-                placeholder="Masukkan Nama Calon Peserta Didik" required style="border-radius: 10px;">
+    <div class="container mt-5">
+      <h2 >Masukkan Data Anda Pada Form Dibawah</h2><br>
+      <ul class="nav nav-tabs" id="registrationTabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="calon-tab" data-toggle="tab" href="#calon" role="tab" aria-controls="calon"
+            aria-selected="true">Data Calon Peserta</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="ortu-tab" data-toggle="tab" href="#ortu" role="tab" aria-controls="ortu"
+            aria-selected="false">Data Orang Tua</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="spesifik-tab" data-toggle="tab" href="#periodik" role="tab" aria-controls="spesifik"
+            aria-selected="false">Data Periodik</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="registrationTabsContent">
+        <!-- Data Calon Peserta -->
+        <div class="tab-pane fade show active" id="calon" role="tabpanel" aria-labelledby="calon-tab">
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="namaCalon">Nama Lengkap</label>
+              <input type="text" class="form-control" id="namaCalon" name="nama" placeholder="Masukkan Nama Calon Peserta Didik" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">jenis Kelamin :</span>
-              </div>
-              <select class="form-select" id="inputGroupSelect01" name="jenisKelamin" style="border-radius: 10px;">
-                <option selected>Pilih Jenis Kelamin</option>
+            <div class="form-group">
+              <label for="jenisKelaminCalon">Jenis Kelamin</label>
+              <select class="form-control" id="jenisKelaminCalon" name="jenisKelamin" required>
+                <option selected disabled>Pilih Jenis Kelamin</option>
                 <option value="Laki-Laki">Laki-Laki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">NIK :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="nik"
-                placeholder="Masukkan NIK" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="nikCalon">NIK</label>
+              <input type="number" class="form-control" id="nikCalon" name="nik" placeholder="Masukkan NIK" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">tepat, Tanggal Lahir :</span>
+            <div class="form-group">
+              <label for="ttlCalon">Tempat dan Tanggal Lahir</label>
+              <div class="flex">
+                <input type="text" class="form-control" id="tempatLahirCalon" name="tempatLahir" placeholder="Masukkan Tempat lahir" required>
+                <input type="date" class="form-control" id="tanggalLahirCalon" name="tanggalLahir" placeholder="Masukkan tanggal lahir" required>
               </div>
-              <input type="text" class="form-control" id="nama" name="ttl" 
-                placeholder="Masukkan Tempat tanggal lahir" required style="border-radius: 10px;">
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Agama :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="agama" 
-                placeholder="Masukkan agama" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="agamaCalon">Agama</label>
+              <input type="text" class="form-control" id="agamaCalon" name="agama" placeholder="Masukkan Agama" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Alamat :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="alamat" 
-                placeholder="Masukkan alamat" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="alamatCalon">Alamat</label>
+              <input type="text" class="form-control" id="alamatCalon" name="alamat" placeholder="Masukkan Alamat" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Status Tempat Tinggal :</span>
-              </div>
-              <select class="form-select" id="inputGroupSelect01" name="tempatTinggal" style="border-radius: 10px;">
-                <option selected>Pilih Status Tempat Tinggal</option>
+            <div class="form-group">
+              <label for="tempatTinggalCalon">Status Tempat Tinggal</label>
+              <select class="form-control" id="tempatTinggalCalon" name="tempatTinggal" required>
+                <option selected disabled>Pilih Status Tempat Tinggal</option>
                 <option value="Bersama Orang Tua">Bersama Orang Tua</option>
                 <option value="Bersama Wali">Bersama Wali</option>
                 <option value="Tinggal Sendiri">Tinggal Sendiri</option>
-
               </select>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Metode Transformasi :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="transportasi" 
-                placeholder="Masukkan Metode Transportasi" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="transportasiCalon">Metode Transportasi</label>
+              <input type="text" class="form-control" id="transportasiCalon" name="transportasi" placeholder="Masukkan Metode Transportasi" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Nama Ayah :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="namaAyah" 
-                placeholder="Masukkan Nama Ayah" required style="border-radius: 10px;">
+          </form>
+        </div>
+        <!-- Data Orang Tua -->
+        <div class="tab-pane fade" id="ortu" role="tabpanel" aria-labelledby="ortu-tab">
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="namaAyah">Nama Ayah</label>
+              <input type="text" class="form-control" id="namaAyah" name="namaAyah" placeholder="Masukkan Nama Ayah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Tahun Lahir Ayah :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="ttlAyah" 
-                placeholder="Masukkan Tahun lahir ayah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="ttlAyah">Tahun Lahir Ayah</label>
+              <input type="number" class="form-control" id="ttlAyah" name="ttlAyah" placeholder="Masukkan Tahun Lahir Ayah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Pendidikan Terakhir Ayah :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="pendidikanAyah" 
-                placeholder="Masukkan Pendidikan Terakhir Ayah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="pendidikanAyah">Pendidikan Terakhir Ayah</label>
+              <input type="text" class="form-control" id="pendidikanAyah" name="pendidikanAyah" placeholder="Masukkan Pendidikan Terakhir Ayah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Pekerjaan Ayah :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="pekerjaanAyah" 
-                placeholder="Masukkan Pekerjaan Ayah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="pekerjaanAyah">Pekerjaan Ayah</label>
+              <input type="text" class="form-control" id="pekerjaanAyah" name="pekerjaanAyah" placeholder="Masukkan Pekerjaan Ayah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Nomor telp/Hp Ayah :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="nomorAyah" 
-                placeholder="Masukkan Nomor Telp / Hp ayah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="nomorAyah">Nomor Telp / Hp Ayah</label>
+              <input type="number" class="form-control" id="nomorAyah" name="nomorAyah" placeholder="Masukkan Nomor Telp / Hp Ayah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Nama Ibu :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="namaIbu" 
-                placeholder="Masukkan Nama ibu" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="namaIbu">Nama Ibu</label>
+              <input type="text" class="form-control" id="namaIbu" name="namaIbu" placeholder="Masukkan Nama Ibu" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Tahun Lahir Ayah :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="ttlIbu" 
-                placeholder="Masukkan Tahun lahir ibu" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="ttlIbu">Tahun Lahir Ibu</label>
+              <input type="number" class="form-control" id="ttlIbu" name="ttlIbu" placeholder="Masukkan Tahun Lahir Ibu" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Pendidikan terakhir Ibu :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="pendidikanIbu" 
-                placeholder="Masukkan Pendidikan Terakhir ibu" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="pendidikanIbu">Pendidikan Terakhir Ibu</label>
+              <input type="text" class="form-control" id="pendidikanIbu" name="pendidikanIbu" placeholder="Masukkan Pendidikan Terakhir Ibu" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Pekerjaan Ibu :</span>
-              </div>
-              <input type="text" class="form-control" id="nama" name="pekerjaanIbu" 
-                placeholder="Masukkan Pekerjaan ibu" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="pekerjaanIbu">Pekerjaan Ibu</label>
+              <input type="text" class="form-control" id="pekerjaanIbu" name="pekerjaanIbu" placeholder="Masukkan Pekerjaan Ibu" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Nomor Telp/Hp Ibu :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="nomorIbu" 
-                placeholder="Masukkan Nomor Telp / Hp ibu" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="nomorIbu">Nomor Telp / Hp Ibu</label>
+              <input type="number" class="form-control" id="nomorIbu" name="nomorIbu" placeholder="Masukkan Nomor Telp / Hp Ibu" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Tinggi (cm):</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="tinggi" 
-                placeholder="Masukkan Tinggi Calon Peserta Didik" required style="border-radius: 10px;">
+          </form>
+        </div>
+        <!-- Data Periodik -->
+        <div class="tab-pane fade" id="periodik" role="tabpanel" aria-labelledby="spesifik-tab">
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="tinggiCalon">Tinggi Calon Peserta Didik</label>
+              <input type="number" class="form-control" id="tinggiCalon" name="tinggi" placeholder="Masukkan Tinggi Calon Peserta Didik" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Berat (kg) :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="berat" 
-                placeholder="Masukkan Berat Calon Peserta Didik" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="beratCalon">Berat Calon Peserta Didik</label>
+              <input type="number" class="form-control" id="beratCalon" name="berat" placeholder="Masukkan Berat Calon Peserta Didik" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Jarak Ke Sekolah (Km) :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="jarakSekolah" 
-                placeholder="Masukkan Jarak Rumah Calon Peserta Didik ke Sekolah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="jarakSekolahCalon">Jarak Rumah ke Sekolah</label>
+              <input type="number" class="form-control" id="jarakSekolahCalon" name="jarakSekolah" placeholder="Masukkan Jarak Rumah ke Sekolah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Waktu Tempuh Ke Sekolah (Menit) :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="waktuSekolah" 
-                placeholder="Masukkan Waktu Tempuh Ke Sekolah" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="waktuSekolahCalon">Waktu Tempuh ke Sekolah</label>
+              <input type="number" class="form-control" id="waktuSekolahCalon" name="waktuSekolah" placeholder="Masukkan Waktu Tempuh ke Sekolah" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Anak Ke :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="anakKe" 
-                placeholder="Masukkan Anak Ke berapa" required style="border-radius: 10px;">
+            <div class="form-group">
+              <label for="anakKeCalon">Anak ke</label>
+              <input type="number" class="form-control" id="anakKeCalon" name="anakKe" placeholder="Masukkan Anak Ke berapa" required>
             </div>
-            <div class=" input-group mb-3 row">
-              <div class="text mx-3 col-md-3">
-                <span class="input-group-text">Jumlah Saudara :</span>
-              </div>
-              <input type="number" class="form-control" id="nama" name="jumlahSaudara" 
-                placeholder="Masukkan Jumlah Saudara Calon Peserta Didik" required style="border-radius: 10px;">
-            </div>
-            <div class="mb-3">
-              <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
+            <div class="form-group">
+              <label for="jumlahSaudaraCalon">Jumlah Saudara</label>
+              <input type="number" class="form-control" id="jumlahSaudaraCalon" name="jumlahSaudara" placeholder="Masukkan Jumlah Saudara" required>
             </div>
           </form>
         </div>
       </div>
+      <div class="text-right mt-4 d-flex justify-content-end">
+        <button type="submit" class="btn btn-danger" style="margin-right: 5%;">Submit</button>
+      </div>
     </div>
-  </main><!-- En
-  {%include 'footer.html'%}
-
+  </main>
+  {% include 'footer.html' %}
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
