@@ -18,10 +18,10 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-      {% if bolean == False %}
-      <a class="btn-getstarted" href="/login">Login</a>
-      {% else %}
+      {% if bolean == True %}
       <a class="btn-getstarted" onclick="sign_out()">Logout</a>
+      {% else %}
+      <a class="btn-getstarted" href="/login">Login</a>
       {%endif%}
 
 
