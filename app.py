@@ -189,14 +189,16 @@ def userBerita():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   Berita =  list(db.berita.find({}))
+      
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/berita.html',bolean=bolean)
+   return render_template('user/berita.html',bolean=bolean,Berita =Berita)
 
 # show berita
-@app.route('/showBerita',methods=['GET'])
-def userShowBerita():
+@app.route('/showBerita/<_id>',methods=['GET'])
+def userShowBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
@@ -205,10 +207,13 @@ def userShowBerita():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
+   subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
+   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/showBerita.html',bolean=bolean)
+   return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar)
 
 # fasilitasUser
 @app.route('/fasilitas',methods=['GET'])

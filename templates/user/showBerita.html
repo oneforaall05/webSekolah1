@@ -1,19 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Show Berita</title>
-    <meta content="" name="description" />
-    <meta content="" name="keywords" />
-    {%include 'vendor.html'%}
-  </head>
-  <body>
-    {%include 'header.html'%}
-    <main class="main">
-    Show Berita
-    </main>
-    {%include 'footer.html'%}
-    
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Show Berita</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  {%include 'vendor.html'%}
+</head>
+
+<body>
+  {%include 'header.html'%}
+  <main class="main m-3">
+    <div class="row justify-content-md-center">
+      <div class="col-lg-8">
+        <div class="tittle">
+          <h1>{{Berita[0].judul}}</h1>
+          <p>{{Berita[0].date_input}}</p>
+        </div>
+        <div class="news">
+          <img class="rounded mx-auto d-block" src="../static/fotoBerita/{{Berita[0].gambar}}" alt="..."
+            style="width: 80%;object-fit:cover;" />
+          <p>{{Berita[0].Deskripsi}}</p>
+        </div>
+        {%for item in subBerita%}
+        <div class="subNews">
+          <div class="card text-center" style="width: 18rem;margin:0 auto;float:none;">
+            <img src="../static/fotoBerita/{{item.gambarSubBerita}}" alt="">
+            <div class="card-body">
+              <h5 class="card-title">{{item.deskripsiGambar}}</h5>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+          <p>
+            {{item.deskripsi}}
+          </p>
+          <!-- <img src="../static/fotoBerita/{{subBerita[0].gambarSubBerita}}" alt=""> -->
+        </div>
+        {%endfor%}
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-lg-8">
+          <form action="">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Recipient's username"
+                aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-8">
+          <div class="list-group">
+            {%for item in komentar%}
+            
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">
+                  {{item.user_nama}}
+                </h5>
+                <small class="text-muted">
+                  {{item.date_input}}
+                </small>
+              </div>
+              <p class="mb-1">
+                {{item.komentar}}
+              </p>
+              
+            </a>
+            {%endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  {%include 'footer.html'%}
+
+</body>
+
 </html>
