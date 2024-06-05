@@ -718,7 +718,7 @@ def AdminAddBerita():
             
             today=datetime.now()
             mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-         
+            timeSave = today.strftime('%d-%m-%Y|%H-%M-%S')
             if nama_gambar:
                extension = nama_gambar.filename.split('.')[-1]
                nama_file_gambar = f'Berita-{mytime}.{extension}'
@@ -729,7 +729,8 @@ def AdminAddBerita():
             doc = {
                   'gambar':nama_file_gambar,
                   'judul' : judul,
-                  'Deskripsi':Deskripsi
+                  'Deskripsi':Deskripsi,
+                  'date_input':timeSave
                   
             }
             db.berita.insert_one(doc)
@@ -782,7 +783,7 @@ def AdminSubBerita(_id):
       if userInfo  and token_receive:
          name = userInfo['username']
          berita = list(db.berita.find({'_id':ObjectId(_id)}))
-         subBerita =  list(db.subBerita.find({}))
+         subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
          return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita,name = name)
       else:
              return redirect(url_for("home",msg="you are not admin"))
