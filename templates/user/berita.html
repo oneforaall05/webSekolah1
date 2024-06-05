@@ -11,9 +11,29 @@
   <body>
     {%include 'header.html'%}
     <main class="main">
-    berita
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          {%for item in Berita%}
+          <div class="col-md-6 d-flex align-items-stretch">
+            <div class="card">
+              <div class="card-img">
+                <img src="static/fotoBerita/{{item.gambar}}" alt="..." style="width: 100%; height:15vw;object-fit:cover;"/>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="/showBerita/{{item._id}}">{{item.judul}}</a></h5>
+                <p class="fst-italic text-center">
+                  {{item.date_input}}
+                </p>
+                <p class="card-text">
+                  {{item.Deskripsi[:100]}}{% if item.Deskripsi|length > 100 %}...{% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
     </main>
     {%include 'footer.html'%}
-    
   </body>
 </html>

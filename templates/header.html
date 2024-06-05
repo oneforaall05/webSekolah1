@@ -3,7 +3,7 @@
 
       <a class="logo d-flex align-items-center me-auto" href="/">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="static/assets/img/logokabserang.png" alt="">
+        <img src="../static/assets/img/logokabserang.png" alt="">
         <h1 style="color: black;">SDN BOJONG NEROS</h1>
       </a>
 
@@ -18,10 +18,10 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-      {% if bolean == False %}
-      <a class="btn-getstarted" href="/login">Login</a>
-      {% else %}
+      {% if bolean == True %}
       <a class="btn-getstarted" onclick="sign_out()">Logout</a>
+      {% else %}
+      <a class="btn-getstarted" href="/login">Login</a>
       {%endif%}
 
 

@@ -11,32 +11,37 @@ from flask import Flask, render_template,jsonify,request,redirect,url_for
 from werkzeug.utils import secure_filename
 
 
-# stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
-stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
-client = MongoClient(stringUrl2)
+stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
+# stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
+client = MongoClient(stringUrl)
 db = client.websekolah
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] =True
 SECRET_KEY = "S4nd4l&sp1r1t_"
-# TOKEN_KEY = "P1@_M3raLe0"
+SECRET_KEY2 = "Sp1rItBr3AkeR"
+TOKEN_KEY2 = "P1a_M3raLe0"
 TOKEN_KEY = "mytoken"
 # user start
 
 # home 
 @app.route('/',methods=['GET'])
 def home():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
+   print(token_receive)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+      print(payload)
    bolean = False
+   
    if userInfo :
       bolean = True
+   print(bolean)
    return render_template('index.html', bolean = bolean)
 
 
@@ -44,6 +49,33 @@ def home():
 # loginUser 
 @app.route('/login',methods=['GET','POST'])
 def userLogin():
+      #  handle error user
+   token_receive = request.cookies.get(TOKEN_KEY2)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY2, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   
+   if userInfo :
+      return redirect(url_for("home",msg="you are still loggin"))
+   
+   # handle error for admin
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+   
+   if userInfo :
+      return redirect(url_for("AdminProfileSekolah",msg="you are still loggin"))
+   # endh handle error
+   
    if request.method == "POST":
       # print("eaea")
       username_receive = request.form["username_give"]
@@ -62,7 +94,7 @@ def userLogin():
          "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
          }
          # print(payload["id"],payload["exp"])
-         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+         token = jwt.encode(payload, SECRET_KEY2, algorithm="HS256")
 
          return jsonify(
                {
@@ -85,9 +117,19 @@ def userLogin():
 # registerUser
 @app.route('/register',methods=['GET','POST'])
 def userRegister():
-   print("eaea123")
+   token_receive = request.cookies.get(TOKEN_KEY2)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY2, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   
+   if userInfo :
+      return redirect(url_for("home",msg="you are still loggin"))
    if request.method == "POST":
-      print("eaea")
+      
       username_receive = request.form["username"]
       password_receive = request.form["password"]
       password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
@@ -106,12 +148,12 @@ def userRegister():
 # profileSekolahUser
 @app.route('/profileSekolah',methods=['GET'])
 def userProfileSekolah():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
    bolean = False
@@ -122,60 +164,66 @@ def userProfileSekolah():
 # StaffUser
 @app.route('/staff',methods=['GET'])
 def userStaff():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   gurustaf = list(db.gurustaff.find({}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/staff.html',bolean=bolean)
+   return render_template('user/staff.html',bolean=bolean, gurustaf=gurustaf)
 
 # berita
 @app.route('/berita',methods=['GET'])
 def userBerita():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   Berita =  list(db.berita.find({}))
+      
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/berita.html',bolean=bolean)
+   return render_template('user/berita.html',bolean=bolean,Berita =Berita)
 
 # show berita
-@app.route('/showBerita',methods=['GET'])
-def userShowBerita():
-   token_receive = request.cookies.get(TOKEN_KEY)
+@app.route('/showBerita/<_id>',methods=['GET'])
+def userShowBerita(_id):
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
+   subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
+   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/showBerita.html',bolean=bolean)
+   return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar)
 
 # fasilitasUser
 @app.route('/fasilitas',methods=['GET'])
 def userFasilitas():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
    fasilitas =  list(db.fasilitas.find({}))
@@ -187,12 +235,12 @@ def userFasilitas():
 # formdaftar
 @app.route('/formDaftar',methods=['GET','POST'])
 def userFormDaftar():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
       
@@ -346,12 +394,12 @@ def konfimDaftar():
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
 def userSyaratDaftar():
-   token_receive = request.cookies.get(TOKEN_KEY)
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
    bolean = False
@@ -368,6 +416,33 @@ def userSyaratDaftar():
 # loginAdmin
 @app.route('/adminLogin',methods=['GET',"POST"])
 def adminLogin():
+      #  handle error for user
+   token_receive = request.cookies.get(TOKEN_KEY2)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY2, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+   
+   if userInfo :
+      return redirect(url_for("home",msg="you are still loggin"))
+   
+   # handle error for admin
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+   
+   if userInfo :
+      return redirect(url_for("AdminProfileSekolah",msg="you are still loggin"))
+   
+   # handle error end
    if request.method == "POST":
       username_receive = request.form["username_give"]
       password_receive = request.form["password_give"]
@@ -425,8 +500,12 @@ def AdminProfileSekolah():
             token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-       
-      if userInfo:
+      passInfo = db.admin.find_one({'password':payload.get('password')})
+      print(payload)
+      print(passInfo)
+      print(SECRET_KEY)
+      print(token_receive)
+      if userInfo and SECRET_KEY and token_receive:
          name = userInfo['username']
             
          struktur = list(db.struktur.find({}))
@@ -450,7 +529,7 @@ def AdminEditProfileSekolah(_id):
             token_receive, SECRET_KEY, algorithms='HS256'
          )
          userInfo = db.admin.find_one({'username':payload.get('id')})
-         if userInfo:
+         if userInfo  and token_receive:
             if request.method == "POST":
                   id = request.form["_id"]
                   sejarah = request.form["sejarah"].strip()
@@ -504,7 +583,7 @@ def AdminStaff():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          name = userInfo['username']
          # print(token_receive)
    
@@ -527,15 +606,17 @@ def AdminEditStaff(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and SECRET_KEY and token_receive:
          if request.method=='POST':
             id=request.form['_id']
             nama=request.form['nama']
+            jabatan=request.form['jabatan']
             nama_gambar= request.files['gambar']
             currentStaff = db.gurustaff.find_one({'_id': ObjectId(id)})
             current_image = currentStaff.get('gambar', None)
             doc={
-                  'nama': nama
+                  'nama': nama,
+                  'jabatan':jabatan
                }
             today=datetime.now()
             mytime = today.strftime('%Y-%m-%d-%H-%m-%S')
@@ -571,7 +652,7 @@ def AdminDeleteStaff(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          currentStaff = db.gurustaff.find_one({'_id': ObjectId(_id)})
          current_image = currentStaff.get('gambar', None)
          if current_image:
@@ -596,11 +677,12 @@ def AdminAddStaff():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          name = userInfo['username']
          if request.method=='POST':
                # ambil input
             nama=request.form.get('nama')
+            jabatan=request.form.get('jabatan')
             nama_gambar= request.files['gambar']
             
             today=datetime.now()
@@ -615,6 +697,7 @@ def AdminAddStaff():
                nama_gambar=None
             doc = {
                   'nama':nama,
+                  'jabatan':jabatan,
                   'gambar':nama_file_gambar   
             }
             db.gurustaff.insert_one(doc)
@@ -641,7 +724,7 @@ def AdminBerita():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          name = userInfo['username']
          Berita =  list(db.berita.find({}))
          print (Berita)
@@ -662,7 +745,7 @@ def AdminEditBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          name = userInfo['username']
          if request.method=='POST':
             id=request.form['_id']
@@ -709,7 +792,7 @@ def AdminAddBerita():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
              
          name = userInfo['username']
          if request.method=='POST':
@@ -720,7 +803,7 @@ def AdminAddBerita():
             
             today=datetime.now()
             mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-         
+            timeSave = today.strftime('%d-%m-%Y|%H-%M-%S')
             if nama_gambar:
                extension = nama_gambar.filename.split('.')[-1]
                nama_file_gambar = f'Berita-{mytime}.{extension}'
@@ -731,7 +814,8 @@ def AdminAddBerita():
             doc = {
                   'gambar':nama_file_gambar,
                   'judul' : judul,
-                  'Deskripsi':Deskripsi
+                  'Deskripsi':Deskripsi,
+                  'date_input':timeSave
                   
             }
             db.berita.insert_one(doc)
@@ -753,7 +837,7 @@ def AdminDeleteBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          currentdeskripsi= db.berita.find_one({'_id': ObjectId(_id)})
          current_image = currentdeskripsi.get('gambar', None)
          if current_image:
@@ -781,10 +865,10 @@ def AdminSubBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
        )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          name = userInfo['username']
          berita = list(db.berita.find({'_id':ObjectId(_id)}))
-         subBerita =  list(db.subBerita.find({}))
+         subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
          return render_template('admin/berita/subBerita.html',berita = berita,subBerita = subBerita,name = name)
       else:
              return redirect(url_for("home",msg="you are not admin"))
@@ -802,7 +886,7 @@ def AdminAddSubBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          name = userInfo['username']
          if request.method=='POST':
             id=request.form['_id']
@@ -843,7 +927,7 @@ def AdminEditSubBerita(_id):
             token_receive, SECRET_KEY, algorithms='HS256'
          )
          userInfo = db.admin.find_one({'username':payload.get('id')})
-         if userInfo:
+         if userInfo and token_receive:
             name = userInfo['username']
             if request.method=='POST':
                id=request.form['_id']
@@ -894,7 +978,7 @@ def AdminDeleteSubBerita(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          currentSubBerita = db.subBerita.find_one({'_id': ObjectId(_id)})
          current_image = currentSubBerita.get('gambarSubBerita', None)
          currentBerita = currentSubBerita.get("berita_id")
@@ -920,7 +1004,7 @@ def AdminDataKomentar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
              
          name = userInfo['username']
          komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
@@ -941,7 +1025,7 @@ def AdminDeleteKomentar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          currentKomentar = db.komentar.find_one({'_id':ObjectId(_id)})
          currentBerita = currentKomentar.get("berita_id")
          # print(currentBerita)
@@ -968,7 +1052,7 @@ def AdminDataDaftar():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
              
          name = userInfo['username']
          if request.method == 'POST':
@@ -1019,7 +1103,7 @@ def AdminDetailDaftar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          name = userInfo['username']
          
          id=ObjectId(_id)
@@ -1041,65 +1125,68 @@ def AdminEditDaftar(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      name = userInfo['username']
-      if request.method=='POST':
-         nama=request.form['nama'].strip()
-         jenisKelamin=request.form['jenisKelamin'].strip()
-         nik=request.form['nik'].strip()
-         ttl=request.form['ttl'].strip()
-         agama=request.form['agama'].strip()
-         alamat=request.form['alamat'].strip()
-         tempatTinggal=request.form['tempatTinggal'].strip()
-         transportasi=request.form['transportasi'].strip()
-         namaAyah=request.form['namaAyah'].strip()
-         ttlAyah=request.form['ttlAyah'].strip()
-         pendidikanAyah=request.form['pendidikanAyah'].strip()
-         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
-         nomorAyah=request.form['nomorAyah'].strip()
-         namaIbu=request.form['namaIbu'].strip()
-         ttlIbu=request.form['ttlIbu'].strip()
-         pendidikanIbu=request.form['pendidikanIbu'].strip()
-         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
-         nomorIbu=request.form['nomorIbu'].strip()
-         tinggi=request.form['tinggi'].strip()
-         berat=request.form['berat'].strip()
-         jarakSekolah=request.form['jarakSekolah'].strip()
-         waktuSekolah=request.form['waktuSekolah'].strip()
-         anakKe=request.form['anakKe'].strip()
-         saudara=request.form['jumlahSaudara'].strip()
-         
-         doc={
-            'nama':nama,
-            'jk':jenisKelamin,
-            'nik':nik,
-            'ttl':ttl,
-            'agama':agama,
-            'alamat':alamat,
-            't_tinggal':tempatTinggal,
-            'transportasi':transportasi,
-            'nama_ayah':namaAyah,
-            'ttl_ayah':ttlAyah,
-            'pendidikan_ayah':pendidikanAyah,
-            'pekerjaan_ayah':pekerjaanAyah,
-            'nomor_Hp_ayah':nomorAyah,
-            'nama_Ibu':namaIbu,
-            'ttl_Ibu':ttlIbu,
-            'pendidikan_Ibu':pendidikanIbu,
-            'pekerjaan_Ibu':pekerjaanIbu,
-            'nomor_Hp_Ibu':nomorIbu,
-            'tinggi':tinggi,
-            'berat':berat,
-            'jarak_sekolah':jarakSekolah,
-            'waktu_sekolah':waktuSekolah,
-            'anak_ke':anakKe,
-            'saudara':saudara
-         }
+      if userInfo  and token_receive:
+         name = userInfo['username']
+         if request.method=='POST':
+            nama=request.form['nama'].strip()
+            jenisKelamin=request.form['jenisKelamin'].strip()
+            nik=request.form['nik'].strip()
+            ttl=request.form['ttl'].strip()
+            agama=request.form['agama'].strip()
+            alamat=request.form['alamat'].strip()
+            tempatTinggal=request.form['tempatTinggal'].strip()
+            transportasi=request.form['transportasi'].strip()
+            namaAyah=request.form['namaAyah'].strip()
+            ttlAyah=request.form['ttlAyah'].strip()
+            pendidikanAyah=request.form['pendidikanAyah'].strip()
+            pekerjaanAyah=request.form['pekerjaanAyah'].strip()
+            nomorAyah=request.form['nomorAyah'].strip()
+            namaIbu=request.form['namaIbu'].strip()
+            ttlIbu=request.form['ttlIbu'].strip()
+            pendidikanIbu=request.form['pendidikanIbu'].strip()
+            pekerjaanIbu=request.form['pekerjaanIbu'].strip()
+            nomorIbu=request.form['nomorIbu'].strip()
+            tinggi=request.form['tinggi'].strip()
+            berat=request.form['berat'].strip()
+            jarakSekolah=request.form['jarakSekolah'].strip()
+            waktuSekolah=request.form['waktuSekolah'].strip()
+            anakKe=request.form['anakKe'].strip()
+            saudara=request.form['jumlahSaudara'].strip()
+            
+            doc={
+               'nama':nama,
+               'jk':jenisKelamin,
+               'nik':nik,
+               'ttl':ttl,
+               'agama':agama,
+               'alamat':alamat,
+               't_tinggal':tempatTinggal,
+               'transportasi':transportasi,
+               'nama_ayah':namaAyah,
+               'ttl_ayah':ttlAyah,
+               'pendidikan_ayah':pendidikanAyah,
+               'pekerjaan_ayah':pekerjaanAyah,
+               'nomor_Hp_ayah':nomorAyah,
+               'nama_Ibu':namaIbu,
+               'ttl_Ibu':ttlIbu,
+               'pendidikan_Ibu':pendidikanIbu,
+               'pekerjaan_Ibu':pekerjaanIbu,
+               'nomor_Hp_Ibu':nomorIbu,
+               'tinggi':tinggi,
+               'berat':berat,
+               'jarak_sekolah':jarakSekolah,
+               'waktu_sekolah':waktuSekolah,
+               'anak_ke':anakKe,
+               'saudara':saudara
+            }
+            id=ObjectId(_id)
+            db.pendaftaran.update_one({'_id':id},{'$set':doc})
+            return redirect(url_for('AdminDetailDaftar',_id=_id))
          id=ObjectId(_id)
-         db.pendaftaran.update_one({'_id':id},{'$set':doc})
-         return redirect(url_for('AdminDetailDaftar',_id=_id))
-      id=ObjectId(_id)
-      detail=db.pendaftaran.find_one({'_id':id})
-      return render_template('admin/pendaftaran/editDaftar.html',data=detail,name = name)
+         detail=db.pendaftaran.find_one({'_id':id})
+         return render_template('admin/pendaftaran/editDaftar.html',data=detail,name = name)
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
    except jwt.ExpiredSignatureError:
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
@@ -1119,7 +1206,7 @@ def AdminFasilitas():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
              
          name = userInfo['username']
          fasilitas =  list(db.fasilitas.find({}))
@@ -1140,7 +1227,7 @@ def AdminEditFasilitas(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
          name = userInfo['username']
          if request.method=='POST':
             id=request.form['_id'].strip()
@@ -1190,7 +1277,7 @@ def AdminAddFasilitas():
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo and token_receive:
              
          name = userInfo['username']
          if request.method=='POST':
@@ -1234,7 +1321,7 @@ def AdminDeleteFasilitas(_id):
          token_receive, SECRET_KEY, algorithms='HS256'
       )
       userInfo = db.admin.find_one({'username':payload.get('id')})
-      if userInfo:
+      if userInfo  and token_receive:
          currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(_id)})
          current_image = currentFasilitas.get('gambarFasilitas', None)
          if current_image:

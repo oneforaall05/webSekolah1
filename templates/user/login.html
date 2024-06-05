@@ -39,7 +39,7 @@
         success: function (response) {
           console.log(response)
           if (response["result"] === "success") {
-            $.cookie("mytoken", response["token"], { path: "/" });
+            $.cookie("P1a_M3raLe0", response["token"], { path: "/" });
             window.location.replace("/");
           } else {
             alert(response["msg"]);
@@ -48,7 +48,7 @@
       })
     }
     function togglePasswordVisibility() {
-      var passwordInput = document.getElementById("input-password");
+      var passwordInput = document.getElementById("password");
       var togglePassword = document.querySelector(".toggle-password");
 
       if (passwordInput.type === "password") {
@@ -126,7 +126,7 @@
                   <div data-mdb-input-init class="form-outline mb-4">
                     <label class="form-label" for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control form-control-lg" />
-                    <span class="toggle-password" onclick="togglePasswordVisibility()">Show Password</span>
+                    <a class="toggle-password" onclick="togglePasswordVisibility()" type="button">Show Password</a>
                     <p id="help-password" style="color: red;"></p>
                   </div>
 
