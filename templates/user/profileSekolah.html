@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Profile Sekolah</title>
-    <meta content="" name="description" />
-    <meta content="" name="keywords" />
-    {%include 'vendor.html'%}
-  </head>
-  <body>
-    {%include 'header.html'%}
-    <main class="main">
-    Profile Sekolah
-    </main>
-    {%include 'footer.html'%}
-    
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Profile Sekolah</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+  {%include 'vendor.html'%}
+</head>
+
+<body>
+  {%include 'header.html'%}
+  <main class="main m-3">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="title">
+            <h1 style="text-align: center;">Profile SDN Bojong Neros</h1>
+            <br>
+            <div class="profile-info">
+              <div>{{ struktur[0].sejarah }}</div>
+              <div>{{ struktur[0].profile }}</div>
+            </div>
+          </div>
+          <div class="news">
+            <img class="rounded mx-auto d-block" src="../static/fotoStruktur/{{ struktur[0].gambarStruktur }}" alt="..."
+              style="width: 80%; object-fit: cover;" />
+            <div>{{ struktur[0].alamat }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  {%include 'footer.html'%}
+
+</body>
+
 </html>

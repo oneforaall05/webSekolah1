@@ -12,25 +12,22 @@
 
 <body>
   {%include 'header.html'%}
-  <main class="main m-5">
-    <h2 style="text-align: center;">Daftar Fasilitas Di SDN Bojong Neros</h2>
-    <div class="row">
-      {% for item in fasilitas%}
-     
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="card" style="width: 18rem;">
-          <img src="static/fotoFasilitas/{{item.gambarFasilitas}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">
-              {{item.namaFasilitas}}
-            </h5>
-            <p class="card-text">
-              {{item.deskripsiFasilitas}}
-            </p>
-          </div>
+  <main class="main">
+    <div class="container">
+      <h1 class="text-center my-4">Fasilitas</h1>
+      <div class="row">
+        {% for item in fasilitas %}
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+          <img src="static/fotoFasilitas/{{ item.gambarFasilitas }}" style="width: 30 rem;" class="img-fluid" alt="">
+          <h5 style="text-align: center;">
+            {{ item.namaFasilitas }}
+          </h5>
+          <p style="text-align: center;">
+            {{ item.deskripsiFasilitas }}
+          </p>
         </div>
+        {% endfor %}
       </div>
-      {%endfor%}
     </div>
   </main>
   {%include 'footer.html'%}
