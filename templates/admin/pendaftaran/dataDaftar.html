@@ -77,7 +77,6 @@
             }
 
         }
-        
     </style>
     <script>
         function submitForm() {
@@ -89,19 +88,6 @@
             if (select.value) {
                 // Kirim form
                 form.submit();
-            }
-        }
-
-        function opeen() {
-            const tutup = $("#close");
-            const buka = $("#open");
-
-            if (buka.is(':visible')) {
-                buka.hide();
-                tutup.show();
-            } else {
-                tutup.hide();
-                buka.show();
             }
         }
 
@@ -129,14 +115,30 @@
             <h2 class="text-center">Data Pendaftar tahun {{thn}}</h2>
             <div class="d-flex justify-content-between">
                 <div>
-                    <button type="button" class="btn btn-info btn-custom mx-2" onclick="opeen()" id="open"
-                        style="text-decoration: none; color: inherit; ">
-                        Buka Pendaftaran
-                    </button>
-                    <button type="button" class="btn btn-danger text-white btn-custom mx-2" onclick="opeen()" id="close"
-                        style="text-decoration: none; color: inherit; display:none; ">
-                        Tutup Pendaftaran
-                    </button>
+                    {% for item in status %}
+                        {% if item.status=='tutup' %}
+                        <form action="/adminStatusDaftar" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="status" value="buka">
+                            <button type="submit" class="btn btn-info btn-custom mx-2" onclick="opeen()" id="open"
+                                style="text-decoration: none; color: inherit; ">
+                                Buka Pendaftaran
+                            </button>
+                        </form>
+                        {% else %}
+                        <form action="/adminStatusDaftar" method="post" enctype="multipart/form-data">
+
+                            <input type="hidden" name="status" value="tutup">
+                            <button type="submit" class="btn btn-danger text-white btn-custom mx-2" onclick="opeen()"
+                                id="close" style="text-decoration: none; color: inherit;">
+                                Tutup Pendaftaran
+                            </button>
+                        </form>
+                            
+                        {% endif %}
+                        
+                    {% endfor %}
+                    
+                    
                 </div>
 
 

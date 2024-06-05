@@ -2,16 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>Detail Daftar</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    {% include 'admin/vendor.html' %}
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Konfirmasi Daftar</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+    {% include 'vendor.html' %}
     <style>
-        
         .breadcrumb {
             background: none;
             padding: 0;
@@ -23,10 +20,10 @@
             text-decoration: none;
         }
 
-        .container {
+        .container-isi {
             display: flex;
             flex-direction: column;
-            margin: 20px auto;
+            margin: auto 10%;
             padding: 20px;
             max-width: 100%;
             background-color: white;
@@ -34,7 +31,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        #daftar{
+        #daftar {
             background-color: rgba(134, 163, 194, 0.1);
         }
 
@@ -93,23 +90,9 @@
 </head>
 
 <body>
-
-    {% include 'admin/sideBar.html' %}
-
-    <main id="main" class="main">
-
-        <div class="pagetitle">
-            <h1>Pendaftaran</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/adminDataDaftar">Pendaftaran</a></li>
-                    <li class="breadcrumb-item">{{data.nama}}</li>
-                </ol>
-            </nav>
-        </div>
-        <!-- End Page Title -->
-
-        <div class="container">
+    {% include 'header.html' %}
+    <main>
+        <div class="container-isi">
             <div class="details">
                 <div class="info">
                     <table>
@@ -246,25 +229,18 @@
                 </div>
             </div>
             <div class="cotainer d-flex justify-content-end mb-3 me-5">
-                <button type="button" class="btn btn-light btn-custom me-3">
-                    <a href="/adminDataDaftar"
-                        style="text-decoration: none; color: inherit; float:right">Back
+                <button type="button" class="btn btn-light btn-custom me-4">
+                    <a href="/formDaftar" style="text-decoration: none; color: inherit; float:right">Batal
                     </a>
                 </button>
-                <button type="button" class="btn btn-info btn-custom me-3">
-                    <a href="/adminEditDaftar/{{data._id}}"
-                        style="text-decoration: none; color: inherit; float:right">Edit
-                        Data</a>
-                </button>
-                <button type="button" class="btn btn-danger btn-custom">
-                    <a href="/adminDeleteDaftar/{{data._id}}"
-                        style="text-decoration: none; color: inherit; float:right">Delete
-                        Data</a>
+                <button type="button" class="btn btn-info btn-custom">
+                    <a href="/syaratDaftar" style="text-decoration: none; color: inherit; float:right">Lanjut</a>
                 </button>
             </div>
         </div>
-
     </main>
-    <!-- End #main -->
+    {% include 'footer.html' %}
+</body>
 
-    {% include 'admin/footer.html' %}
+
+</html>

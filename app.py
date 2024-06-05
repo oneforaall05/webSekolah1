@@ -247,85 +247,6 @@ def userFormDaftar():
       if request.method=='POST':
          today=datetime.now()
          tahun=today.strftime('%Y')
-         nama=request.form1['nama'].strip()
-         jenisKelamin=request.form['jenisKelamin'].strip()
-         nik=request.form['nik'].strip()
-         tempatLahir=request.form['tempatLahir'].strip()
-         tanggalLahir=request.form['tanggalLahir'].strip()
-         agama=request.form['agama'].strip()
-         alamat=request.form['alamat'].strip()
-         tempatTinggal=request.form['tempatTinggal'].strip()
-         transportasi=request.form['transportasi'].strip()
-         namaAyah=request.form['namaAyah'].strip()
-         ttlAyah=request.form['ttlAyah'].strip()
-         pendidikanAyah=request.form['pendidikanAyah'].strip()
-         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
-         nomorAyah=request.form['nomorAyah'].strip()
-         namaIbu=request.form['namaIbu'].strip()
-         ttlIbu=request.form['ttlIbu'].strip()
-         pendidikanIbu=request.form['pendidikanIbu'].strip()
-         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
-         nomorIbu=request.form['nomorIbu'].strip()
-         tinggi=request.form['tinggi'].strip()
-         berat=request.form['berat'].strip()
-         jarakSekolah=request.form['jarakSekolah'].strip()
-         waktuSekolah=request.form['waktuSekolah'].strip()
-         anakKe=request.form['anakKe'].strip()
-         saudara=request.form['jumlahSaudara'].strip()
-         
-         doc={
-            'tahun':tahun,
-            'nama':nama,
-            'jk':jenisKelamin,
-            'nik':nik,
-            'ttl': tempatLahir + ', ' + tanggalLahir,
-            'agama':agama,
-            'alamat':alamat,
-            't_tinggal':tempatTinggal,
-            'transportasi':transportasi,
-            'nama_ayah':namaAyah,
-            'ttl_ayah':ttlAyah,
-            'pendidikan_ayah':pendidikanAyah,
-            'pekerjaan_ayah':pekerjaanAyah,
-            'nomor_Hp_ayah':nomorAyah,
-            'nama_Ibu':namaIbu,
-            'ttl_Ibu':ttlIbu,
-            'pendidikan_Ibu':pendidikanIbu,
-            'pekerjaan_Ibu':pekerjaanIbu,
-            'nomor_Hp_Ibu':nomorIbu,
-            'tinggi':tinggi,
-            'berat':berat,
-            'jarak_sekolah':jarakSekolah,
-            'waktu_sekolah':waktuSekolah,
-            'anak_ke':anakKe,
-            'saudara':saudara,
-         } 
-         print(doc)
-         return render_template('user/konfimDaftar.html',data=doc)
-      return render_template('user/formDaftar.html')
-      
-   bolean = False
-   if userInfo :
-      bolean = True
-      
-   else:
-      return redirect(url_for('userLogin',msg="Kamu Harus Login Terlebih dahulu"))
-   
-#konfirm daftar
-@app.route('/konfimDaftar',methods=['GET','POST'])
-def konfimDaftar():
-   token_receive = request.cookies.get(TOKEN_KEY)
-   
-   userInfo =''
-   if token_receive:
-      payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
-         )
-      userInfo = db.user.find_one({'username':payload.get('id')})
-      
-      if request.method=='POST':
-         today=datetime.now()
-         tahun=today.strftime('%Y')
          nama=request.form['nama'].strip()
          jenisKelamin=request.form['jenisKelamin'].strip()
          nik=request.form['nik'].strip()
@@ -367,22 +288,34 @@ def konfimDaftar():
             'pendidikan_ayah':pendidikanAyah,
             'pekerjaan_ayah':pekerjaanAyah,
             'nomor_Hp_ayah':nomorAyah,
-            'nama_Ibu':namaIbu,
-            'ttl_Ibu':ttlIbu,
-            'pendidikan_Ibu':pendidikanIbu,
-            'pekerjaan_Ibu':pekerjaanIbu,
-            'nomor_Hp_Ibu':nomorIbu,
+            'nama_ibu':namaIbu,
+            'ttl_ibu':ttlIbu,
+            'pendidikan_ibu':pendidikanIbu,
+            'pekerjaan_ibu':pekerjaanIbu,
+            'nomor_Hp_ibu':nomorIbu,
             'tinggi':tinggi,
             'berat':berat,
             'jarak_sekolah':jarakSekolah,
             'waktu_sekolah':waktuSekolah,
             'anak_ke':anakKe,
             'saudara':saudara,
-         }
+         } 
+         
          db.pendaftaran.insert_one(doc)
-         return redirect(url_for('userSyaratDaftar'))
-      return render_template('user/formDaftar.html')
+         return render_template('user/konfirmDaftar.html',data=doc)
       
+      id_status = ObjectId('66604681eccb9999bc3d7fbc')
+      status = db.status.find_one({'_id': id_status})
+      
+      if status:
+         print(status)
+         if status.get('status') == 'buka':
+            return render_template('user/formDaftar.html')
+         else:
+            return render_template('user/daftarBelumBuka.html')
+      else:
+         return "Status tidak ditemukan", 404
+     
    bolean = False
    if userInfo :
       bolean = True
@@ -390,7 +323,28 @@ def konfimDaftar():
    else:
       return redirect(url_for('userLogin',msg="Kamu Harus Login Terlebih dahulu"))
    
+#konfirm daftar
+@app.route('/konfimDaftar',methods=['GET','POST'])
+def konfimDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY)
+   
+   userInfo =''
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+      
+      if request.method=='POST':
+         return redirect(url_for('userSyaratdaftar'))
+      data=list(db.pendaftaran.find_one({'_id':ObjectId('665a9f7d2e979b86ed07cfbd')}))
+      return render_template('user/konfirmDaftar.html',data=data)
+      
+   bolean = False
+   if userInfo :
+      bolean = True
 
+   
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
 def userSyaratDaftar():
@@ -1067,9 +1021,10 @@ def AdminDataDaftar():
             year.reverse()
             years=year
 
-            
+            id_status=ObjectId('66604681eccb9999bc3d7fbc')
+            status=db.status.find({'_id': id_status})
          
-            return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn,name = name)
+            return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn,name = name,status=status)
 
          pendaftaran = list(db.pendaftaran.find({}))
          tahun = set()
@@ -1085,7 +1040,9 @@ def AdminDataDaftar():
          thn=mytime
          dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
          
-         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar,name = name)
+         id_status=ObjectId('66604681eccb9999bc3d7fbc')
+         status=db.status.find({'_id': id_status})
+         return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,thn=thn,data=dataDaftar,name = name,status=status)
       else:
              return redirect(url_for("home",msg="you are not admin"))
 
@@ -1191,6 +1148,54 @@ def AdminEditDaftar(_id):
        return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
    except jwt.exceptions.DecodeError:
        return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+    
+  
+# Delete Pendaftaran 
+@app.route('/adminDeleteDaftar/<_id>', methods = ['GET','POST'])
+def AdminDeleteDaftar(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+
+         db.pendaftaran.delete_one({"_id":ObjectId(_id)})
+         return redirect(url_for('AdminDataDaftar'))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+   # Buka pendaftaran  
+@app.route('/adminStatusDaftar', methods = ['POST'])
+def AdminStatusDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+         status=request.form['status'].strip()
+         doc={
+               'status':status
+            }
+         print(doc)
+         id=ObjectId('66604681eccb9999bc3d7fbc')
+         db.status.update_one({'_id':id},{'$set':doc})
+         return redirect(url_for('AdminDataDaftar'))
+      else:
+             return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+
 
 # pendaftaranAdmin end
 
