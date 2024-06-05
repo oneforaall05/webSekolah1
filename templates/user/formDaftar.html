@@ -9,26 +9,30 @@
   <meta content="" name="keywords" />
   {% include 'vendor.html' %}
   <style>
-    .form-group{
+    .form-group {
       margin: auto;
     }
-    label{
+
+    label {
       margin: 15px 0px 10px 0px;
     }
+
     .form-group .flex {
       display: flex;
       gap: 10px;
-
     }
-
   </style>
+
+  <script>
+
+  </script>
 </head>
 
 <body>
   {% include 'header.html' %}
   <main class="main">
     <div class="container mt-5">
-      <h2 >Masukkan Data Anda Pada Form Dibawah</h2><br>
+      <h2>Masukkan Data Anda Pada Form Dibawah</h2><br>
       <ul class="nav nav-tabs" id="registrationTabs" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="calon-tab" data-toggle="tab" href="#calon" role="tab" aria-controls="calon"
@@ -43,13 +47,14 @@
             aria-selected="false">Data Periodik</a>
         </li>
       </ul>
-      <div class="tab-content" id="registrationTabsContent">
-        <!-- Data Calon Peserta -->
-        <div class="tab-pane fade show active" id="calon" role="tabpanel" aria-labelledby="calon-tab">
-          <form class="mt-4">
+      <form action="/formDaftar" method="post" enctype="multipart/form-data">
+        <div class="tab-content" id="registrationTabsContent">
+          <!-- Data Calon Peserta -->
+          <div class="tab-pane fade show active" id="calon" role="tabpanel" aria-labelledby="calon-tab">
             <div class="form-group">
               <label for="namaCalon">Nama Lengkap</label>
-              <input type="text" class="form-control" id="namaCalon" name="nama" placeholder="Masukkan Nama Calon Peserta Didik" required>
+              <input type="text" class="form-control" id="namaCalon" name="nama"
+                placeholder="Masukkan Nama Calon Peserta Didik" required>
             </div>
             <div class="form-group">
               <label for="jenisKelaminCalon">Jenis Kelamin</label>
@@ -66,17 +71,23 @@
             <div class="form-group">
               <label for="ttlCalon">Tempat dan Tanggal Lahir</label>
               <div class="flex">
-                <input type="text" class="form-control" id="tempatLahirCalon" name="tempatLahir" placeholder="Masukkan Tempat lahir" required>
-                <input type="date" class="form-control" id="tanggalLahirCalon" name="tanggalLahir" placeholder="Masukkan tanggal lahir" required>
+                <input type="text" class="form-control" id="tempatLahirCalon" name="tempatLahir"
+                  placeholder="Masukkan Tempat lahir" required>
+                <input type="date" class="form-control" id="tanggalLahirCalon" name="tanggalLahir"
+                  placeholder="Masukkan tanggal lahir" required>
               </div>
             </div>
             <div class="form-group">
               <label for="agamaCalon">Agama</label>
-              <input type="text" class="form-control" id="agamaCalon" name="agama" placeholder="Masukkan Agama" required>
+              <input type="text" class="form-control" id="agamaCalon" name="agama" placeholder="Masukkan Agama"
+                required>
             </div>
             <div class="form-group">
-              <label for="alamatCalon">Alamat</label>
-              <input type="text" class="form-control" id="alamatCalon" name="alamat" placeholder="Masukkan Alamat" required>
+              <label for="alamatCalon" style="margin-bottom: 0px;">Alamat</label><br>
+              <label for="alamatCalon" style="margin-top: 0px;">contoh : Ds. Bojong Neros Kp. Panosogan RT 001 RW 003
+                kec. Cikeusal Serang Banten</label>
+              <input type="text" class="form-control" id="alamatCalon" name="alamat" placeholder="Masukkan Alamat"
+                required>
             </div>
             <div class="form-group">
               <label for="tempatTinggalCalon">Status Tempat Tinggal</label>
@@ -89,89 +100,106 @@
             </div>
             <div class="form-group">
               <label for="transportasiCalon">Metode Transportasi</label>
-              <input type="text" class="form-control" id="transportasiCalon" name="transportasi" placeholder="Masukkan Metode Transportasi" required>
+              <input type="text" class="form-control" id="transportasiCalon" name="transportasi"
+                placeholder="Masukkan Metode Transportasi" required>
             </div>
-          </form>
-        </div>
-        <!-- Data Orang Tua -->
-        <div class="tab-pane fade" id="ortu" role="tabpanel" aria-labelledby="ortu-tab">
-          <form class="mt-4">
+
+          </div>
+          <!-- Data Orang Tua -->
+          <div class="tab-pane fade" id="ortu" role="tabpanel" aria-labelledby="ortu-tab">
             <div class="form-group">
               <label for="namaAyah">Nama Ayah</label>
-              <input type="text" class="form-control" id="namaAyah" name="namaAyah" placeholder="Masukkan Nama Ayah" required>
+              <input type="text" class="form-control" id="namaAyah" name="namaAyah" placeholder="Masukkan Nama Ayah"
+                required>
             </div>
             <div class="form-group">
               <label for="ttlAyah">Tahun Lahir Ayah</label>
-              <input type="number" class="form-control" id="ttlAyah" name="ttlAyah" placeholder="Masukkan Tahun Lahir Ayah" required>
+              <input type="number" class="form-control" id="ttlAyah" name="ttlAyah"
+                placeholder="Masukkan Tahun Lahir Ayah" required>
             </div>
             <div class="form-group">
               <label for="pendidikanAyah">Pendidikan Terakhir Ayah</label>
-              <input type="text" class="form-control" id="pendidikanAyah" name="pendidikanAyah" placeholder="Masukkan Pendidikan Terakhir Ayah" required>
+              <input type="text" class="form-control" id="pendidikanAyah" name="pendidikanAyah"
+                placeholder="Masukkan Pendidikan Terakhir Ayah" required>
             </div>
             <div class="form-group">
               <label for="pekerjaanAyah">Pekerjaan Ayah</label>
-              <input type="text" class="form-control" id="pekerjaanAyah" name="pekerjaanAyah" placeholder="Masukkan Pekerjaan Ayah" required>
+              <input type="text" class="form-control" id="pekerjaanAyah" name="pekerjaanAyah"
+                placeholder="Masukkan Pekerjaan Ayah" required>
             </div>
             <div class="form-group">
               <label for="nomorAyah">Nomor Telp / Hp Ayah</label>
-              <input type="number" class="form-control" id="nomorAyah" name="nomorAyah" placeholder="Masukkan Nomor Telp / Hp Ayah" required>
+              <input type="number" class="form-control" id="nomorAyah" name="nomorAyah"
+                placeholder="Masukkan Nomor Telp / Hp Ayah" required>
             </div>
             <div class="form-group">
               <label for="namaIbu">Nama Ibu</label>
-              <input type="text" class="form-control" id="namaIbu" name="namaIbu" placeholder="Masukkan Nama Ibu" required>
+              <input type="text" class="form-control" id="namaIbu" name="namaIbu" placeholder="Masukkan Nama Ibu"
+                required>
             </div>
             <div class="form-group">
               <label for="ttlIbu">Tahun Lahir Ibu</label>
-              <input type="number" class="form-control" id="ttlIbu" name="ttlIbu" placeholder="Masukkan Tahun Lahir Ibu" required>
+              <input type="number" class="form-control" id="ttlIbu" name="ttlIbu" placeholder="Masukkan Tahun Lahir Ibu"
+                required>
             </div>
             <div class="form-group">
               <label for="pendidikanIbu">Pendidikan Terakhir Ibu</label>
-              <input type="text" class="form-control" id="pendidikanIbu" name="pendidikanIbu" placeholder="Masukkan Pendidikan Terakhir Ibu" required>
+              <input type="text" class="form-control" id="pendidikanIbu" name="pendidikanIbu"
+                placeholder="Masukkan Pendidikan Terakhir Ibu" required>
             </div>
             <div class="form-group">
               <label for="pekerjaanIbu">Pekerjaan Ibu</label>
-              <input type="text" class="form-control" id="pekerjaanIbu" name="pekerjaanIbu" placeholder="Masukkan Pekerjaan Ibu" required>
+              <input type="text" class="form-control" id="pekerjaanIbu" name="pekerjaanIbu"
+                placeholder="Masukkan Pekerjaan Ibu" required>
             </div>
             <div class="form-group">
               <label for="nomorIbu">Nomor Telp / Hp Ibu</label>
-              <input type="number" class="form-control" id="nomorIbu" name="nomorIbu" placeholder="Masukkan Nomor Telp / Hp Ibu" required>
+              <input type="number" class="form-control" id="nomorIbu" name="nomorIbu"
+                placeholder="Masukkan Nomor Telp / Hp Ibu" required>
             </div>
-          </form>
-        </div>
-        <!-- Data Periodik -->
-        <div class="tab-pane fade" id="periodik" role="tabpanel" aria-labelledby="spesifik-tab">
-          <form class="mt-4">
+          </div>
+          <!-- Data Periodik -->
+          <div class="tab-pane fade" id="periodik" role="tabpanel" aria-labelledby="spesifik-tab">
             <div class="form-group">
-              <label for="tinggiCalon">Tinggi Calon Peserta Didik</label>
-              <input type="number" class="form-control" id="tinggiCalon" name="tinggi" placeholder="Masukkan Tinggi Calon Peserta Didik" required>
-            </div>
-            <div class="form-group">
-              <label for="beratCalon">Berat Calon Peserta Didik</label>
-              <input type="number" class="form-control" id="beratCalon" name="berat" placeholder="Masukkan Berat Calon Peserta Didik" required>
+              <label for="tinggiCalon">Tinggi Calon Peserta Didik (cm)</label>
+              <input type="number" class="form-control" id="tinggiCalon" name="tinggi"
+                placeholder="Masukkan Tinggi Calon Peserta Didik" required>
             </div>
             <div class="form-group">
-              <label for="jarakSekolahCalon">Jarak Rumah ke Sekolah</label>
-              <input type="number" class="form-control" id="jarakSekolahCalon" name="jarakSekolah" placeholder="Masukkan Jarak Rumah ke Sekolah" required>
+              <label for="beratCalon">Berat Calon Peserta Didik (kg)</label>
+              <input type="number" class="form-control" id="beratCalon" name="berat"
+                placeholder="Masukkan Berat Calon Peserta Didik" required>
             </div>
             <div class="form-group">
-              <label for="waktuSekolahCalon">Waktu Tempuh ke Sekolah</label>
-              <input type="number" class="form-control" id="waktuSekolahCalon" name="waktuSekolah" placeholder="Masukkan Waktu Tempuh ke Sekolah" required>
+              <label for="jarakSekolahCalon">Jarak Rumah ke Sekolah (Km)</label>
+              <input type="number" class="form-control" id="jarakSekolahCalon" name="jarakSekolah"
+                placeholder="Masukkan Jarak Rumah ke Sekolah" required>
+            </div>
+            <div class="form-group">
+              <label for="waktuSekolahCalon">Waktu Tempuh ke Sekolah (Menit)</label>
+              <input type="number" class="form-control" id="waktuSekolahCalon" name="waktuSekolah"
+                placeholder="Masukkan Waktu Tempuh ke Sekolah" required>
             </div>
             <div class="form-group">
               <label for="anakKeCalon">Anak ke</label>
-              <input type="number" class="form-control" id="anakKeCalon" name="anakKe" placeholder="Masukkan Anak Ke berapa" required>
+              <input type="number" class="form-control" id="anakKeCalon" name="anakKe"
+                placeholder="Masukkan Anak Ke berapa" required>
             </div>
             <div class="form-group">
               <label for="jumlahSaudaraCalon">Jumlah Saudara</label>
-              <input type="number" class="form-control" id="jumlahSaudaraCalon" name="jumlahSaudara" placeholder="Masukkan Jumlah Saudara" required>
+              <input type="number" class="form-control" id="jumlahSaudaraCalon" name="jumlahSaudara"
+                placeholder="Masukkan Jumlah Saudara" required>
             </div>
-          </form>
-        </div>
-      </div>
-      <div class="text-right mt-4 d-flex justify-content-end">
-        <button type="submit" class="btn btn-danger" style="margin-right: 5%;">Submit</button>
-      </div>
+          </div>
+          <div class="text-right mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-danger" style="margin-right: 5%;">Submit</button>
+          </div>
+      </form>
     </div>
+
+    </div>
+
+
   </main>
   {% include 'footer.html' %}
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
