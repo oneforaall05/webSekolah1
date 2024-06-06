@@ -32,9 +32,12 @@
                 {{ item.date_input }}
               </p>
               <p class="card-text mb-4">
-                {{ item.Deskripsi[:100] }}{% if item.Deskripsi|length > 100 %}...{% endif %}
+                {{ item.Deskripsi[:100]|safe }}{% if item.Deskripsi|length > 100 %} |<a href="/showBerita/{{ item._id }}" >Baca Selengkapnya</a>{% endif %}
               </p>
-              <a href="/showBerita/{{ item._id }}" class="btn btn-primary mt-auto align-self-end">Baca Selengkapnya</a>
+              <div>
+
+                <a href="/showBerita/{{ item._id }}" class="btn btn-primary mt-auto align-self-end">Baca Selengkapnya</a>
+              </div>
             </div>
           </div>
         </div>

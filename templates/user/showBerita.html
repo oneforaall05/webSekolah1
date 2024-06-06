@@ -22,7 +22,7 @@
         <div class="news">
           <img class="rounded mx-auto d-block" src="../static/fotoBerita/{{Berita[0].gambar}}" alt="..."
             style="width: 80%;object-fit:cover;" />
-          <p>{{Berita[0].Deskripsi}}</p>
+          <p>{{Berita[0].Deskripsi|safe}}</p>
         </div>
         {%for item in subBerita%}
         <div class="subNews">
@@ -35,7 +35,7 @@
             </div>
           </div>
           <p>
-            {{item.deskripsi}}
+            {{item.deskripsi|safe}}
           </p>
           <!-- <img src="../static/fotoBerita/{{subBerita[0].gambarSubBerita}}" alt=""> -->
         </div>

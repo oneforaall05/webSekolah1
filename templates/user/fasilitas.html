@@ -23,7 +23,7 @@
             {{ item.namaFasilitas }}
           </h5>
           <p style="text-align: center;">
-            {{ item.deskripsiFasilitas }}
+            {{ item.deskripsiFasilitas |safe}}
           </p>
         </div>
         {% endfor %}
