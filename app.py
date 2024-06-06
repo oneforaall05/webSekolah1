@@ -198,23 +198,56 @@ def userBerita():
    return render_template('user/berita.html',bolean=bolean,Berita =Berita)
 
 # show berita
-@app.route('/showBerita/<_id>',methods=['GET'])
+@app.route('/showBerita/<_id>',methods=['GET','POST'])
 def userShowBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
+   Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
+   subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
+   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
    if token_receive:
       payload = jwt.decode(
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
-   Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
-   subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
-   komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
+      
+         
    bolean = False
    if userInfo :
       bolean = True
+      if request.method=='POST':
+         print(userInfo)
    return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar)
+
+
+# komentar
+@app.route('/komentar/<_id>',methods=['POST'])
+def userKomentar(_id):
+   token_receive = request.cookies.get(TOKEN_KEY2)
+   
+   userInfo =''
+   
+   komentar = request.form['komentar']
+   if token_receive:
+      payload = jwt.decode(
+               token_receive, SECRET_KEY2, algorithms='HS256'
+         )
+      userInfo = db.user.find_one({'username':payload.get('id')})
+      
+         
+   bolean = False
+   if userInfo :
+      bolean = True
+      doc = {
+         'berita_id':ObjectId(_id),
+         'komentar':komentar,
+         'user_name':userInfo['username']
+      }
+      db.komentar.insert_one(doc)
+      print(userInfo)  
+      return redirect(url_for('userShowBerita',_id = _id)) 
+   return redirect(url_for('userShowBerita',_id = _id,msg="silikan login terlebih dahulu"))
 
 # fasilitasUser
 @app.route('/fasilitas',methods=['GET'])

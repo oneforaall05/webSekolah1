@@ -43,11 +43,10 @@
       </div>
       <div class="row justify-content-md-center">
         <div class="col-lg-8">
-          <form action="">
+          <form action="/komentar/{{Berita[0]._id}}" method="POST">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Recipient's username"
-                aria-label="Recipient's username" aria-describedby="button-addon2">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+              <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
             </div>
           </form>
         </div>
