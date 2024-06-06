@@ -63,7 +63,7 @@
               <td class="text-center"><img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image" width="100"
                   class="img-fluid img-thumbnail"></td>
               <td class="text-center">{{item.judul}}</td>
-              <td class="text-center">{{item.Deskripsi}}</td>
+              <td class="text-center">{{item.Deskripsi|safe}}</td>
               <td class="text-center">
                 <a href="/adminEditBerita/{{item._id}}">
                   <button type="button" class="btn btn-primary btn-sm "><i class="bi bi-pencil-square"></i>

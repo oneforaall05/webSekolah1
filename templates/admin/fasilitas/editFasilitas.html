@@ -38,7 +38,7 @@
     <div class="card border-0 shadow mb-4">
       <div class="card-body mt-4">
         <div class="table-responsive">
-          <form action="/adminEditFasilitas/{{fasilitas[0]._id}}" method="post" enctype="multipart/form-data">
+          <form id="form" action="/adminEditFasilitas/{{fasilitas[0]._id}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_id" value="{{fasilitas[0]._id}}">
             <div class="mb-3">
               <label for="namaFasilitas" class="form-label">Nama Fasilitas :</label>
@@ -53,9 +53,8 @@
             </div>            
             <div class="mb-3">
               <label for="deskripsiFasilitas" class="form-label">Deskripsi :</label>
-              <textarea class="form-control" id="deskripsiFasilitas" name="deskripsiFasilitas"
-                placeholder="Deskripsikan fasilitas disini" required
-                style="border-radius: 10px;">{{fasilitas[0].deskripsiFasilitas}}</textarea>
+              <div id="editorFasilitas">{{fasilitas[0].deskripsiFasilitas|safe}}</div>
+              <input type="hidden" name="deskripsiFasilitas" id="apbn" >
             </div>
             <div class="mb-3">
               <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
@@ -66,5 +65,15 @@
     </div>
   </main>
   <!-- End #main -->
+  <script>
+    const quill = new Quill('#editorFasilitas', {
+        theme: 'snow'
+      });
+      let form = document.getElementById('form');
+      form.onsubmit = function (e) {
+        let content = document.getElementById('apbn');
+        content.value = quill.root.innerHTML;
+      }
 
+</script>
   {% include 'admin/footer.html' %}

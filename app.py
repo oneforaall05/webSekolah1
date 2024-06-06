@@ -488,8 +488,11 @@ def AdminEditProfileSekolah(_id):
             if request.method == "POST":
                   id = request.form["_id"]
                   sejarah = request.form["sejarah"].strip()
-                  profile = request.form["profile"].strip()
+                  profile = request.form["profile"]
                   alamat = request.form["alamat"].strip()
+                  print(sejarah)
+                  print(profile)
+                  print(alamat)
                   nama_gambar = request.files["gambarStruktur"]
                   currentStruktur = db.struktur.find_one({'_id': ObjectId(id)})
                   current_image = currentStruktur.get('gambarStruktur', None)
@@ -1240,7 +1243,7 @@ def AdminEditFasilitas(_id):
             nama=request.form['namaFasilitas'].strip()
             deskripsi=request.form['deskripsiFasilitas'].strip()
                
-            nama_gambar= request.files['gambarFasilitas'].strip()
+            nama_gambar= request.files['gambarFasilitas']
             currentFasilitas = db.fasilitas.find_one({'_id': ObjectId(id)})
             current_image = currentFasilitas.get('gambarFasilitas', None)
             doc={
@@ -1289,9 +1292,9 @@ def AdminAddFasilitas():
          if request.method=='POST':
             # ambil input
             nama=request.form['namaFasilitas'].strip()
-            deskripsi=request.form['deskripsiFasilitas'].strip()
+            deskripsi=request.form['deskripsiFasilitas']
             
-            nama_gambar= request.files['gambarFasilitas'].strip()
+            nama_gambar= request.files['gambarFasilitas']
             
             today=datetime.now()
             mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
@@ -1378,4 +1381,4 @@ def test():
 # admin end
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5001, debug=True)

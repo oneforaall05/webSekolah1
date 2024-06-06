@@ -37,7 +37,7 @@
     <div class="card border-0 shadow mb-4">
       <div class="card-body mt-4">
         <div class="table-responsive">
-          <form action="/adminEditBerita/{{berita[0]._id}}" method="POST" enctype="multipart/form-data">
+          <form id="form" action="/adminEditBerita/{{berita[0]._id}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_id" value="{{berita[0]._id}}">
             <div class="mb-3">
               <label for="gambar" class="form-label">Upload foto</label>
@@ -53,8 +53,11 @@
             </div>
             <div class="mb-3">
               <label for="Deskripsi" class="form-label">Deskripsi </label>
-              <textarea class="form-control" id="Deskripsi" name="Deskripsi" placeholder="Masukan Deskripsi" required
-                style="border-radius: 10px;">{{berita[0].Deskripsi}}</textarea>
+              <div id="editorBerita">{{berita[0].Deskripsi|safe}}</div>
+              <input type="hidden" name="Deskripsi" id="apbn">
+              <!-- <textarea class="form-control" id="Deskripsi" name="Deskripsi" placeholder="Masukan Deskripsi" required
+                style="border-radius: 10px;"></textarea> -->
+
             </div>
             <div class="mb-3">
               <button type="submit" class="btn btn-danger" style="float: right;">Submit</button>
@@ -65,4 +68,15 @@
     </div>
 
   </main><!-- End #main -->
+  <script>
+    const quill = new Quill('#editorBerita', {
+      theme: 'snow'
+    });
+    let form = document.getElementById('form');
+    form.onsubmit = function (e) {
+      let content = document.getElementById('apbn');
+      content.value = quill.root.innerHTML;
+    }
+
+  </script>
   {%include 'admin/footer.html'%}

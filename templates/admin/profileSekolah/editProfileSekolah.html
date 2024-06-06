@@ -14,6 +14,8 @@
       background-color: rgba(134, 163, 194, 0.1);
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 
 </head>
 
@@ -27,7 +29,7 @@
     <!-- End Page Title -->
 
     <!-- General Form Elements -->
-    <form action="/adminEditProfileSekolah/{{struktur[0]._id}}" method="POST" enctype="multipart/form-data">
+    <form id="form" action="/adminEditProfileSekolah/{{struktur[0]._id}}" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="_id" value="{{struktur[0]._id}}">
       <div class="card">
         <div class="card-body">
@@ -35,24 +37,28 @@
           <div class="row mb-3">
 
 
-            <div class="col-sm-12">
-              <textarea class="form-control" style="height: 100px" name="sejarah">{{struktur[0].sejarah}}</textarea>
+            <div class="col-sm-12" id="editorSejarah">
+              {{struktur[0].sejarah|safe}}
             </div>
+            <input type="hidden" name="sejarah" id="sejarah">
           </div>
         </div>
       </div>
+      
 
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Profile Sekolah</h5>
           <div class="row mb-3">
 
-            <div class="col-sm-12">
-              <textarea class="form-control" style="height: 100px" name="profile">{{struktur[0].profile}}</textarea>
+            <div class="col-sm-12" id="editorProfile">
+              {{struktur[0].profile|safe}}
             </div>
+            <input type="hidden" name="profile" id="nganu">
           </div>
         </div>
       </div>
+     
 
       <div class="card">
         <div class="card-body">
@@ -75,9 +81,10 @@
           <h5 class="card-title">Alamat</h5>
           <div class="row mb-3">
 
-            <div class="col-sm-12">
-              <textarea class="form-control" style="height: 100px" name="alamat">{{struktur[0].alamat}}</textarea>
+            <div class="col-sm-12" id="editorAlamat">
+              {{struktur[0].alamat|safe}}
             </div>
+            <input type="hidden" name="alamat" id="alamat">
           </div>
         </div>
       </div>
@@ -87,7 +94,39 @@
     </form>
   </main>
   <!-- End #main -->
-  {%include 'admin/footer.html'%}
-  </head>
+  <!-- quil -->
+  <script>
+    const quill = new Quill('#editorSejarah', {
+      theme: 'snow'
+    });
 
-</html>
+    const quill2 = new Quill('#editorProfile', {
+      theme: 'snow'
+    });
+
+    const quill3 = new Quill('#editorAlamat', {
+      theme: 'snow'
+    });
+
+
+    let form = document.getElementById('form');
+    form.onsubmit = function (e) {
+      let content = document.getElementById('sejarah');
+      content.value = quill.root.innerHTML;
+
+      let content2 = document.getElementById('nganu');
+      content2.value = quill2.root.innerHTML;
+
+      let content3 = document.getElementById('alamat');
+      content3.value = quill3.root.innerHTML;
+
+      console.log(content.value);
+      console.log(content2.value);
+      console.log(content3.value);
+    }
+  </script>
+
+  {%include 'admin/footer.html'%}
+  <!-- </head> -->
+
+<!-- </html> -->

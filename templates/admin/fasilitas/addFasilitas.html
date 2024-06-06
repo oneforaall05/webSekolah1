@@ -36,7 +36,7 @@
     <div class="card border-0 shadow mb-4">
         <div class="card-body mt-4">
             <div class="table-responsive">
-                <form action="/adminAddFasilitas" method="post" enctype="multipart/form-data">
+                <form id="form" action="/adminAddFasilitas" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="namaFasilitas" class="form-label">Nama Fasilitas :</label>
                         <input type="text" class="form-control" id="namaFasilitas" name="namaFasilitas"
@@ -49,9 +49,10 @@
                     </div>
                     <div class="mb-3">
                         <label for="deskripsiFasilitas" class="form-label">Deskripsi :</label>
-                        <textarea class="form-control" id="deskripsiFasilitas" name="deskripsiFasilitas"
-                            placeholder="Deskripsikan fasilitas disini" required style="border-radius: 10px;"></textarea>
+                        <div id="editorFasilitas"></div>
+                        
                     </div>
+                    <input type="hidden" name="deskripsiFasilitas" id="apbn" >
                     <div class="mb-3">
                         <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
                     </div>
@@ -60,4 +61,15 @@
         </div>
     </div>
 </main><!-- End #main -->
+<script>
+    const quill = new Quill('#editorFasilitas', {
+        theme: 'snow'
+      });
+      let form = document.getElementById('form');
+      form.onsubmit = function (e) {
+        let content = document.getElementById('apbn');
+        content.value = quill.root.innerHTML;
+      }
+
+</script>
   {%include 'admin/footer.html'%}
