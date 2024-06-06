@@ -17,12 +17,12 @@
       <h1 class="text-center my-4">Guru & Staff SDN Bojong Neros</h1>
       <div class="row">
         {% for item in gurustaf %}
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
           <div class="card text-center">
-            <img src="static/fotostaff/{{ item.gambar }}" style="width: 80%; height: auto; margin: 0 auto;"
+            <img src="static/fotostaff/{{ item.gambar }}" style="width: 50%; height: auto; margin: 0 auto;"
               class="card-img-top img-fluid" alt="">
             <div class="card-body">
-              <h4 class="card-title">{{ item.nama }}</h4>
+              <h6 class="card-title">{{ item.nama }}</h6>
               <p class="card-text">{{ item.jabatan }}</p>
             </div>
           </div>

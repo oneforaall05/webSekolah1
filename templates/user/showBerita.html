@@ -26,52 +26,46 @@
         </div>
         {%for item in subBerita%}
         <div class="subNews">
-          <div class="card text-center" style="width: 18rem;margin:0 auto;float:none;">
-            <img src="../static/fotoBerita/{{item.gambarSubBerita}}" alt="">
-            <div class="card-body">
-              <h5 class="card-title">{{item.deskripsiGambar}}</h5>
-              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-            </div>
+          <div class="text-center">
+              <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
+                  style="width: 500px; height: auto;">
+              <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
           </div>
-          <p>
-            {{item.deskripsi|safe}}
-          </p>
-          <!-- <img src="../static/fotoBerita/{{subBerita[0].gambarSubBerita}}" alt=""> -->
-        </div>
-        {%endfor%}
+          <p>{{ item.deskripsi|safe }}</p>
       </div>
-      <div class="row justify-content-md-center">
-        <div class="col-lg-8">
-          <form action="/komentar/{{Berita[0]._id}}" method="POST">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
-              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
-            </div>
-          </form>
-        </div>
-        <div class="col-lg-8">
-          <div class="list-group">
-            {%for item in komentar%}
-            
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">
-                  {{item.user_nama}}
-                </h5>
-                <small class="text-muted">
-                  {{item.date_input}}
-                </small>
-              </div>
-              <p class="mb-1">
-                {{item.komentar}}
-              </p>
-              
-            </a>
-            {%endfor%}
+      {% endfor %}
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-lg-8">
+        <form action="/komentar/{{Berita[0]._id}}" method="POST">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
           </div>
+        </form>
+      </div>
+      <div class="col-lg-8">
+        <div class="list-group">
+          {%for item in komentar%}
+
+          <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">
+                {{item.user_nama}}
+              </h5>
+              <small class="text-muted">
+                {{item.date_input}}
+              </small>
+            </div>
+            <p class="mb-1">
+              {{item.komentar}}
+            </p>
+
+          </a>
+          {%endfor%}
         </div>
       </div>
+    </div>
     </div>
   </main>
   {%include 'footer.html'%}
