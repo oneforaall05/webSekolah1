@@ -156,10 +156,11 @@ def userProfileSekolah():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   struktur = list(db.struktur.find({}))
    bolean = False
    if userInfo :
       bolean = True
-   return render_template('user/profileSekolah.html',bolean=bolean)
+   return render_template('user/profileSekolah.html',bolean=bolean, struktur=struktur)
 
 # StaffUser
 @app.route('/staff',methods=['GET'])

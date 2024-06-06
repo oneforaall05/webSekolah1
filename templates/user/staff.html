@@ -12,26 +12,27 @@
 
 <body>
   {%include 'header.html'%}
-  <main class="main m-5">
-    <h2 style="text-align: center;">Daftar Guru Dan Staff SDN Bojong Neros </h2>
-    <br>
-    <div class="row justify-content-center">
-      <div class="d-flex justify-content-between">
-        {% for item in gurustaf%}
-        <div class="col-sm-12 col-md-3 " data-aos="fade-up" data-aos-delay="300">
-          <div class="card" style="width: 80%;">
-            <img src="static/fotostaff/{{item.gambar}}" class="card-img-top" alt="">
+  <main class="main">
+    <div class="container">
+      <h1 class="text-center my-4">Guru & Staff SDN Bojong Neros</h1>
+      <div class="row">
+        {% for item in gurustaf %}
+        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="card text-center">
+            <img src="static/fotostaff/{{ item.gambar }}" style="width: 80%; height: auto; margin: 0 auto;"
+              class="card-img-top img-fluid" alt="">
             <div class="card-body">
-              <h4 class="card-title" style="text-align: center;"> {{item.nama}}</h4>
-              <p class="card-text" style="text-align: center;">{{item.jabatan}}</p>
+              <h4 class="card-title">{{ item.nama }}</h4>
+              <p class="card-text">{{ item.jabatan }}</p>
             </div>
           </div>
         </div>
-        {%endfor%}
+        {% endfor %}
       </div>
-
     </div>
   </main>
+
+
   {%include 'footer.html'%}
 
 </body>

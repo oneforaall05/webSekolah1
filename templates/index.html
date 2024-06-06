@@ -9,7 +9,6 @@
   <meta content="" name="keywords">
   {%include 'vendor.html'%}
   <style>
-    
     .slide {
       position: absolute;
       height: 100%;
@@ -21,30 +20,45 @@
     .slide-2 {
       animation-delay: 4s;
     }
+
     .slide-3 {
       animation-delay: 8s;
     }
+
     .slide-4 {
       animation-delay: 10s;
     }
-    
+
     @keyframes slide-show {
       0% {
         opacity: 0;
       }
+
       10% {
         opacity: 1;
       }
+
       20%,
       30% {
         opacity: 1;
         scale: 1.03;
       }
+
       50% {
         opacity: 0;
       }
     }
+
+    .title {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .mission p {
+      text-align: center;
+    }
   </style>
+
 
 </head>
 
@@ -67,10 +81,32 @@
         </div>
       </div>
       <div class="container text-center">
-        <h2 data-aos="fade-up" data-aos-delay="200">Selamat Datang <br> SDN Bojong Neros</h2>
+        <h5 data-aos="fade-up" data-aos-delay="200">Selamat Datang di</h5>
+        <h2 data-aos="fade-up" data-aos-delay="200">SDN Bojong Neros</h2>
       </div>
-
     </section><!-- /Hero Section -->
+    <br>
+    <div class="container">
+      <div class="title">
+        <h1 class="font-weight-bold">VISI & MISI SDN BOJONG NEROS</h1>
+        <br>
+        <h3 class="font-weight-bold">VISI</h3>
+        <p>“Beriman, Berilmu, Berbudaya, Terdidik, dan Terpercaya”</p>
+        <br>
+        <h3 class="font-weight-bold">MISI</h3>
+      </div>
+      <div class="mission">
+        <p>1. Menumbuhkembangkan keimanan dan ketaqwaan dalam menjalankan ajaran Agama</p>
+        <p>2. Melaksanakan pembelajaran dan bimbingan secara efektif, sehingga siswa dapat tumbuh dan berkembang secara
+          optimal, sesuai potensi yang dimilikinya</p>
+        <p>3. Menumbuhkembangkan penghayatan dan pengamalan terhadap norma-norma dan budaya bangsa, sehingga menjadi
+          sumber kearifan dalam bersikap dan bertindak.</p>
+        <p>4. Menumbuhkan semangat kemandirian dan percaya diri secara intensif kepada semua warga Sekolah.</p>
+        <p>5. Menerapkan manajemen dengan melibatkan seluruh warga Sekolah dan Komite Sekolah.</p>
+        <p>6. Menumbuhkembangkan kecintaan terhadap budaya bangsa melalui Kebudayaan daerah yang dimilikinya.</p>
+        <p>7. Membangun citra sekolah sebagai mitra terpercaya di masyarakat.</p>
+      </div>
+    </div>
   </main>
   {%include 'footer.html'%}
 
