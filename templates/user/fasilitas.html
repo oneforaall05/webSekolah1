@@ -32,9 +32,8 @@
     }
 
     .scroll-container {
-      overflow-x: auto; /* Enable horizontal scrolling */
-      overflow-y: hidden; /* Hide vertical scrollbar */
-      white-space: nowrap; /* Prevent wrapping */
+      overflow: hidden; 
+      white-space: nowrap; 
       margin-bottom: 20px;
       position: relative;
     }
@@ -56,7 +55,7 @@
       color: rgba(0, 0, 0, 0.479);
       padding: 10px 20px;
       cursor: pointer;
-      font-size: 5rem;
+      font-size: 3rem;
       transition: background-color 0.3s ease;
     }
 
@@ -65,9 +64,9 @@
     }
 
     .card-wrapper {
-      display: inline-block; /* Ensure cards stay on the same line */
-      white-space: nowrap; /* Prevent wrapping */
-      transition: transform 0.3s ease; /* Smooth transition */
+      display: flex; 
+      gap: 60px;
+      transition: transform 0.3s ease; 
     }
 
     .card {
@@ -76,9 +75,9 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       transition: transform 0.3s ease;
-      display: inline-block; /* Ensure cards stay on the same line */
-      vertical-align: top; /* Align cards at the top */
-      margin-right: 15px;
+      height: 500px;
+      flex: 0 0 auto; 
+      width: 300px;
     }
 
     .card:last-child {
@@ -91,7 +90,7 @@
 
     .card img {
       width: 100%;
-      height: 250px;
+      height: 300px;
       object-fit: cover;
       border-bottom: 2px solid #007bff;
       transition: transform 0.3s ease;
@@ -103,7 +102,7 @@
 
     .card-body {
       padding: 15px;
-      text-align: center;
+      text-align: left;
     }
 
     .card h5 {
@@ -114,6 +113,7 @@
 
     .card p {
       color: #6c757d;
+    
     }
 
     .bungkus {
@@ -122,7 +122,6 @@
       color: white;
       clip-path: polygon(0 0, 100% 0%, 85% 100%, 0 100%);
       text-align: left;
-
     }
 
     .judul {
@@ -132,6 +131,7 @@
       padding: 10px;
       clip-path: polygon(0 0, 95% 0%, 82% 85%, 0 85%);
       text-align: left;
+      margin-bottom: 20px;
       z-index: 1;
     }
 
@@ -143,9 +143,35 @@
       position: relative;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 1300px) {
       .card {
-        flex: 0 0 calc(33.33% - 20px);
+        flex: 0 0 calc(33.33% - 60px); 
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1299px) {
+      .card {
+        flex: 0 0 calc(50% - 60px); 
+      }
+      .card-wrapper{
+        gap: 30px;
+      }
+    }
+    @media (max-width: 768px) {
+      .container{
+        width: 95%;
+        height: 95%;
+        align-items: center;
+        padding: 10%;
+      }
+      .header > div > a > h1 {
+        font-size: 1rem; /* Atur ukuran font h1 untuk tampilan mobile */
+      }
+      .card {
+        flex: 0 0 calc(100% - 30px); 
+      }
+      .card-wrapper{
+        gap: 15px;
       }
     }
   </style>
@@ -158,8 +184,8 @@
       <h1 class="text-center my-4">Fasilitas</h1>
       <div class="scroll-container">
         <div class="button-container">
-          <button onclick="scrollCards(-1)"> < </button>
-          <button onclick="scrollCards(1)"> > </button>
+          <button onclick="scrollCards(-1)">&#8249;</button>
+          <button onclick="scrollCards(1)">&#8250;</button>
         </div>
         <div class="card-wrapper" id="cardWrapper">
           {% for item in fasilitas %}
@@ -185,10 +211,9 @@
     let currentIndex = 0;
     const cardWrapper = document.getElementById('cardWrapper');
     const cards = document.querySelectorAll('.card');
-    const cardWidth = cards[0].offsetWidth + 15; // 15px is the margin-right
-
+    const cardWidth = cards[0].offsetWidth + 30; 
     function scrollCards(direction) {
-      const maxIndex = cards.length - 1;
+      const maxIndex = cards.length - Math.floor(cardWrapper.offsetWidth / cardWidth); // Update maxIndex calculation
       if (direction === 1 && currentIndex < maxIndex) {
         currentIndex++;
       } else if (direction === -1 && currentIndex > 0) {
@@ -196,6 +221,11 @@
       }
       cardWrapper.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
     }
+
+    window.addEventListener('resize', () => {
+      cardWidth = cards[0].offsetWidth + 30;
+      scrollCards(0);
+    });
   </script>
 </body>
 
