@@ -260,6 +260,7 @@ def userFasilitas():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+      
    fasilitas =  list(db.fasilitas.find({}))
    bolean = False
    if userInfo :

@@ -7,31 +7,196 @@
   <title>Fasilitas</title>
   <meta content="" name="description" />
   <meta content="" name="keywords" />
-  {%include 'vendor.html'%}
+  {% include 'vendor.html' %}
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    .main {
+      padding: 20px 0;
+    }
+
+    .container {
+      max-width: 1350px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #000000;
+      text-align: center;
+    }
+
+    .scroll-container {
+      overflow-x: auto; /* Enable horizontal scrolling */
+      overflow-y: hidden; /* Hide vertical scrollbar */
+      white-space: nowrap; /* Prevent wrapping */
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .button-container {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .button-container button {
+      background-color: transparent;
+      border: none;
+      border-radius: 15%;
+      color: rgba(0, 0, 0, 0.479);
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .button-container button:hover {
+      background-color: rgba(35, 19, 107, 0.39);
+    }
+
+    .card-wrapper {
+      display: inline-block; /* Ensure cards stay on the same line */
+      white-space: nowrap; /* Prevent wrapping */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      display: inline-block; /* Ensure cards stay on the same line */
+      vertical-align: top; /* Align cards at the top */
+      margin-right: 15px;
+    }
+
+    .card:last-child {
+      margin-right: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 2px solid #007bff;
+      transition: transform 0.3s ease;
+    }
+
+    .card img:hover {
+      transform: scale(1.05);
+    }
+
+    .card-body {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .card h5 {
+      font-size: 1.5rem;
+      margin: 15px 0 10px;
+      color: #ffffff;
+    }
+
+    .card p {
+      color: #6c757d;
+    }
+
+    .bungkus {
+      position: relative;
+      background: rgba(0, 0, 0, 0.15);
+      color: white;
+      clip-path: polygon(0 0, 100% 0%, 85% 100%, 0 100%);
+      text-align: left;
+
+    }
+
+    .judul {
+      position: relative;
+      background: rgba(0, 0, 0, 0.35);
+      color: white;
+      padding: 10px;
+      clip-path: polygon(0 0, 95% 0%, 82% 85%, 0 85%);
+      text-align: left;
+      z-index: 1;
+    }
+
+    .judul h5 {
+      margin: 0;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      z-index: 2;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        flex: 0 0 calc(33.33% - 20px);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  {%include 'header.html'%}
+  {% include 'header.html' %}
   <main class="main">
-    <div class="container">
+    <div class="container isi">
       <h1 class="text-center my-4">Fasilitas</h1>
-      <div class="row">
-        {% for item in fasilitas %}
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-          <img src="static/fotoFasilitas/{{ item.gambarFasilitas }}" style="width: 30 rem;" class="img-fluid" alt="">
-          <h5 style="text-align: center;">
-            {{ item.namaFasilitas }}
-          </h5>
-          <p style="text-align: center;">
-            {{ item.deskripsiFasilitas |safe}}
-          </p>
+      <div class="scroll-container">
+        <div class="button-container">
+          <button onclick="scrollCards(-1)"> < </button>
+          <button onclick="scrollCards(1)"> > </button>
         </div>
-        {% endfor %}
+        <div class="card-wrapper" id="cardWrapper">
+          {% for item in fasilitas %}
+          <div class="card mx-2" data-aos="fade-up" data-aos-delay="300">
+            <img src="static/fotoFasilitas/{{ item.gambarFasilitas }}" class="img-fluid" alt="{{ item.namaFasilitas }}">
+            <div class="card-body">
+              <div class="bungkus">
+                <div class="judul">
+                  <h5>{{ item.namaFasilitas }}</h5>
+                </div>
+              </div>
+              <p>{{ item.deskripsiFasilitas |safe }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </main>
-  {%include 'footer.html'%}
+  {% include 'footer.html' %}
 
+  <script>
+    let currentIndex = 0;
+    const cardWrapper = document.getElementById('cardWrapper');
+    const cards = document.querySelectorAll('.card');
+    const cardWidth = cards[0].offsetWidth + 15; // 15px is the margin-right
+
+    function scrollCards(direction) {
+      const maxIndex = cards.length - 1;
+      if (direction === 1 && currentIndex < maxIndex) {
+        currentIndex++;
+      } else if (direction === -1 && currentIndex > 0) {
+        currentIndex--;
+      }
+      cardWrapper.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+    }
+  </script>
 </body>
 
 </html>
