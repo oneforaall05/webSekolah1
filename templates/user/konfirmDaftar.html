@@ -87,6 +87,10 @@
             color: #fff;
         }
     </style>
+
+    <script>
+        
+    </script>
 </head>
 
 <body>
@@ -95,13 +99,15 @@
         <div class="container-isi">
             <div class="details">
                 <div class="info">
+                    {{data}}
+   
                     <table>
                         <tr>
                             <th colspan="3" style="background-color: #85b4e7;">Data Calon Peserta Didik</th>
                         </tr>
                         <tr>
                             <th>Nama</th>
-                            <td>{{data.nama}}</td>
+                            <td>{{data['nama']}}</td>
                         </tr>
                         <tr>
                             <th>Jenis Kelamin</th>
@@ -226,6 +232,7 @@
                             <td>{{data.saudara}}</td>
                         </tr>
                     </table>
+           
                 </div>
             </div>
             <div class="cotainer d-flex justify-content-end mb-3 me-5">
@@ -233,6 +240,7 @@
                     <a href="/formDaftar" style="text-decoration: none; color: inherit; float:right">Batal
                     </a>
                 </button>
+
                 <button type="button" class="btn btn-info btn-custom">
                     <a href="/syaratDaftar" style="text-decoration: none; color: inherit; float:right">Lanjut</a>
                 </button>

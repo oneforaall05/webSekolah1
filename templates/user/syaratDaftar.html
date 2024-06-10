@@ -17,13 +17,18 @@
       align-items: center;
       text-align: center;
     }
+
     ul {
       list-style-type: none;
       padding: 0;
       margin-left: 40%;
       margin-top: 50px;
       text-align: left;
-      font-size: large;
+      font-size: larger;
+    }
+    button{
+      
+      background-color: blue;
     }
   </style>
 </head>
@@ -31,13 +36,17 @@
 <body>
   {%include 'header.html'%}
   <main class="main">
-    <div class=" container-isi ">
+    <div class=" container-isi">
       <h1>Terimakasih telah mendaftar</h1><br>
-      <h1>silahkan lengkapi persyaratan Berikut Untuk Melanjutkan Pendaftaran :</h1>
-      <ul >
-        <li> 1. Pas foto 3 x 4</li>
-        <li> 2. Fotocopy akta kelahiran</li>
+      <h1>Berikut adalah berkas yang harus diserahkan ke sekolah :</h1>
+      <ul>
+        <h3> 1. Pas foto 3 x 4</h3>
+        <h3> 2. Fotocopy Kartu Keluarga</h3>
+        <h3> 3. Fotocopy KTP Orang Tua</h3>
       </ul>
+      <button type="button" class="btn btn-light "style="background-color: green; padding: 20px 100px; margin-top: 30px">
+        <a href="/" style="color: white;">Back To Home </a>
+      </button>
     </div>
   </main>
   {%include 'footer.html'%}

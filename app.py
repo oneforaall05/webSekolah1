@@ -337,7 +337,7 @@ def userFormDaftar():
          } 
          
          db.pendaftaran.insert_one(doc)
-         return render_template('user/konfirmDaftar.html',data=doc)
+         return redirect(url_for('konfirmDaftar',data=doc))
       
       id_status = ObjectId('66604681eccb9999bc3d7fbc')
       status = db.status.find_one({'_id': id_status})
@@ -358,27 +358,32 @@ def userFormDaftar():
    else:
       return redirect(url_for('userLogin',msg="Kamu Harus Login Terlebih dahulu"))
    
+
+@app.route('/test',methods=['GET'])
+def test():
+   data=db.pendaftaran.find_one({'_id':ObjectId('665a9f7d2e979b86ed07cfbd')})
+   return redirect(url_for('konfirmDaftar',data=data))
+   
 #konfirm daftar
-@app.route('/konfimDaftar',methods=['GET','POST'])
-def konfimDaftar():
-   token_receive = request.cookies.get(TOKEN_KEY)
+@app.route('/konfirmDaftar',methods=['GET' ])
+def konfirmDaftar():
+   token_receive = request.cookies.get(TOKEN_KEY2)
    
    userInfo =''
    if token_receive:
       payload = jwt.decode(
-               token_receive, SECRET_KEY, algorithms='HS256'
+               token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
-      
-      if request.method=='POST':
-         return redirect(url_for('userSyaratdaftar'))
-      data=list(db.pendaftaran.find_one({'_id':ObjectId('665a9f7d2e979b86ed07cfbd')}))
-      return render_template('user/konfirmDaftar.html',data=data)
-      
+   
+   data=request.args['data']
+   
    bolean = False
    if userInfo :
       bolean = True
 
+   return render_template('user/konfirmDaftar.html',bolean=bolean,data=data)
+   
    
 # syaratDaftar
 @app.route('/syaratDaftar',methods=['GET'])
@@ -1380,35 +1385,6 @@ def AdminDeleteFasilitas(_id):
    except jwt.exceptions.DecodeError:
        return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
  
-@app.route("/test",methods=['GET','POST'])
-def test():
-   if request.method == 'POST':
-      thn = request.form['tahun']
-      dataDaftar = list(db.pendaftaran.find({'tahun': thn}))
-      pendaftaran = list(db.pendaftaran.find({}))
-      tahun = set()
-      for dataThn in pendaftaran:
-         tahun.add(dataThn.get('tahun'))
-
-      year = list(tahun)
-      year.reverse()
-      years=year
-      print(years)
-      
-   
-      return render_template('admin/pendaftaran/dataDaftar.html', tahun=years,data=dataDaftar,thn=thn)
-
-   pendaftaran = list(db.pendaftaran.find({}))
-   tahun = set()
-   for dataThn in pendaftaran:
-      tahun.add(dataThn.get('tahun'))
-
-   year = list(tahun)
-   year.reverse()
-   years=year
-   print(years)
-   
-   return render_template('admin/pendaftaran/dataDaftar.html', tahun=years)
 # fasilitas end
 
 
