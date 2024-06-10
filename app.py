@@ -335,8 +335,6 @@ def userFormDaftar():
             'anak_ke':anakKe,
             'saudara':saudara,
          } 
-         
-         db.pendaftaran.insert_one(doc)
          return redirect(url_for('konfirmDaftar',data=doc))
       
       id_status = ObjectId('66604681eccb9999bc3d7fbc')
@@ -381,7 +379,7 @@ def konfirmDaftar():
    bolean = False
    if userInfo :
       bolean = True
-
+   db.pendaftaran.insert_one(data)
    return render_template('user/konfirmDaftar.html',bolean=bolean,data=data)
    
    
