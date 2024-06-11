@@ -5,25 +5,64 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Data Komentar</title>
+    <title>Sub Berita</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-
-    {%include 'admin/vendor.html'%}
+    {% include 'admin/vendor.html' %}
 
     <style>
         #berita {
             background-color: rgba(134, 163, 194, 0.1);
+        }
+
+        .table-custom {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+
+        .table-custom th,
+        .table-custom td {
+            padding: 0.75rem;
+            vertical-align: middle;
+            border-top: 1px solid #dee2e6;
+            border: 2px solid #dee2e6;
+        }
+
+        .table-custom thead th {
+            vertical-align: bottom;
+            border: 2px solid #dee2e6;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .col-width-3 {
+            width: 3%;
+        }
+
+        .col-width-10 {
+            width: 10%;
+        }
+
+        .col-width-15 {
+            width: 15%;
+        }
+
+        .col-width-62 {
+            width: 62%;
         }
     </style>
 
 </head>
 
 <body>
-
-
-    {%include 'admin/sideBar.html'%}
+    {% include 'admin/sideBar.html' %}
 
     <main id="main" class="main">
 
@@ -38,50 +77,42 @@
         </div><!-- End Page Title -->
 
         <div class="d-flex justify-content-end mb-3 me-5">
-            <button type="button" class="btn  btn-outline-primary">
+            <button type="button" class="btn btn-outline-primary">
                 <a href="/adminAddSubBerita/{{berita[0]._id}}" style="text-decoration: none; color: inherit;">Add Berita</a>
             </button>
         </div>
-        
+
         <!-- table -->
         <div class="card">
             <div class="card-body">
 
-
                 <!-- Table with hoverable rows -->
-                <table class="table table-hover mt-3">
+                <table class="table table-hover table-custom mt-3">
                     <thead>
                         <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Gambar</th>
-                            <th scope="col">Deskripsi Gambar</th>
-                            <th scope="col">Deskripsi Berita</th>
-                            <th scope="col">Aksi</th>
-
+                            <th class="text-center col-width-3">No</th>
+                            <th class="text-center col-width-10">Gambar</th>
+                            <th class="text-center col-width-15">Deskripsi Gambar</th>
+                            <th class="text-center col-width-52">Deskripsi Berita</th>
+                            <th class="text-center col-width-10">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in subBerita %}
                         <tr>
-                            <th scope="row">
-                                {{loop.index}}
-                            </th>
-                            <td>
-                                <img src="../static/fotoBerita/{{item.gambarSubBerita}}" alt="" width="100px">
+                            <th scope="row" class="text-center">{{ loop.index }}</th>
+                            <td class="text-center">
+                                <img src="../static/fotoBerita/{{item.gambarSubBerita}}" alt="" width="100px" class="img-thumbnail img-thumbnail-custom">
                             </td>
-                            <td>
-                                {{item.deskripsiGambar}}
-                            </td>
-                            <td>
-                                {{item.deskripsi|safe}}
-                            </td>
-                            <td>
-                                <a href="/adminEditSubBerita/{{item._id}}">
-                                    <button type="button" class="btn btn-primary btn-sm "><i class="bi bi-pencil-square"></i>
-                                        Edit</button></a>
-                                <a href="/adminDeleteSubBerita/{{item._id}}">
-                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
-                                        Delete</button></a>
+                            <td>{{ item.deskripsiGambar }}</td>
+                            <td >{{ item.deskripsi | safe }}</td>
+                            <td class="text-center">
+                                <a href="/adminEditSubBerita/{{ item._id }}">
+                                    <button type="button" class="btn btn-primary btn-sm mb-2"><i class="bi bi-pencil-square"></i> Edit</button>
+                                </a>
+                                <a href="/adminDeleteSubBerita/{{ item._id }}">
+                                    <button type="button" class="btn btn-danger btn-sm mt-1"><i class="bi bi-trash"></i> Delete</button>
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -93,4 +124,5 @@
         </div>
         <!-- table end -->
     </main><!-- End #main -->
-    {%include 'admin/footer.html'%}
+    {% include 'admin/footer.html' %}
+

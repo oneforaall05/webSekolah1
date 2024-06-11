@@ -9,40 +9,58 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  {%include 'admin/vendor.html'%}
+  {% include 'admin/vendor.html' %}
   <style>
     #berita {
       background-color: rgba(134, 163, 194, 0.1);
     }
-  </style>
 
+    .table-custom {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+    }
+
+    .table-custom th,
+    .table-custom td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table-custom thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+      background-color: #f8f9fa;
+    }
+
+    .table-custom tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+
+  </style>
 </head>
 
 <body>
-
-
-
-
-  {%include 'admin/sideBar.html'%}
+  {% include 'admin/sideBar.html' %}
 
   <main id="main" class="main">
 
-    <div class="pagetitle">
+    <div class="page-title">
       <h1>Berita</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Berita</li>
         </ol>
       </nav>
-
     </div><!-- End Page Title -->
 
     <div class="d-flex justify-content-end mb-3 me-5">
-      <button type="button" class="btn  btn-outline-primary">
+      <button type="button" class="btn btn-outline-primary btn-custom">
         <a href="/adminAddBerita" style="text-decoration: none; color: inherit;">Add Berita</a>
       </button>
     </div>
-
 
     <section class="section">
       <div class="table-responsive">
@@ -60,30 +78,30 @@
             {% for item in Berita %}
             <tr>
               <td class="text-center">{{ loop.index }}</td>
-              <td class="text-center"><img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image" width="100"
-                  class="img-fluid img-thumbnail"></td>
-              <td class="text-center">{{item.judul}}</td>
-              <td class="text-center">{{item.Deskripsi|safe}}</td>
               <td class="text-center">
+                <img src="static/fotoBerita/{{item.gambar}}" alt="Sample Image" width="100" class="img-fluid img-thumbnail img-thumbnail-custom">
+              </td>
+              <td >{{item.judul}}</td>
+              <td>{{item.Deskripsi|safe}}</td>
+              <td class="text-center" style="vertical-align: middle;">
                 <a href="/adminEditBerita/{{item._id}}">
-                  <button type="button" class="btn btn-primary btn-sm "><i class="bi bi-pencil-square"></i>
-                    Edit</button>
+                  <button type="button" class="btn btn-primary btn-sm mb-3 btn-custom mt-3"><i class="bi bi-pencil-square"></i> Edit</button>
                 </a>
                 <a href="/adminSubBerita/{{item._id}}">
-                  <button type="button" class="btn btn-primary btn-sm">
-                    Sub Berita</button>
+                  <button type="button" class="btn btn-primary btn-sm mb-3 btn-custom">Sub Berita</button>
                 </a>
                 <a href="/adminDataKomentar/{{item._id}}">
-                  <button type="button" class="btn btn-secondary btn-sm"><i class=""></i>
-                    Komentar</button>
+                  <button type="button" class="btn btn-secondary btn-sm mb-3 btn-custom"><i class=""></i> Komentar</button>
                 </a>
                 <a href="/adminDeleteBerita/{{item._id}}">
-                  <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
-                    Delete</button>
+                  <button type="button" class="btn btn-danger btn-sm btn-custom mb-3"><i class="bi bi-trash"></i> Delete</button>
                 </a>
               </td>
             </tr>
             {% endfor %}
-
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main><!-- End #main -->
-  {%include 'admin/footer.html'%}
+  {% include 'admin/footer.html' %}

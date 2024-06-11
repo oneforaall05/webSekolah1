@@ -46,24 +46,12 @@
   {% include 'header.html' %}
   <main class="main">
     <div class="container-isi mt-5">
-      <h2>Masukkan Data Anda Pada Form Dibawah</h2><br>
-      <ul class="nav nav-tabs" id="registrationTabs" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="calon-tab" data-toggle="tab" href="#calon" role="tab" aria-controls="calon"
-            aria-selected="true">Data Calon Peserta</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="ortu-tab" data-toggle="tab" href="#ortu" role="tab" aria-controls="ortu"
-            aria-selected="false">Data Orang Tua</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="periodik-tab" data-toggle="tab" href="#periodik" role="tab" aria-controls="periodik"
-            aria-selected="false">Data Periodik</a>
-        </li>
-      </ul>
+      <h2>Masukkan Data Anda Pada Form Dibawah :</h2><br>
       <form id="registrationForm" action="/formDaftar" method="post" enctype="multipart/form-data">
         <div class="tab-content" id="registrationTabsContent">
           <!-- Data Calon Peserta -->
+          <h5 class="text-center">Data Calon Peserta</h5>
+          <hr>
           <div class="tab-pane fade show active" id="calon" role="tabpanel" aria-labelledby="calon-tab">
             <div class="form-group">
               <label for="namaCalon">Nama Lengkap</label>
@@ -125,6 +113,8 @@
           </div>
           <!-- Data Orang Tua -->
           <div class="tab-pane fade" id="ortu" role="tabpanel" aria-labelledby="ortu-tab">
+            <h5 class="text-center">Data Orang Tua</h5>
+            <hr>
             <div class="form-group">
               <label for="namaAyah">Nama Ayah</label>
               <input type="text" class="form-control" id="namaAyah" name="namaAyah" placeholder="Masukkan Nama Ayah"
@@ -183,6 +173,8 @@
           </div>
           <!-- Data Periodik -->
           <div class="tab-pane fade" id="periodik" role="tabpanel" aria-labelledby="periodik-tab">
+            <h5 class="text-center">Data Periodik</h5>
+            <hr>
             <div class="form-group">
               <label for="tinggiCalon">Tinggi Calon Peserta Didik (cm)</label>
               <input type="number" class="form-control" id="tinggiCalon" name="tinggi"
