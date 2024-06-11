@@ -239,8 +239,20 @@ def userShowBerita(_id):
    
    userInfo =''
    Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
+   for berita in Berita:
+        if "date_input" in berita:
+            date_input = berita["date_input"]
+            date_parts = date_input.split('|')
+            formatted_date = format_date(date_parts[0])
+            berita["date"] = formatted_date
+            berita["time"] = date_parts[1]
    subBerita =  list(db.subBerita.find({'berita_id':ObjectId(_id)}))
    komentar = list(db.komentar.find({'berita_id':ObjectId(_id)}))
+   for komen in komentar:
+          if "date_input" in komen:
+                 date = komen['date_input']
+                 komen_date = time2str(date)
+                 komen['date_input'] = komen_date
    if token_receive:
       payload = jwt.decode(
                token_receive, SECRET_KEY2, algorithms='HS256'
@@ -255,7 +267,22 @@ def userShowBerita(_id):
          print(userInfo)
    return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar)
 
+# date conv
+def time2str(date):
+    today = datetime.now()
+    time_diff = (today - date).total_seconds() / 60  # minutes
 
+    if time_diff < 60:
+        return f"{int(time_diff)} minutes ago"
+    time_diff /= 60  # hours
+    if time_diff < 24:
+        return f"{int(time_diff)} hours ago"
+    time_diff /= 24  # days
+    if time_diff < 7:
+        return f"{int(time_diff)} days ago"
+    
+    return date.strftime("%Y.%m.%d")
+ 
 # komentar
 @app.route('/komentar/<_id>',methods=['POST'])
 def userKomentar(_id):
@@ -270,14 +297,15 @@ def userKomentar(_id):
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
       
-         
+   
    bolean = False
    if userInfo :
       bolean = True
       doc = {
          'berita_id':ObjectId(_id),
          'komentar':komentar,
-         'user_name':userInfo['username']
+         'user_name':userInfo['username'],
+         'date_input':datetime.now()
       }
       db.komentar.insert_one(doc)
       print(userInfo)  
