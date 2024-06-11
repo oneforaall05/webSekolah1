@@ -79,18 +79,19 @@
 
         .btn-custom {
             border: 2px solid #000;
-            color: #000;
+            color: #000000;
+            
         }
 
         .btn-custom:hover {
-            background-color: #432ad4;
+            background-color: #037012;
             color: #fff;
         }
     </style>
 
-    <script>
-        
-    </script>
+
+
+
 </head>
 
 <body>
@@ -99,8 +100,8 @@
         <div class="container-isi">
             <div class="details">
                 <div class="info">
-                    {{data}}
-   
+
+
                     <table>
                         <tr>
                             <th colspan="3" style="background-color: #85b4e7;">Data Calon Peserta Didik</th>
@@ -232,22 +233,24 @@
                             <td>{{data.saudara}}</td>
                         </tr>
                     </table>
-           
+
                 </div>
             </div>
             <div class="cotainer d-flex justify-content-end mb-3 me-5">
-                <button type="button" class="btn btn-light btn-custom me-4">
+                <button type="button" class="btn btn-info btn-custom me-4" >
                     <a href="/formDaftar" style="text-decoration: none; color: inherit; float:right">Batal
                     </a>
                 </button>
-
-                <button type="button" class="btn btn-info btn-custom">
-                    <a href="/syaratDaftar" style="text-decoration: none; color: inherit; float:right">Lanjut</a>
-                </button>
+                <form method="POST" action="{{ url_for('konfirmDaftar') }}">
+                    <input type="hidden" name="data" value='{{ data | tojson | safe }}'>
+                    <button type="submit" class="btn btn-danger btn-custom" >Submit</button>
+                </form>
+                </form>
             </div>
         </div>
     </main>
     {% include 'footer.html' %}
+
 </body>
 
 

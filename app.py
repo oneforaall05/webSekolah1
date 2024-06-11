@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import hashlib
 import os
 from bson import ObjectId
+import json
 
 from flask import Flask, render_template,jsonify,request,redirect,url_for
 
@@ -268,6 +269,8 @@ def userFasilitas():
    return render_template('user/fasilitas.html',bolean=bolean,fasilitas=fasilitas)
 
 # formdaftar
+import json
+
 @app.route('/formDaftar',methods=['GET','POST'])
 def userFormDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
@@ -282,31 +285,31 @@ def userFormDaftar():
       if request.method=='POST':
          today=datetime.now()
          tahun=today.strftime('%Y')
-         nama=request.form['nama'].strip()
-         jenisKelamin=request.form['jenisKelamin'].strip()
-         nik=request.form['nik'].strip()
-         tempatLahir=request.form['tempatLahir'].strip()
-         tanggalLahir=request.form['tanggalLahir'].strip()
-         agama=request.form['agama'].strip()
-         alamat=request.form['alamat'].strip()
-         tempatTinggal=request.form['tempatTinggal'].strip()
-         transportasi=request.form['transportasi'].strip()
-         namaAyah=request.form['namaAyah'].strip()
-         ttlAyah=request.form['ttlAyah'].strip()
-         pendidikanAyah=request.form['pendidikanAyah'].strip()
-         pekerjaanAyah=request.form['pekerjaanAyah'].strip()
-         nomorAyah=request.form['nomorAyah'].strip()
-         namaIbu=request.form['namaIbu'].strip()
-         ttlIbu=request.form['ttlIbu'].strip()
-         pendidikanIbu=request.form['pendidikanIbu'].strip()
-         pekerjaanIbu=request.form['pekerjaanIbu'].strip()
-         nomorIbu=request.form['nomorIbu'].strip()
-         tinggi=request.form['tinggi'].strip()
-         berat=request.form['berat'].strip()
-         jarakSekolah=request.form['jarakSekolah'].strip()
-         waktuSekolah=request.form['waktuSekolah'].strip()
-         anakKe=request.form['anakKe'].strip()
-         saudara=request.form['jumlahSaudara'].strip()
+         nama=request.form['nama']
+         jenisKelamin=request.form['jenisKelamin']
+         nik=request.form['nik']
+         tempatLahir=request.form['tempatLahir']
+         tanggalLahir=request.form['tanggalLahir']
+         agama=request.form['agama']
+         alamat=request.form['alamat']
+         tempatTinggal=request.form['tempatTinggal']
+         transportasi=request.form['transportasi']
+         namaAyah=request.form['namaAyah']
+         ttlAyah=request.form['ttlAyah']
+         pendidikanAyah=request.form['pendidikanAyah']
+         pekerjaanAyah=request.form['pekerjaanAyah']
+         nomorAyah=request.form['nomorAyah']
+         namaIbu=request.form['namaIbu']
+         ttlIbu=request.form['ttlIbu']
+         pendidikanIbu=request.form['pendidikanIbu']
+         pekerjaanIbu=request.form['pekerjaanIbu']
+         nomorIbu=request.form['nomorIbu']
+         tinggi=request.form['tinggi']
+         berat=request.form['berat']
+         jarakSekolah=request.form['jarakSekolah']
+         waktuSekolah=request.form['waktuSekolah']
+         anakKe=request.form['anakKe']
+         saudara=request.form['jumlahSaudara']
          
          doc={
             'tahun':tahun,
@@ -335,35 +338,37 @@ def userFormDaftar():
             'anak_ke':anakKe,
             'saudara':saudara,
          } 
-         return redirect(url_for('konfirmDaftar',data=doc))
+         return redirect(url_for('konfirmDaftar', data=json.dumps(doc)))
       
-      id_status = ObjectId('66604681eccb9999bc3d7fbc')
-      status = db.status.find_one({'_id': id_status})
       
-      if status:
-         print(status)
-         if status.get('status') == 'buka':
-            return render_template('user/formDaftar.html')
-         else:
-            return render_template('user/daftarBelumBuka.html')
-      else:
-         return "Status tidak ditemukan", 404
      
    bolean = False
    if userInfo :
       bolean = True
-      
+   
    else:
       return redirect(url_for('userLogin',msg="Kamu Harus Login Terlebih dahulu"))
    
+   id_status = ObjectId('66604681eccb9999bc3d7fbc')
+   status = db.status.find_one({'_id': id_status})
+      
+   if status:
+      print(status)
+      if status.get('status') == 'buka':
+         return render_template('user/formDaftar.html',bolean=bolean)
+      else:
+         return render_template('user/daftarBelumBuka.html',bolean=bolean)
+   else:
+      return "Status tidak ditemukan", 404
+      
 
 @app.route('/test',methods=['GET'])
 def test():
    data=db.pendaftaran.find_one({'_id':ObjectId('665a9f7d2e979b86ed07cfbd')})
-   return redirect(url_for('konfirmDaftar',data=data))
+   return redirect(url_for('konfirmDaftar',data=json.dumps(data)))
    
 #konfirm daftar
-@app.route('/konfirmDaftar',methods=['GET' ])
+@app.route('/konfirmDaftar',methods=['GET','POST' ])
 def konfirmDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
    
@@ -373,18 +378,24 @@ def konfirmDaftar():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   if request.method == 'POST':
+      data=request.form.get('data')
+      data_dict = json.loads(data)
+      db.pendaftaran.insert_one(data_dict)
+      return redirect(url_for('userSyaratDaftar'))
    
-   data=request.args['data']
    
+   data=request.args.get('data')  
    bolean = False
    if userInfo :
       bolean = True
-   db.pendaftaran.insert_one(data)
+   data=json.loads(data)  
+   print(data)
    return render_template('user/konfirmDaftar.html',bolean=bolean,data=data)
-   
+
    
 # syaratDaftar
-@app.route('/syaratDaftar',methods=['GET'])
+@app.route('/syaratDaftar',methods=['GET','POST'])
 def userSyaratDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
    
@@ -394,10 +405,11 @@ def userSyaratDaftar():
                token_receive, SECRET_KEY2, algorithms='HS256'
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
+   
    bolean = False
-   if userInfo :
+   if userInfo:
       bolean = True
-   return render_template('user/syaratDaftar.html',bolean=bolean)
+   return render_template('user/syaratDaftar.html', bolean=bolean)
 
 # user end
 
