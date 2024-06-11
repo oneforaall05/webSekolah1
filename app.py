@@ -11,6 +11,10 @@ from flask import Flask, render_template,jsonify,request,redirect,url_for
 
 from werkzeug.utils import secure_filename
 
+# for deleting html in text
+import re
+import bleach
+# for deleteing html in text end
 
 stringUrl='mongodb+srv://group05:kosonglima@group05.a81awpa.mongodb.net/?retryWrites=true&w=majority&appName=group05'
 # stringUrl2 = "mongodb://group05:kosonglima@ac-qnc3rcc-shard-00-00.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-01.a81awpa.mongodb.net:27017,ac-qnc3rcc-shard-00-02.a81awpa.mongodb.net:27017/?ssl=true&replicaSet=atlas-xlwhyu-shard-0&authSource=admin&retryWrites=true&w=majority&appName=group05"
@@ -180,6 +184,29 @@ def userStaff():
       bolean = True
    return render_template('user/staff.html',bolean=bolean, gurustaf=gurustaf)
 
+
+# menghilangkan tanda html
+def truncate_at_dot(description):
+    clean_description = bleach.clean(description, tags=[], strip=True)  # Menghapus semua tag HTML
+    if len(clean_description) > 100:
+        match = re.search(r'\.', clean_description[100:])
+        if match:
+            end_index = match.start() + 101
+            return description[:end_index + 1].rstrip(), True
+        else:
+            return description.rstrip(), False
+    return description.rstrip(), False
+ 
+ # Register the custom filter with Jinja2 environment
+app.jinja_env.filters['truncate_at_dot'] = truncate_at_dot
+
+# menghilangkan tanda html end
+
+# date formater
+def format_date(date_str):
+    date_obj = datetime.strptime(date_str, '%d-%m-%Y')
+    return date_obj.strftime('%d %B %Y')
+
 # berita
 @app.route('/berita',methods=['GET'])
 def userBerita():
@@ -192,7 +219,14 @@ def userBerita():
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
    Berita =  list(db.berita.find({}))
-      
+   print(Berita[0]["date_input"])
+   for berita in Berita:
+        if "date_input" in berita:
+            date_input = berita["date_input"]
+            date_parts = date_input.split('|')
+            formatted_date = format_date(date_parts[0])
+            berita["date"] = formatted_date
+            berita["time"] = date_parts[1]
    bolean = False
    if userInfo :
       bolean = True

@@ -29,10 +29,24 @@
                 <a href="/showBerita/{{ item._id }}">{{ item.judul }}</a>
               </h5>
               <p class="fst-italic text-center mb-2">
-                {{ item.date_input }}
+                {{ item.date }}
               </p>
               <p class="card-text mb-4">
-                {{ item.Deskripsi[:100]|safe }}{% if item.Deskripsi|length > 100 %} |<a href="/showBerita/{{ item._id }}" >Baca Selengkapnya</a>{% endif %}
+                {% set truncated_description = item.Deskripsi | truncate_at_dot %}
+                {% if truncated_description[1] %}
+                <span>
+                  
+                  {{ truncated_description[0] | safe }}
+                  ..... 
+                </span>
+                {%else%}
+                
+                  {{(item.Deskripsi|safe).rstrip()}} 
+
+                
+                {% endif %}
+
+                <!-- {{ item.Deskripsi[:100]|safe }}{% if item.Deskripsi|length > 100 %} |<a href="/showBerita/{{ item._id }}" >Baca Selengkapnya</a>{% endif %} -->
               </p>
               <div>
 
