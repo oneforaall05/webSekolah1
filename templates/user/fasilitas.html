@@ -14,7 +14,8 @@
       background-color: #f8f9fa;
       color: #343a40;
     }
-    #fasilitas{
+
+    #fasilitas {
       color: green;
     }
 
@@ -36,7 +37,6 @@
 
     .scroll-container {
       overflow: hidden;
-      white-space: nowrap;
       margin-bottom: 20px;
       position: relative;
     }
@@ -80,6 +80,7 @@
       transition: transform 0.3s ease;
       height: 500px;
       flex: 0 0 auto;
+      flex-direction: column;
       width: 300px;
     }
 
@@ -150,29 +151,28 @@
       .card {
         flex: 0 0 calc(33.33% - 60px);
       }
+      .card-wrapper {
+        gap: 30px;
+      }
+
     }
 
     @media (min-width: 769px) and (max-width: 1299px) {
       .card {
-        flex: 0 0 calc(50% - 60px);
+        flex: 0 0 calc(50% - 30px);
       }
 
       .card-wrapper {
-        gap: 30px;
+        gap: 15px;
       }
     }
 
     @media (max-width: 768px) {
-      .container {
+      .container-isi {
         width: 95%;
         height: 95%;
         align-items: center;
         padding: 10%;
-      }
-
-      .header>div>a>h1 {
-        font-size: 1rem;
-        /* Atur ukuran font h1 untuk tampilan mobile */
       }
 
       .card {
@@ -181,6 +181,10 @@
 
       .card-wrapper {
         gap: 15px;
+      }
+
+      h1{
+        font-size: 1.5rem;
       }
     }
   </style>
@@ -198,17 +202,19 @@
         </div>
         <div class="card-wrapper" id="cardWrapper">
           {% for item in fasilitas %}
-          <div class="card mx-2" data-aos="fade-up" data-aos-delay="300">
-            <img src="static/fotoFasilitas/{{ item.gambarFasilitas }}" class="img-fluid" alt="{{ item.namaFasilitas }}">
-            <div class="card-body">
-              <div class="bungkus">
-                <div class="judul">
-                  <h5>{{ item.namaFasilitas }}</h5>
+            <div class="card mx-2" data-aos="fade-up" data-aos-delay="300">
+              <img src="static/fotoFasilitas/{{ item.gambarFasilitas }}" class="img-fluid" alt="{{ item.namaFasilitas }}">
+              <div class="card-body">
+                <div class="bungkus">
+                  <div class="judul">
+                    <h5>{{ item.namaFasilitas }}</h5>
+                  </div>
+                </div>
+                <div >
+                  <p style="word-break: break-all;" >{{ item.deskripsiFasilitas |safe }}</p>
                 </div>
               </div>
-              <p>{{ item.deskripsiFasilitas |safe }}</p>
             </div>
-          </div>
           {% endfor %}
         </div>
       </div>

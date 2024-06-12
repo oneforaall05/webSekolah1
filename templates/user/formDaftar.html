@@ -9,9 +9,10 @@
   <meta content="" name="keywords" />
   {% include 'vendor.html' %}
   <style>
-    #daftar{
+    #daftar {
       color: green;
     }
+
     .container-isi {
       margin: auto 10%;
       padding: 10px 5% 20px 5%;
@@ -50,12 +51,27 @@
   <main class="main">
     <div class="container-isi mt-5">
       <h2>Masukkan Data Anda Pada Form Dibawah :</h2><br>
+      <ul class="nav nav-tabs" id="registrationTabs" role="tablist" style="display: none;">
+        <li class="nav-item">
+          <a class="nav-link active" id="calon-tab" data-toggle="tab" href="#calon" role="tab" aria-controls="calon"
+            aria-selected="true">Data Calon Peserta</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="ortu-tab" data-toggle="tab" href="#ortu" role="tab" aria-controls="ortu"
+            aria-selected="false">Data Orang Tua</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="spesifik-tab" data-toggle="tab" href="#periodik" role="tab" aria-controls="spesifik"
+            aria-selected="false">Data Periodik</a>
+        </li>
+      </ul>
       <form id="registrationForm" action="/formDaftar" method="post" enctype="multipart/form-data">
         <div class="tab-content" id="registrationTabsContent">
           <!-- Data Calon Peserta -->
-          <h5 class="text-center">Data Calon Peserta</h5>
-          <hr>
+
           <div class="tab-pane fade show active" id="calon" role="tabpanel" aria-labelledby="calon-tab">
+            <h5 class="text-center">Data Calon Peserta</h5>
+            <hr>
             <div class="form-group">
               <label for="namaCalon">Nama Lengkap</label>
               <input type="text" class="form-control" id="namaCalon" name="nama"
