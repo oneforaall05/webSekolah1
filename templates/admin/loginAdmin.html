@@ -91,7 +91,10 @@
       margin-bottom: 20px;
     }
 
-    
+    .logo {
+      width: 40px;
+      height: auto;
+    }
   </style>
 </head>
 
@@ -99,63 +102,58 @@
 <body>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <div class="d-flex justify-content-center py-4">
-          <a href="/adminLogin" class="logo d-flex align-items-center w-auto">
-            <img src="static/assets/img/logokabserang.png" alt="" style="width: 200px; height: auto;">
-            <span class="d-none d-lg-block">SDN Bojong Neros</span>
-          </a>
-        </div>
-        <!-- End Logo -->
-
-        <div class="container">
-          <div class="row justify-content-center align-items-center" style="height: 90vh;">
-            <div class="col col-xl-10">
-              <div class="card mx-auto mb-3">
-                <div class="card-body"> 
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title pb-0 fs-4 text-center">Login ke akun Admin</h5>
-                    <p class="small text-center">Masukkan Username dan Password</p>
-                  </div>
-
-                  <form class="row g-3 needs-validation" novalidate>
-                    <div class="col-12">
-                      <label for="input-username" class="form-label">Username</label>
-                      <div class="mb-2">
-                        <div class="field">
-                          <div class="control" style="width: 100%;">
-                            <input type="text" name="username" class="form-control" id="input-username" required>
-                            <p id="help-id-login" style="color: red;"></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="mb-2">
-                        <div class="field">
-                          <div class="control" style="width: 100%;">
-                            <label for="input-password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" id="input-password" required>
-                            <span class="toggle-password" onclick="togglePasswordVisibility()">Show Password</span>
-                            <p id="help-password" style="color: red;"></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100 mb-4" onclick="signIn()" type="button">Login</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+        <div class="col-lg-6">
+            <div class="d-flex justify-content-center py-5">
+                <img src="static/assets/img/logokabserang.png" alt="" class="logo">
+                <h2 class="d-none d-lg-block" style="font-weight: bold;">SDN Bojong Neros</h2>
             </div>
-          </div>
+            <!-- End Logo -->
         </div>
-      </div>
     </div>
-  </div>
+    <div class="row justify-content-center align-items-center" style="margin-top: auto;">
+        <div class="col-lg-6">
+            <div class="card mx-auto mb-3">
+                <div class="card-body">
+                    <div class="pt-4 pb-2">
+                        <h5 class="card-title pb-0 fs-4 text-center">Login ke akun Admin</h5>
+                        <p class="small text-center">Masukkan Username dan Password</p>
+                    </div>
+
+                    <form class="row g-3 needs-validation" novalidate>
+                        <div class="col-12">
+                            <label for="input-username" class="form-label">Username</label>
+                            <div class="mb-2">
+                                <div class="field">
+                                    <div class="control" style="width: 100%;">
+                                        <input type="text" name="username" class="form-control" id="input-username" required>
+                                        <p id="help-id-login" style="color: red;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mb-2">
+                                <div class="field">
+                                    <div class="control" style="width: 100%;">
+                                        <label for="input-password" class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control" id="input-password" required>
+                                        <span class="toggle-password" onclick="togglePasswordVisibility()">Show Password</span>
+                                        <p id="help-password" style="color: red;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100 mb-4" onclick="signIn()" type="button">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
   <!-- End #main -->
