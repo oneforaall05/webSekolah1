@@ -147,7 +147,7 @@
                         <input type="hidden" name="thn" value="{{thn}}">
                         <select class="form-select" id="inputGroupSelect01" name="tahun" onchange="submitForm()"
                             style="border-radius: 10px ; width: 100px;">
-                            <option selected>{{thn}}</option>
+                            <option selected disabled>{{thn}}</option>
                             {% for item in tahun %}
                             <option value="{{item}}">{{item}}</option>
                             {% endfor %}
