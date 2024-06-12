@@ -9,16 +9,9 @@
     <meta content="" name="keywords" />
     {% include 'vendor.html' %}
     <style>
-        .breadcrumb {
-            background: none;
-            padding: 0;
-            margin: 10px 0;
-        }
-
-        .breadcrumb-item a {
-            color: #007BFF;
-            text-decoration: none;
-        }
+        #daftar{
+            color: green;
+          }
 
         .container-isi {
             display: flex;
@@ -80,7 +73,7 @@
         .btn-custom {
             border: 2px solid #000;
             color: #000000;
-            
+
         }
 
         .btn-custom:hover {
@@ -88,8 +81,6 @@
             color: #fff;
         }
     </style>
-
-
 
 
 </head>
@@ -237,13 +228,13 @@
                 </div>
             </div>
             <div class="cotainer d-flex justify-content-end mb-3 me-5">
-                <button type="button" class="btn btn-info btn-custom me-4" >
+                <button type="button" class="btn btn-info btn-custom me-4">
                     <a href="/formDaftar" style="text-decoration: none; color: inherit; float:right">Batal
                     </a>
                 </button>
                 <form method="POST" action="{{ url_for('konfirmDaftar') }}">
                     <input type="hidden" name="data" value='{{ data | tojson | safe }}'>
-                    <button type="submit" class="btn btn-danger btn-custom" >Submit</button>
+                    <button type="submit" class="btn btn-danger btn-custom">Submit</button>
                 </form>
                 </form>
             </div>
