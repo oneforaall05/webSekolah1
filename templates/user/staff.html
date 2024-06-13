@@ -9,8 +9,19 @@
   <meta content="" name="keywords" />
   {%include 'vendor.html'%}
   <style>
-    #staff{
-      color: green;
+    .uniform-card {
+      height: 400px; 
+    }
+    
+    .card-img-container {
+      flex-grow: 1; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .img-fluid:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -23,12 +34,16 @@
       <div class="row">
         {% for item in gurustaf %}
         <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="card text-center">
-            <img src="static/fotostaff/{{ item.gambar }}" style="width: 50%; height: auto; margin: 0 auto;"
-              class="card-img-top img-fluid" alt="">
-            <div class="card-body">
-              <h6 class="card-title">{{ item.nama }}</h6>
-              <p class="card-text">{{ item.jabatan }}</p>
+          <div class="card text-center shadow-sm uniform-card" style="border-radius: 15px; overflow: hidden;">
+            <div class="card-img-container" style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+              <img src="static/fotostaff/{{ item.gambar }}" 
+                   style="max-width: 80%; height: auto; border-radius: 15px; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s;" 
+                   class="img-fluid" 
+                   alt="{{ item.nama }}">
+            </div>
+            <div class="card-body" style="padding-top: 20px;">
+              <h5 class="card-title" style="font-weight: bold; color: #343a40;">{{ item.nama }}</h5>
+              <p class="card-text" style="color: #6c757d;">{{ item.jabatan }}</p>
             </div>
           </div>
         </div>
@@ -36,11 +51,7 @@
       </div>
     </div>
   </main>
-
-
   {%include 'footer.html'%}
-
-
 </body>
 
 </html>
