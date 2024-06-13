@@ -12,9 +12,15 @@
     #berita {
       color: green;
     }
-
     body {
-      background-color: #ecfaec; /* Warna latar belakang untuk body atau halaman */
+      background-color: white;
+    }
+    .kotakberita {
+      margin: auto 10%;
+      padding: 10px 5% 20px 5%;
+      background-color: #ecfaec;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .comment-item {
       background-color: #90EE90;
@@ -48,59 +54,62 @@
 
 <body>
   {%include 'header.html'%}
-  <main class="main m-3">
-    <div class="row justify-content-md-center">
-      <div class="col-lg-8">
-        <div class="tittle">
-          <h1>{{Berita[0].judul}}</h1>
-          <p>{{Berita[0].date}}</p>
-        </div>
-        <div class="news">
-          <img class="rounded mx-auto d-block" src="../static/fotoBerita/{{Berita[0].gambar}}" alt="..."
-            style="width: 80%;object-fit:cover;" />
-          <p>{{Berita[0].Deskripsi|safe}}</p>
-        </div>
-        {%for item in subBerita%}
-        <div class="subNews" >
-          <div class="text-center">
-            <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
-              style="width: 500px; height: auto;">
-            <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
-          </div>
-          <p>{{ item.deskripsi|safe }}</p>
-        </div>
-        {% endfor %}
-      </div>
+  <main class="main mt-4 mb-5">
+    <div class="kotakberita">
       <div class="row justify-content-md-center">
         <div class="col-lg-8">
-          <form action="/komentar/{{Berita[0]._id}}" method="POST">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
-              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
+          <div class="tittle">
+            <h1 style="text-align: center;">{{Berita[0].judul}}</h1>
+            <p style="text-align: center;" >{{Berita[0].date}}</p>
+          </div>
+          <div class="news">
+            <img class="rounded mx-auto d-block" src="../static/fotoBerita/{{Berita[0].gambar}}" alt="..."
+              style="width: 80%;object-fit:cover;" />
+            <p>{{Berita[0].Deskripsi|safe}}</p>
+          </div>
+          {%for item in subBerita%}
+          <div class="subNews">
+            <div class="text-center">
+              <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
+                style="width: 500px; height: auto;">
+              <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
             </div>
-          </form>
+            <p>{{ item.deskripsi|safe }}</p>
+          </div>
+          {% endfor %}
         </div>
-        <div class="col-lg-8">
-          <div class="list-group">
-            {%for item in komentar%}
-            <div class="comment-item">
-              <div class="comment-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-1" style="font-weight: bold;">
-                  {{ item.user_name }}
-                </h5>
-                <small class="text-muted">
-                  {{ item.date_input }}
-                </small>
+        <div class="row justify-content-md-center">
+          <div class="col-lg-8">
+            <form action="/komentar/{{Berita[0]._id}}" method="POST">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
               </div>
-              <p class="comment-text">
-                {{ item.komentar }}
-              </p>
+            </form>
+          </div>
+          <div class="col-lg-8">
+            <div class="list-group">
+              {%for item in komentar%}
+              <div class="comment-item">
+                <div class="comment-header d-flex justify-content-between align-items-center">
+                  <h5 class="mb-1" style="font-weight: bold;">
+                    {{ item.user_name }}
+                  </h5>
+                  <small class="text-muted">
+                    {{ item.date_input }}
+                  </small>
+                </div>
+                <p class="comment-text">
+                  {{ item.komentar }}
+                </p>
+              </div>
+              {%endfor%}
             </div>
-            {%endfor%}
           </div>
         </div>
       </div>
     </div>
+
   </main>
   {%include 'footer.html'%}
 
