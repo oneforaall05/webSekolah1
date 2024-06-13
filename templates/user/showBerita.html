@@ -13,8 +13,11 @@
       color: green;
     }
 
+    body {
+      background-color: #ecfaec; /* Warna latar belakang untuk body atau halaman */
+    }
     .comment-item {
-      background-color: #ffffff;
+      background-color: #90EE90;
       border: 1px solid #dee2e6;
       border-radius: 8px;
       padding: 15px;
@@ -58,7 +61,7 @@
           <p>{{Berita[0].Deskripsi|safe}}</p>
         </div>
         {%for item in subBerita%}
-        <div class="subNews">
+        <div class="subNews" >
           <div class="text-center">
             <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
               style="width: 500px; height: auto;">
