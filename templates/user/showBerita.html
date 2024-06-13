@@ -9,8 +9,36 @@
   <meta content="" name="keywords" />
   {%include 'vendor.html'%}
   <style>
-    #berita{
+    #berita {
       color: green;
+    }
+
+    .comment-item {
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-header {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .comment-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #495057;
+    }
+
+    .comment-text:last-child {
+      margin-bottom: 0;
+    }
+
+    .comment-header small {
+      font-size: 12px;
     }
   </style>
 </head>
@@ -32,45 +60,43 @@
         {%for item in subBerita%}
         <div class="subNews">
           <div class="text-center">
-              <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
-                  style="width: 500px; height: auto;">
-              <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
+            <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
+              style="width: 500px; height: auto;">
+            <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
           </div>
           <p>{{ item.deskripsi|safe }}</p>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-    <div class="row justify-content-md-center">
-      <div class="col-lg-8">
-        <form action="/komentar/{{Berita[0]._id}}" method="POST">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
-          </div>
-        </form>
-      </div>
-      <div class="col-lg-8">
-        <div class="list-group">
-          {%for item in komentar%}
-
-          <div class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">
-                {{item.user_name}}
-              </h5>
-              <small class="text-muted">
-                {{item.date_input}}
-              </small>
+      <div class="row justify-content-md-center">
+        <div class="col-lg-8">
+          <form action="/komentar/{{Berita[0]._id}}" method="POST">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
             </div>
-            <p class="mb-1">
-              {{item.komentar}}
-            </p>
-
+          </form>
+        </div>
+        <div class="col-lg-8">
+          <div class="list-group">
+            {%for item in komentar%}
+            <div class="comment-item">
+              <div class="comment-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-1" style="font-weight: bold;">
+                  {{ item.user_name }}
+                </h5>
+                <small class="text-muted">
+                  {{ item.date_input }}
+                </small>
+              </div>
+              <p class="comment-text">
+                {{ item.komentar }}
+              </p>
+            </div>
+            {%endfor%}
           </div>
-          {%endfor%}
         </div>
       </div>
-    </div>
     </div>
   </main>
   {%include 'footer.html'%}
