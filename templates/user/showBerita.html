@@ -12,16 +12,19 @@
     #berita {
       color: green;
     }
+
     body {
-      background-color: white;
-    }
-    .kotakberita {
-      margin: auto 10%;
-      padding: 10px 5% 20px 5%;
       background-color: #ecfaec;
+    }
+
+    .kotakberita {
+      margin: 0px 10% 20px 10%;
+      padding: 50px 10px 20px 10px;
+      background-color: #ffffff;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     .comment-item {
       background-color: #90EE90;
       border: 1px solid #dee2e6;
@@ -35,11 +38,15 @@
       padding-bottom: 10px;
       border-bottom: 1px solid #e9ecef;
     }
+    .comment-header small {
+      font-size: 12px;
+    }
 
     .comment-text {
-      font-size: 15px;
+      font-size: 17px;
       line-height: 1.6;
-      color: #495057;
+      color: #000000;
+      padding-top: 10px;
     }
 
     .comment-text:last-child {
@@ -47,20 +54,47 @@
     }
 
     .comment-header small {
-      font-size: 12px;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .kotakberita {
+        margin: 3%;
+        padding: 5%;
+      }
+
+      .tittle h1 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 10px;
+      }
+
+      .comment-header h5{
+        font-size: 12px;
+      }
+
+      .comment-text {
+        font-size: 12px;
+      }
+
+      .comment-header small {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
   {%include 'header.html'%}
-  <main class="main mt-4 mb-5">
+  <main class="main">
     <div class="kotakberita">
       <div class="row justify-content-md-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
           <div class="tittle">
             <h1 style="text-align: center;">{{Berita[0].judul}}</h1>
-            <p style="text-align: center;" >{{Berita[0].date}}</p>
+            <p style="text-align: center; margin-bottom: 30px">{{Berita[0].date}}</p>
           </div>
           <div class="news">
             <img class="rounded mx-auto d-block" src="../static/fotoBerita/{{Berita[0].gambar}}" alt="..."
@@ -69,44 +103,48 @@
           </div>
           {%for item in subBerita%}
           <div class="subNews">
-            <div class="text-center">
+            <div class="text-center mb-4">
               <img src="../static/fotoBerita/{{ item.gambarSubBerita }}" alt="" class="img-fluid"
                 style="width: 500px; height: auto;">
-              <h6 style="text-align: center;">{{ item.deskripsiGambar }}</h6>
+              <i><h6 style="text-align: center; font-weight: bold; ">{{ item.deskripsiGambar }}</h6></i>
             </div>
             <p>{{ item.deskripsi|safe }}</p>
           </div>
           {% endfor %}
         </div>
-        <div class="row justify-content-md-center">
-          <div class="col-lg-8">
-            <form action="/komentar/{{Berita[0]._id}}" method="POST">
-              <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
-                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
-              </div>
-            </form>
-          </div>
-          <div class="col-lg-8">
-            <div class="list-group">
-              {%for item in komentar%}
-              <div class="comment-item">
-                <div class="comment-header d-flex justify-content-between align-items-center">
-                  <h5 class="mb-1" style="font-weight: bold;">
-                    {{ item.user_name }}
-                  </h5>
-                  <small class="text-muted">
-                    {{ item.date_input }}
-                  </small>
+        <section>
+
+          <div class="row justify-content-md-center komen">
+            <div class="col-lg-8">
+              <h1 class="text-center mb-3"> Komentar</h1>
+              <form action="/komentar/{{Berita[0]._id}}" method="POST">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+                  <button class="btn btn-success" type="submit" id="button-addon2">Submit</button>
                 </div>
-                <p class="comment-text">
-                  {{ item.komentar }}
-                </p>
+              </form>
+            </div>
+            <div class="col-lg-8">
+              <div class="list-group">
+                {%for item in komentar%}
+                <div class="comment-item">
+                  <div class="comment-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-1" style="font-weight: bold;">
+                      {{ item.user_name }}
+                    </h5>
+                    <small class="date text-muted" >
+                      {{ item.date_input }}
+                    </small>
+                  </div>
+                  <p class="comment-text">
+                    {{ item.komentar }}
+                  </p>
+                </div>
+                {%endfor%}
               </div>
-              {%endfor%}
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
