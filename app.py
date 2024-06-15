@@ -265,7 +265,10 @@ def userShowBerita(_id):
       bolean = True
       if request.method=='POST':
          print(userInfo)
-   return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar)
+   badWords = db.badWord.find({})
+   badWordList = [badWord['badWord'] for badWord in badWords]
+   print(badWordList)
+   return render_template('user/showBerita.html',bolean=bolean,Berita = Berita, subBerita =subBerita,komentar = komentar,badWordList=badWordList)
 
 # date conv
 def time2str(date):

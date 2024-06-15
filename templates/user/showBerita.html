@@ -145,6 +145,7 @@
     }
   </style>
   <script>
+    var badwords = {{badWordList|tojson}};
     function bahaya() {
       alert("Anda harus login terlebih dahulu");
 
@@ -157,7 +158,13 @@
         alert("Komentar tidak boleh kosong!");
         return false; // Prevent form submission
       }
-      else if (komentar.toLowerCase().includes("asu")) {
+      for (var i=0;i<badwords.length;i++){
+        if (komentar.toLowerCase().includes(badwords[i].toLowerCase())) {
+          alert("Komentar tersebut tidak lulus sensor, silakan berkata-kata yang lebih sopan");
+          return false;
+        }
+      }
+      if (komentar.toLowerCase().includes("asu")) {
         alert("Komentar tersebut tidak lulus sensor, silakan berkata-kata yang lebih sopan");
         return false;
       }
