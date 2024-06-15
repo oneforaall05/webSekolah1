@@ -12,19 +12,48 @@
     #staff {
       color: green;
     }
+
     .uniform-card {
-      height: 400px; 
+      height: 400px;
     }
-    
+
     .card-img-container {
-      flex-grow: 1; 
+      flex-grow: 1;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    
+
     .img-fluid:hover {
       transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .uniform-card {
+        height: auto;
+      }
+
+      .card-img-container img {
+        max-width: 100%;
+      }
+
+      .card-body h5 {
+        font-size: 16px;
+      }
+
+      .card-body p {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .card-img-container {
+        padding: 10px;
+      }
+
+      .card-body {
+        padding-top: 10px;
+      }
     }
   </style>
 </head>
@@ -36,7 +65,7 @@
       <h1 class="text-center my-4">Guru & Staff SDN Bojong Neros</h1>
       <div class="row">
         {% for item in gurustaf %}
-        <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" data-aos="fade-up" data-aos-delay="300">
           <div class="card text-center shadow-sm uniform-card" style="border-radius: 15px; overflow: hidden;">
             <div class="card-img-container" style="display: flex; justify-content: center; align-items: center; padding: 20px;">
               <img src="static/fotostaff/{{ item.gambar }}" 

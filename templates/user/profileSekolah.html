@@ -15,6 +15,11 @@
     #profile{
       color: green;
     }
+    @media(min-width:1400px){
+      p{
+        font-size: 20px;
+      }
+    }
   </style>
 
 </head>
@@ -28,13 +33,13 @@
           <div class="title">
             <h1 style="text-align: center;">Profile SDN Bojong Neros</h1>
             <br>
-            <div class="profile-info">
+            <div class="profile-info mb-4">
               <div>{{ struktur[0].sejarah|safe }}</div>
               <div>{{ struktur[0].profile|safe }}</div>
             </div>
           </div>
           <div class="news">
-            <img class="rounded mx-auto d-block" src="../static/fotoStruktur/{{ struktur[0].gambarStruktur }}" alt="..."
+            <img class="rounded mx-auto d-block mb-4" src="../static/fotoStruktur/{{ struktur[0].gambarStruktur }}" alt="..."
               style="width: 80%; object-fit: cover;" />
             <div>{{ struktur[0].alamat|safe }}</div>
           </div>
