@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Bad Word</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+
+    {%include 'admin/vendor.html'%}
+
+    <style>
+        #berita {
+            background-color: rgba(134, 163, 194, 0.1);
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    {%include 'admin/sideBar.html'%}
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Bad Word</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/adminBerita">Berita</a></li>
+
+                    <li class="breadcrumb-item">Bad Word</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <!-- table -->
+        <div class="d-flex justify-content-end mb-3 me-5">
+            <button type="button" class="btn btn-outline-primary btn-custom">
+                <a href="/adminAddBadWord" style="text-decoration: none; color: inherit;">Add Bad Word</a>
+            </button>
+
+        </div>
+        <div class="card">
+            <div class="card-body">
+
+
+                <!-- Table with hoverable rows -->
+                <table class="table table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Bad Word</th>
+                            <th scope="col">Aksi</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in datas %}
+                        <tr>
+                            <th scope="row">
+                                {{loop.index}}
+                            </th>
+                            <td>
+                                {{item.badWord}}
+                            </td>
+
+                            <td>
+                                <a href="/adminEditBadWord/{{item._id}}">
+                                    <button type="button" class="btn btn-warning btn-sm"><i
+                                            class="bi bi-pencil-square"></i>
+                                        Edit</button>
+                                </a>
+                                <a href="/adminDeleteBadWord/{{item._id}}">
+                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                                        Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- End Table with hoverable rows -->
+
+            </div>
+        </div>
+        <!-- table end -->
+    </main><!-- End #main -->
+    {%include 'admin/footer.html'%}

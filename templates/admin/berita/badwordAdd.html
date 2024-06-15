@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Add Bad Word</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  {%include 'admin/vendor.html'%}
+  <style>
+    #berita{
+        background-color: rgba(134, 163, 194, 0.1);
+    }
+  </style>
+
+</head>
+
+<body>
+  {%include 'admin/sideBar.html'%}
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Bad Word</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/adminBadWord">Bad Word</a></li>
+          <li class="breadcrumb-item">Add Bad Word</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <!-- isi -->
+    <div class="card border-0 shadow mb-4">
+      <div class="card-body mt-4">
+        <div class="table-responsive">
+          <form action="/adminAddBadWord" method="POST" >
+            <div class="mb-3">
+              <label for="badWord" class="form-label">Bad Word </label>
+              <input type="text" class="form-control" id="badWord" name="badWord" placeholder="Enter Bad Word"
+                required style="border-radius: 10px;">
+            </div>
+            
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-danger" style="margin-left: 90%;">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main><!-- End #main -->
+  {%include 'admin/footer.html'%}

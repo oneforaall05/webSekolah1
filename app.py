@@ -1107,6 +1107,112 @@ def AdminDeleteKomentar(_id):
    except jwt.exceptions.DecodeError:
        return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
 
+# badWordAdmin
+@app.route('/adminBadWord',methods =['GET','POST'])
+def AdminBadWord():
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+         badWord = list(db.badWord.find({}))
+             
+         name = userInfo['username']
+         
+         return render_template("/admin/berita/badWord.html",name = name,datas = badWord)
+      else:
+         return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+# add badword
+@app.route('/adminAddBadWord',methods =['GET','POST'])
+def AdminAddBadWord():
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+         name = userInfo['username']
+         if request.method == "POST":    
+            badword = request.form['badWord']
+            doc = {
+               "badWord":badword,
+            }
+            db.badWord.insert_one(doc)
+            return redirect(url_for("AdminBadWord"))
+         
+         return render_template("/admin/berita/badWordAdd.html",name = name)
+      else:
+         return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+
+# edit badWord
+@app.route('/adminEditBadWord/<_id>',methods =['GET','POST'])
+def AdminEditBadWord(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+         name = userInfo['username']
+         if request.method == "POST":    
+            badword = request.form['badWord']
+            id=request.form['_id']
+            doc = {
+               "badWord":badword,
+            }
+            db.badWord.update_one({'_id':ObjectId(id)},{'$set':doc})
+            return redirect(url_for("AdminBadWord"))
+         badWord = list(db.badWord.find({"_id":ObjectId(_id)}))
+         
+         # print(badWord)
+         return render_template("/admin/berita/badWordEdit.html",badWord = badWord,name = name)
+      else:
+         return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+
+
+# delete badWord
+@app.route('/adminDeleteBadWord/<_id>',methods =['GET','POST'])
+def AdminDeleteBadWord(_id):
+   token_receive = request.cookies.get(TOKEN_KEY)
+   try:
+      payload = jwt.decode(
+         token_receive, SECRET_KEY, algorithms='HS256'
+      )
+      userInfo = db.admin.find_one({'username':payload.get('id')})
+      if userInfo and token_receive:
+         
+         db.badWord.delete_one({'_id':ObjectId(_id)})
+         return redirect(url_for("AdminBadWord"))
+         
+         
+      else:
+         return redirect(url_for("home",msg="you are not admin"))
+   except jwt.ExpiredSignatureError:
+       return redirect(url_for("adminLogin",msg="session expired , lets try to login"))
+   except jwt.exceptions.DecodeError:
+       return redirect(url_for("adminLogin",msg="something wrong with your loggin"))
+
+
+
 # berita end
 
 
