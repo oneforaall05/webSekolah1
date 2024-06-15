@@ -144,6 +144,22 @@
       }
     }
   </style>
+  <script>
+    function bahaya() {
+      alert("Anda harus login terlebih dahulu");
+      
+      return window.location.href = "/login"
+    }
+
+    function checkInput() {
+      var komentar = document.getElementById("komentar").value;
+      if (komentar.trim() === "") {
+        alert("Komentar tidak boleh kosong!");
+        return false; // Prevent form submission
+      }
+      return true; // Allow form submission
+    }
+  </script>
 </head>
 
 <body>
@@ -176,10 +192,16 @@
           <div class="row justify-content-md-center komen">
             <div class="col-lg-8">
               <h1 class="text-center mb-3">Komentar</h1>
-              <form action="/komentar/{{Berita[0]._id}}" method="POST">
+              <form action="/komentar/{{Berita[0]._id}}" method="POST" onsubmit="return checkInput()">
+                
                 <div class="input-group mb-3">
                   <input type="text" class="form-control" placeholder="masukkan komentar" name="komentar" id="komentar">
+                  {% if bolean == True %}
                   <button class="btn btn-success" type="submit" id="button-addon2">Submit</button>
+                {% else %}
+                  <button type="button" class="btn btn-success"  id="button-addon2" onclick="bahaya()">Submit</button>
+                  
+                {% endif %}
                 </div>
               </form>
             </div>
