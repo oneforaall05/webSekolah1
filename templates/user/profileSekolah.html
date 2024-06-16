@@ -9,16 +9,26 @@
   <meta content="" name="keywords" />
   {%include 'vendor.html'%}
   <style>
-    p{
+    p {
       text-indent: 50px;
     }
-    #profile{
+
+    #profile {
       color: green;
     }
-    @media(min-width:1400px){
-      p{
+
+    @media (min-width: 1400px) {
+      p {
         font-size: 20px;
       }
+    }
+
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 500px;
+      /* Sesuaikan tinggi sesuai kebutuhan Anda */
+      width: 100%;
     }
   </style>
 
@@ -31,23 +41,103 @@
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="title">
-            <h1 style="text-align: center;">Profile SDN Bojong Neros</h1>
-            <br>
+            <h1 style="text-align: center">Profile SDN Bojong Neros</h1>
+            <br />
             <div class="profile-info mb-4">
               <div>{{ struktur[0].sejarah|safe }}</div>
               <div>{{ struktur[0].profile|safe }}</div>
             </div>
           </div>
           <div class="news">
-            <img class="rounded mx-auto d-block mb-4" src="../static/fotoStruktur/{{ struktur[0].gambarStruktur }}" alt="..."
-              style="width: 80%; object-fit: cover;" />
+            <img class="rounded mx-auto d-block mb-4" src="../static/fotoStruktur/{{ struktur[0].gambarStruktur }}"
+              alt="..." style="width: 80%; object-fit: cover" />
             <div>{{ struktur[0].alamat|safe }}</div>
           </div>
+          <a href="https://maps.app.goo.gl/cu4yiqMDrYVxDcUh6" target="_blank">
+          <div id="viewDiv"></div></a>
         </div>
       </div>
     </div>
   </main>
   {%include 'footer.html'%}
+  <!-- argis -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.29/"></script>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/Graphic",
+      "esri/layers/GraphicsLayer",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/symbols/TextSymbol",
+      "esri/geometry/Point"
+    ], function (Map, MapView, Graphic, GraphicsLayer, SimpleMarkerSymbol, TextSymbol, Point) {
+      const map = new Map({
+        basemap: "hybrid"
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        zoom: 18, // Sesuaikan level zoom sesuai kebutuhan
+        center: [106.28539779077053, -6.209978970280072] // Koordinat longitude, latitude
+      });
+
+      // Membuat lapisan grafik
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      // Membuat simbol marker
+      const markerSymbol = new SimpleMarkerSymbol({
+        color: [226, 119, 40],
+        outline: {
+          color: [255, 255, 255],
+          width: 2
+        }
+      });
+      // Membuat simbol teks
+      const textSymbol = new TextSymbol({
+        text: "SDN Bojong Neros",
+        color: "black",
+        haloColor: "white",
+        haloSize: "1px",
+        xoffset: 0,
+        yoffset: 15,
+        font: { // Menyesuaikan font dan ukuran teks
+          size: 12,
+          family: "Arial",
+          weight: "bold"
+        },
+      });
+      // Menggabungkan simbol marker dan teks
+      
+     // const combinedSymbol = {
+       // type: "composite", 
+      //  symbols: [markerSymbol, textSymbol]
+     //}; 
+      // Membuat titik lokasi
+      const point = new Point({
+        longitude: 106.28539779077053,
+        latitude: -6.209978970280072
+      });
+
+      // Membuat grafik marker
+      const pointGraphic = new Graphic({
+        geometry: point,
+        symbol: markerSymbol
+      });
+      const pointGraphic2 = new Graphic({
+        geometry: point,
+        symbol:  textSymbol
+      });
+
+      // Menambahkan grafik ke lapisan grafik
+      graphicsLayer.add(pointGraphic2);
+      graphicsLayer.add(pointGraphic);
+    });
+  </script>
 
 </body>
 
