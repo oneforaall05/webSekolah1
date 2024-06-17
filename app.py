@@ -256,8 +256,8 @@ def userBerita():
    Berita.sort(key=lambda x: x["datetime"], reverse=True)
    for berita in Berita:
         if "datetime" in berita:
-            berita["date"] = berita["datetime"].strftime('%d-%m-%Y')
-            berita["time"] = berita["datetime"].strftime('%H-%M-%S')
+            # berita["date"] = berita["datetime"].strftime('%d-%m-%Y')
+            # berita["time"] = berita["datetime"].strftime('%H-%M-%S')
             del berita["datetime"]         
    bolean = False
    if userInfo :
