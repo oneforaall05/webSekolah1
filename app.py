@@ -227,6 +227,11 @@ def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%d-%m-%Y')
     return date_obj.strftime('%d %B %Y')
 
+# date formater2
+def format_date2(date_str):
+    date_obj = datetime.strptime(date_str, '%d-%m-%Y')
+    return date_obj.strftime('%d %B %Y')
+
 # berita
 @app.route('/berita',methods=['GET'])
 def userBerita():
@@ -247,6 +252,13 @@ def userBerita():
             formatted_date = format_date(date_parts[0])
             berita["date"] = formatted_date
             berita["time"] = date_parts[1]
+            berita["datetime"] = datetime.strptime(date_input, '%d-%m-%Y|%H-%M-%S')
+   Berita.sort(key=lambda x: x["datetime"], reverse=True)
+   for berita in Berita:
+        if "datetime" in berita:
+            berita["date"] = berita["datetime"].strftime('%d-%m-%Y')
+            berita["time"] = berita["datetime"].strftime('%H-%M-%S')
+            del berita["datetime"]         
    bolean = False
    if userInfo :
       bolean = True
@@ -1593,4 +1605,4 @@ def AdminDeleteFasilitas(_id):
 
 if __name__ == '__main__':
    #  app.run('0.0.0.0', port=5001, debug=True)
-    app.run(host='192.168.1.12', port=5001, debug=True)
+    app.run(host='192.168.10.112', port=5001, debug=True)
