@@ -16,6 +16,11 @@
         #berita {
             background-color: rgba(134, 163, 194, 0.1);
         }
+
+        th,
+        td {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
     </style>
 
 </head>
@@ -39,7 +44,7 @@
         </div><!-- End Page Title -->
 
         <!-- table -->
-        <div class="d-flex justify-content-end mb-3 me-5">
+        <div class="d-flex justify-content-end mb-3 me-2">
             <button type="button" class="btn btn-outline-primary btn-custom">
                 <a href="/adminAddBadWord" style="text-decoration: none; color: inherit;">Add Bad Word</a>
             </button>
@@ -47,31 +52,29 @@
         </div>
         <div class="card">
             <div class="card-body">
-
-
                 <!-- Table with hoverable rows -->
                 <table class="table table-hover mt-3">
                     <thead>
                         <tr>
-                            <th scope="col">No</th>
+                            <th scope="col" class="text-center">No</th>
                             <th scope="col">Bad Word</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col" class="text-center">Aksi</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in datas %}
                         <tr>
-                            <th scope="row">
+                            <th scope="row" class="text-center">
                                 {{loop.index}}
                             </th>
                             <td>
                                 {{item.badWord}}
-                            </td>
+                            </td class="text-center">
 
-                            <td>
+                            <td class="text-center">
                                 <a href="/adminEditBadWord/{{item._id}}">
-                                    <button type="button" class="btn btn-warning btn-sm"><i
+                                    <button type="button" class="btn btn-warning btn-sm mx-4"><i
                                             class="bi bi-pencil-square"></i>
                                         Edit</button>
                                 </a>
