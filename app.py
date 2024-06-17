@@ -7,7 +7,9 @@ import os
 from bson import ObjectId
 import json
 
-from flask import Flask, render_template,jsonify,request,redirect,url_for
+from flask import Flask, render_template,jsonify,request,redirect,url_for,flash, make_response
+import re
+import hashlib
 
 from werkzeug.utils import secure_filename
 
@@ -120,34 +122,52 @@ def userLogin():
    return render_template('user/login.html')
 
 # registerUser
-@app.route('/register',methods=['GET','POST'])
+def validate_username(username):
+   pattern = r'^[a-zA-Z_ ]{5,20}$'
+   return re.match(pattern, username) is not None
+
+def validate_password(password):
+   pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$'
+   return re.match(pattern, password) is not None
+
+@app.route('/register', methods=['GET', 'POST'])
 def userRegister():
    token_receive = request.cookies.get(TOKEN_KEY2)
-   
-   userInfo =''
+   userInfo = ''
    if token_receive:
-      payload = jwt.decode(
-               token_receive, SECRET_KEY2, algorithms='HS256'
-         )
-      userInfo = db.user.find_one({'username':payload.get('id')})
-   
-   if userInfo :
-      return redirect(url_for("home",msg="you are still loggin"))
+      try:
+         payload = jwt.decode(token_receive, SECRET_KEY2, algorithms=['HS256'])
+         userInfo = db.user.find_one({'username': payload.get('id')})
+      except jwt.ExpiredSignatureError:
+         return redirect(url_for("userLogin"))
+      except jwt.InvalidTokenError:
+         return redirect(url_for("userLogin"))
+
+   if userInfo:
+      return redirect(url_for("home", msg="You are still logged in"))
+
    if request.method == "POST":
-      
       username_receive = request.form["username"]
       password_receive = request.form["password"]
+
+      if not validate_username(username_receive):
+         msg = 'Username tidak valid. Harus antara 5-20 karakter dan hanya berisi huruf, spasi, dan underscore.'
+         return redirect(url_for('userRegister', msg=msg))
+      if not validate_password(password_receive):
+         msg = 'Password tidak valid. Harus minimal 8 karakter, mengandung huruf besar, huruf kecil dan angka.'
+         return redirect(url_for('userRegister', msg=msg))
+
       password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-      print(username_receive,password_receive)
       doc = {
-         'username':username_receive,
-         'password':password_hash
+            'username': username_receive,
+            'password': password_hash
       }
       db.user.insert_one(doc)
-      return redirect(url_for("userLogin"))   
-   return render_template('user/register.html')
+      flash('Registrasi berhasil!', 'success')
+      return redirect(url_for("userLogin"))
 
-
+   msg = request.args.get('msg')
+   return render_template('user/register.html', msg=msg)
        
 
 # profileSekolahUser
@@ -1573,4 +1593,4 @@ def AdminDeleteFasilitas(_id):
 
 if __name__ == '__main__':
    #  app.run('0.0.0.0', port=5001, debug=True)
-    app.run(host='192.168.10.112', port=5001, debug=True)
+    app.run(host='192.168.1.12', port=5001, debug=True)
