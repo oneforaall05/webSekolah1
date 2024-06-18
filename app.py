@@ -1,5 +1,8 @@
 import jwt.exceptions
 from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError, AutoReconnect, NetworkTimeout
+# from flask_session import Session
+import jwt
 import jwt
 from datetime import datetime, timedelta
 import hashlib
@@ -31,11 +34,32 @@ TOKEN_KEY2 = "P1a_M3raLe0"
 TOKEN_KEY = "mytoken"
 # user start
 
+
+# handle error mongodb not reach
+def get_db():
+    
+    try:
+        client.server_info()  # Ini akan memeriksa apakah MongoDB dapat dijangkau
+         
+        return db
+    except (ServerSelectionTimeoutError, AutoReconnect, NetworkTimeout) as e:
+      print(f"Error connecting to MongoDB: {e}")
+      return redirect(url_for("not_found"))
+
+
+# not found db route
+@app.route('/not-found')
+def not_found():
+    return render_template('notFound.html')
+
 # home 
 @app.route('/',methods=['GET'])
 def home():
    token_receive = request.cookies.get(TOKEN_KEY2)
    print(token_receive)
+   # handle error network
+   get_db()
+   
    
    userInfo =''
    if token_receive:
@@ -58,6 +82,8 @@ def home():
 def userLogin():
       #  handle error user
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -133,6 +159,8 @@ def validate_password(password):
 @app.route('/register', methods=['GET', 'POST'])
 def userRegister():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    userInfo = ''
    if token_receive:
       try:
@@ -174,6 +202,8 @@ def userRegister():
 @app.route('/profileSekolah',methods=['GET'])
 def userProfileSekolah():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -191,6 +221,8 @@ def userProfileSekolah():
 @app.route('/staff',methods=['GET'])
 def userStaff():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -236,6 +268,8 @@ def format_date2(date_str):
 @app.route('/berita',methods=['GET'])
 def userBerita():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -268,6 +302,8 @@ def userBerita():
 @app.route('/showBerita/<_id>',methods=['GET','POST'])
 def userShowBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    Berita =  list(db.berita.find({'_id':ObjectId(_id)}))
@@ -322,7 +358,8 @@ def time2str(date):
 @app.route('/komentar/<_id>',methods=['POST'])
 def userKomentar(_id):
    token_receive = request.cookies.get(TOKEN_KEY2)
-   
+   # handle error network
+   get_db()
    userInfo =''
    
    komentar = request.form['komentar']
@@ -351,6 +388,8 @@ def userKomentar(_id):
 @app.route('/fasilitas',methods=['GET'])
 def userFasilitas():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -371,6 +410,8 @@ import json
 @app.route('/formDaftar',methods=['GET','POST'])
 def userFormDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -468,6 +509,8 @@ def test():
 @app.route('/konfirmDaftar',methods=['GET','POST' ])
 def konfirmDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -495,6 +538,8 @@ def konfirmDaftar():
 @app.route('/syaratDaftar',methods=['GET','POST'])
 def userSyaratDaftar():
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -519,6 +564,8 @@ def userSyaratDaftar():
 def adminLogin():
       #  handle error for user
    token_receive = request.cookies.get(TOKEN_KEY2)
+   # handle error network
+   get_db()
    
    userInfo =''
    if token_receive:
@@ -592,6 +639,9 @@ def adminLogin():
 @app.route('/adminProfileSekolah',methods=['GET'])
 def AdminProfileSekolah():
     token_receive = request.cookies.get(TOKEN_KEY)
+    # handle error network
+    get_db()
+    
    #  print(token_receive)
    #  print(SECRET_KEY)
    #  print(TOKEN_KEY)
@@ -625,6 +675,9 @@ def AdminProfileSekolah():
 @app.route('/adminEditProfileSekolah/<_id>',methods=['GET','POST'])
 def AdminEditProfileSekolah(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
          payload = jwt.decode(
             token_receive, SECRET_KEY, algorithms='HS256'
@@ -682,6 +735,9 @@ def AdminEditProfileSekolah(_id):
 @app.route('/adminStaff',methods=['GET'])
 def AdminStaff():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -705,6 +761,9 @@ def AdminStaff():
 @app.route('/adminEditStaff/<_id>',methods=['GET','POST'])
 def AdminEditStaff(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -751,6 +810,9 @@ def AdminEditStaff(_id):
 @app.route('/adminDeleteStaff/<_id>',methods=['GET','POST'])
 def AdminDeleteStaff(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -776,6 +838,9 @@ def AdminDeleteStaff(_id):
 @app.route('/adminAddStaff',methods=['GET','POST'])
 def AdminAddStaff():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -822,6 +887,9 @@ def AdminAddStaff():
 # berita
 @app.route('/adminBerita',methods=['GET'])
 def AdminBerita():
+   # handle error network
+   get_db()
+   
    try:
       token_receive = request.cookies.get(TOKEN_KEY)
       payload = jwt.decode(
@@ -844,6 +912,9 @@ def AdminBerita():
 @app.route('/adminEditBerita/<_id>',methods=['GET','POST'])
 def AdminEditBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -891,6 +962,9 @@ def AdminEditBerita(_id):
 @app.route('/adminAddBerita',methods=['GET','POST'])
 def AdminAddBerita():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -936,6 +1010,9 @@ def AdminAddBerita():
 @app.route('/adminDeleteBerita/<_id>',methods=['GET','POST'])
 def AdminDeleteBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -964,6 +1041,9 @@ def AdminDeleteBerita(_id):
 @app.route('/adminSubBerita/<_id>',methods=['GET'])
 def AdminSubBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -985,6 +1065,9 @@ def AdminSubBerita(_id):
 @app.route('/adminAddSubBerita/<_id>',methods=['GET','POST'])
 def AdminAddSubBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1026,6 +1109,9 @@ def AdminAddSubBerita(_id):
 @app.route('/adminEditSubBerita/<_id>',methods=['GET','POST'])
 def AdminEditSubBerita(_id):
       token_receive = request.cookies.get(TOKEN_KEY)
+      # handle error network
+      get_db()
+   
       try:
          payload = jwt.decode(
             token_receive, SECRET_KEY, algorithms='HS256'
@@ -1077,6 +1163,9 @@ def AdminEditSubBerita(_id):
 @app.route('/adminDeleteSubBerita/<_id>',methods=['GET','POST'])
 def AdminDeleteSubBerita(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1103,6 +1192,9 @@ def AdminDeleteSubBerita(_id):
 @app.route('/adminDataKomentar/<_id>',methods=['GET',"POST"])
 def AdminDataKomentar(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1124,6 +1216,9 @@ def AdminDataKomentar(_id):
 @app.route('/adminDeleteKomentar/<_id>', methods = ['GET','POST'])
 def AdminDeleteKomentar(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1146,6 +1241,9 @@ def AdminDeleteKomentar(_id):
 @app.route('/adminBadWord',methods =['GET','POST'])
 def AdminBadWord():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1168,6 +1266,9 @@ def AdminBadWord():
 @app.route('/adminAddBadWord',methods =['GET','POST'])
 def AdminAddBadWord():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1196,6 +1297,9 @@ def AdminAddBadWord():
 @app.route('/adminEditBadWord/<_id>',methods =['GET','POST'])
 def AdminEditBadWord(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1228,6 +1332,9 @@ def AdminEditBadWord(_id):
 @app.route('/adminDeleteBadWord/<_id>',methods =['GET','POST'])
 def AdminDeleteBadWord(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1257,6 +1364,9 @@ def AdminDeleteBadWord(_id):
 @app.route('/adminDataDaftar',methods=['GET','POST'])
 def AdminDataDaftar():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1311,6 +1421,9 @@ def AdminDataDaftar():
 @app.route("/adminDetailDaftar/<_id>", methods=['GET','POST'])
 def AdminDetailDaftar(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1333,6 +1446,9 @@ def AdminDetailDaftar(_id):
 @app.route('/adminEditDaftar/<_id>',methods=['GET','POST'])
 def AdminEditDaftar(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1410,6 +1526,9 @@ def AdminEditDaftar(_id):
 @app.route('/adminDeleteDaftar/<_id>', methods = ['GET','POST'])
 def AdminDeleteDaftar(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1430,6 +1549,9 @@ def AdminDeleteDaftar(_id):
 @app.route('/adminStatusDaftar', methods = ['POST'])
 def AdminStatusDaftar():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1462,6 +1584,9 @@ def AdminStatusDaftar():
 @app.route('/adminFasilitas',methods=['GET'])
 def AdminFasilitas():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1483,6 +1608,9 @@ def AdminFasilitas():
 @app.route('/adminEditFasilitas/<_id>',methods=['GET','POST'])
 def AdminEditFasilitas(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1533,6 +1661,9 @@ def AdminEditFasilitas(_id):
 @app.route('/adminAddFasilitas',methods=['GET','POST'])
 def AdminAddFasilitas():
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
@@ -1577,6 +1708,9 @@ def AdminAddFasilitas():
 @app.route('/adminDeleteFasilitas/<_id>',methods=['GET','POST'])
 def AdminDeleteFasilitas(_id):
    token_receive = request.cookies.get(TOKEN_KEY)
+   # handle error network
+   get_db()
+   
    try:
       payload = jwt.decode(
          token_receive, SECRET_KEY, algorithms='HS256'
