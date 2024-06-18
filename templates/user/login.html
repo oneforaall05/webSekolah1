@@ -7,9 +7,7 @@
   <title>Login</title>
   <meta content="" name="description" />
   <meta content="" name="keywords" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   {%include 'vendor.html'%}
   <script>
     function signIn() {
@@ -100,13 +98,6 @@
       text-decoration: underline;
 
     }
-
-    #eye-icon {
-      font-size: 1.5em;
-      /* Atur ukuran ikon */
-      color: #6c757d;
-      /* Warna ikon default */
-    }
   </style>
 </head>
 
@@ -143,13 +134,11 @@
                       <div class="input-group">
                         <input type="password" id="password" name="password" class="form-control form-control-lg"
                           placeholder="Masukkan password">
-                        <div class="input-group-append">
-                          <span class="input-group-text">
-                            <a class="toggle-password" onclick="togglePasswordVisibility()" href="#">
-                              <i class="fa fa-eye"></i>
-                            </a>
-                          </span>
-                        </div>
+                        <span class="input-group-text">
+                          <a class="toggle-password" onclick="togglePasswordVisibility()" href="#">
+                            <i class="fa fa-eye"></i>
+                          </a>
+                        </span>
                       </div>
                       <p id="help-password" class="text-danger"></p>
                     </div>
