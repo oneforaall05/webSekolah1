@@ -1,49 +1,129 @@
 <style>
   #footer {
     background-color: #cae7ca;
-    color: #ffffff;
+    color: black;
     padding: 15px 0;
     font-size: 14px;
   }
 
-  .footer-contact h3 {
+  .copyright {
+    font-size: 14px;
     color: black;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-
-  .footer-contact p {
-    color: black;
-    margin-bottom: 5px;
+    padding: 5px 0;
   }
 
   .sitename {
-    color: black;
     font-weight: bold;
+    color: black;
+  }
+
+
+  .footer h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: black;
+  }
+
+  .footer p {
+    margin: 0;
     font-size: 16px;
   }
 
-  .copyright {
-    color: black;
-    margin-top: 10px;
-    font-size: 12px;
+  .footer .footer-contact p {
+    margin-bottom: 10px;
   }
+
+  .footer .container {
+    width: 100%;
+  }
+
+  .footer-bottom {
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+  }
+
+  .footer-logo {
+    max-width: 60px;
+    vertical-align: middle;
+    margin-right: 20px;
+  }
+
+  .footer-logo img {
+    max-width: 90%;
+  }
+
+  .footer-contact-info {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .footer-contact-info p {
+    margin-bottom: 5px;
+  }
+
+  .school-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    vertical-align: middle;
+    color: black;
+  }
+
+  .school-name span {
+    display: block;
+  }
+
+  .contact-icon {
+    width: 15px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
 </style>
 
 
 <footer id="footer" class="footer position-relative">
   <div class="container footer-top text-center">
     <div class="row gy-4 text-center">
-      <div class="footer-contact pt-3">
-        <h3>Info Kontak</h3>
-        <p class="mt-3"><strong>Phone:</strong> <span>0819898789</span></p>
-        <p><strong>Email:</strong> <span>sdnbojongneros@gmail.com</span></p>
+      <div class="col-md-6 text-center text-md-left">
+        <!-- School Logo -->
+        <img src="../static/assets/img/logokabserang.png" alt="School Logo" class="footer-logo">
+        <!-- School Name -->
+        <h3 class="school-name text-center mb-2">SDN Bojong Neros</h3>
+        <p class="school-address text-center mb-3">Jl. Raya Bojong Neros - Panosogan<br>Kec.Cikeusal Kab.Serang 42175
+        </p>
+
       </div>
-      <div class="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">Grup 5</strong> <span>All Rights Reserved</span></p>
+      <div class="col-md-6 text-center text-md-right">
+        <!-- Contact Information -->
+        <div class="footer-contact">
+          <h3>Info Kontak</h3>
+          <div class="contact-info text-center">
+            <p>
+              <i class="bi bi-telephone-fill"></i> 081283109712
+            </p>
+            <p>
+              <i class="bi bi-envelope-fill"></i> sdnbojongneros@gmail.com
+            </p>
+            <p>
+              <i class="bi bi-facebook"></i> SDN Bojong Neros
+            </p>
+          </div>
+          
+          </p>
+        </div>
       </div>
+
     </div>
-  </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Grup 5</strong> <span>All Rights Reserved</span></p>
+    </div>
+
+</footer>
+
 </footer>
 
 <!-- Scroll Top -->
