@@ -16,15 +16,6 @@
         #fasilitas{
             background-color: rgba(134, 163, 194, 0.1);
         }
-        #btn-custom {
-            border: 2px solid #000;
-            color: #000;
-        }
-
-        #btn-custom:hover {
-            background-color: #432ad4;
-            color: #fff;
-        }
 
         #table-custom thead {
             background-color: #f1f1f1;
@@ -60,7 +51,7 @@
         </div><!-- End Page Title -->
 
         <div class="d-flex justify-content-end mb-3 me-5">
-            <button type="button" class="btn btn-light btn-custom" id="btn-custom">
+            <button type="button" class="btn btn-outline-primary btn-custom" id="btn-custom">
                 <a href="/adminAddFasilitas" style="text-decoration: none; color: inherit;">Add Fasilitas</a>
             </button>
         </div>
@@ -88,10 +79,10 @@
                             <td>{{item.deskripsiFasilitas|safe}}</td>
                             <td class="text-center">
                                 <a href="/adminEditFasilitas/{{item._id}}">
-                                    <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm mx-2 mb-2"><i class="bi bi-pencil-square"></i> Edit</button>
                                 </a>
                                 <a href="/adminDeleteFasilitas/{{item._id}}">
-                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Delete</button>
+                                    <button type="button" class="btn btn-danger btn-sm mx-2 mb-2 "><i class="bi bi-trash"></i> Delete</button>
                                 </a>
                             </td>
                         </tr>

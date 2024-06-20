@@ -144,8 +144,12 @@ def userLogin():
                   "msg": "We could not find a user with that id/password combination",
                }
          )
-      
-   return render_template('user/login.html')
+   
+   msg=request.args.get('msg')
+   if msg:
+      return render_template('user/login.html',msg=msg)
+   else:
+      return render_template('user/login.html')
 
 # registerUser
 def validate_username(username):
@@ -1738,5 +1742,5 @@ def AdminDeleteFasilitas(_id):
 
 if __name__ == '__main__':
    #  app.run('0.0.0.0', port=5001, debug=True)
-   app.run(host='192.168.0.107', port=5001, debug=True)
+   app.run(host='192.168.1.8', port=5001, debug=True)
 

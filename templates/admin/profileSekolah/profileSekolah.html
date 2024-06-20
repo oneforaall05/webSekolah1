@@ -2,18 +2,6 @@
 <html lang="en">
 
 <head>
-  <style>
-    #btn-custom {
-      border: 2px solid #000;
-      color: #000;
-    }
-
-    #btn-custom:hover {
-      background-color: #000;
-      color: #fff;
-    }
-  </style>
-
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -24,9 +12,10 @@
 
   {%include 'admin/vendor.html'%}
   <style>
-    #profile{
-            background-color: rgba(134, 163, 194, 0.1);
-        }
+    #profile {
+      background-color: rgba(134, 163, 194, 0.1);
+    }
+
   </style>
 
 
@@ -46,7 +35,7 @@
     </div><!-- End Page Title -->
     <div class="d-flex justify-content-end mb-3 me-5">
 
-      <button type="button" class="btn btn-light " id="btn-custom">
+      <button type="button" class="btn btn-outline-primary " id="btn-custom">
         <a href="/adminEditProfileSekolah/{{struktur[0]._id}}" style="text-decoration: none; color: inherit;">Edit
           Profile</a>
       </button>
