@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError, AutoReconnect, NetworkTimeout
 # from flask_session import Session
 import jwt
-import jwt
+
 from datetime import datetime, timedelta
 import hashlib
 import os
@@ -17,7 +17,7 @@ import hashlib
 from werkzeug.utils import secure_filename
 
 # for deleting html in text
-import re
+
 import bleach
 # for deleteing html in text end
 
