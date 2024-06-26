@@ -281,7 +281,7 @@ def userBerita():
          )
       userInfo = db.user.find_one({'username':payload.get('id')})
    Berita =  list(db.berita.find({}))
-   print(Berita[0]["date_input"])
+   
    for berita in Berita:
         if "date_input" in berita:
             date_input = berita["date_input"]
@@ -1741,6 +1741,6 @@ def AdminDeleteFasilitas(_id):
 # admin end
 
 if __name__ == '__main__':
-   #  app.run('0.0.0.0', port=5001, debug=True)
-   app.run(host='192.168.1.8', port=5001, debug=True)
+   app.run('0.0.0.0', port=5001, debug=True)
+   #papp.run(host='192.168.1.8', port=5001, debug=True)
 
