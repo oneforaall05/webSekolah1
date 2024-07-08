@@ -75,8 +75,6 @@ def home():
    print(bolean)
    return render_template('index.html', bolean = bolean)
 
-
-
 # loginUser 
 @app.route('/login',methods=['GET','POST'])
 def userLogin():
